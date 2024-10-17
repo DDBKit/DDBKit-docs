@@ -34,50 +34,11 @@
     'DejaVu Sans Mono', Menlo, Consolas, monospace !important;
     tab-size: 40px;
 }
-#_top {
-    font-weight: 400;
-}
-.tagline {
-    font-weight: 300;
-}
-p {
-    font-weight: 500;
-}
-b, strong {
-    font-weight: 600 !important;
-}
-.starlight-aside {
-    border-radius: 0.7rem;
+starlight-file-tree, code[dir="auto"] {
     border: none;
-    background: none;
-    box-shadow: 0 0 7px var(--sl-color-accent-high),
-                0 0 2px var(--sl-color-accent-high) inset;
-    line-height: 2.3rem;
-    padding: 1.2rem;
-    position: relative;
-    z-index: 1;
-    --sl-color-asides-text-accent: var(--sl-color-accent-high);
-}
-.starlight-aside::before {
-    content: "";
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    border-radius: 0.7rem;
-    opacity: 0.1;
-    z-index: -1;
-    background: var(--sl-color-accent-high);
-}
-.starlight-aside--note {
-    --sl-color-asides-text-accent: #007aff;
-    --sl-color-accent-high: #007aff;
-}
-starlight-file-tree {
-    border: none;
-    border-radius: 0.7rem !important;
-    box-shadow: 0 0 2px var(--sl-color-gray-4) inset;
+    border-radius: 0.3rem !important;
+    box-shadow: 0 0 1px var(--sl-color-gray-4) inset,
+                0 4px 8px #0000001a;
 }
 .tree-entry {
     transition: 0.2s color;
@@ -89,7 +50,7 @@ starlight-file-tree {
     margin-left: 4px !important;
     margin-right: 4px !important;
     gap: 0;
-    color: var(--sl-color-accent-high) !important;
+    color: var(--sl-color-asides-text-accent) !important;
     height: 0;
     font-weight: 500;
     display: inline;
@@ -103,48 +64,31 @@ starlight-file-tree {
 .indent {
     letter-spacing: 6px !important;
 }
-/* Inline code styling.
-   We use dir=auto to only find inline ones, not whole blocks */
-code[dir="auto"] {
-    color: var(--sl-color-accent-high);
-    background-color: var(--sl-color-accent-low) !important;
-    border-radius: 0.4rem;
-}
-/* Set code font weight and spacing to something similiar to Xcode */
-code {
-    font-weight: 700 !important;
-    font-size: 16px !important;
-    --0fs: normal !important;
-}
-code > div {
-    line-height: 1.4rem !important;
-}
-/* Font weight: Code comments */
-span[style="--0:#98A2AC;--0fs:italic"] {
-    --0fs: normal !important;
-    --0fw: 600 !important;
-}
-/* Font weight: Red stuff in code, like func, let, etc. */
-span[style="--0:#EE82B0"] {
-    --0fw: 800 !important;
-}
 /* Terminal codeblocks */
 .is-terminal {
-    background: var(--sl-color-black) !important;
-    border: 1px solid black !important;
+    background: #1e1e1e !important;
+    border: 1px solid #4e4e4e !important;
+    box-shadow: 0 4px 8px #0000001a !important;
 }
 [data-theme="light"] .is-terminal {
-    background: var(--sl-color-gray-1) !important;
+    background: #1e1e1e !important;
     border: 1px solid black !important;
 }
 .is-terminal > figure, .is-terminal > figcaption, .is-terminal > pre {
     border: none !important;
+}
+.is-terminal > figcaption {
+    background: #2d2d2d !important;
 }
 .is-terminal > figcaption::after {
     border-color: black !important;
 }
 .is-terminal >figcaption > .title::after {
     content: "~ (zsh)";
+    font-weight: 700;
+    color: #bcbdc0;
+    font-size: 14px;
+    opacity: 0.5 !important;
 }
 .is-terminal >figcaption::before {
     content: '';
@@ -152,15 +96,7 @@ span[style="--0:#EE82B0"] {
     width: 2.5rem !important;
     height: 100%;
     mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 68 16' preserveAspectRatio='xMidYMid meet'%3E%3Ccircle cx='8' cy='8' r='8'/%3E%3Ccircle cx='35' cy='8' r='8'/%3E%3Ccircle cx='60' cy='8' r='8'/%3E%3C/svg%3E") !important;
-    background: linear-gradient(to right, 
-        #ff5f57 0%, 
-        #ff5f57 33.33%,
-        #febc2f 33.33%, 
-        #febc2f 66.66%,
-        #28c840 66.66%, 
-        #28c840 100%
-    );
-    opacity: 1 !important;
+
 }
 .is-terminal .ec-line::before {
     content: "➜ ~";
@@ -173,8 +109,4 @@ span[style="--0:#EE82B0"] {
 }
 .dir-my-new-bot .is-terminal >figcaption > .title::after {
     content: "~/MyNewBot (zsh)";
-}
-/* Sidebar link rounding */
-#starlight__sidebar a {
-    border-radius: 0.5rem !important;
 }
