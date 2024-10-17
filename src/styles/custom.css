@@ -16,14 +16,14 @@
 /* Light mode colors. */
 :root[data-theme='light'] {
     --sl-color-accent-low: #facdac;
-    --sl-color-accent: #a05500;
+    --sl-color-accent: #e09137;
     --sl-color-accent-high: #4e2600;
     --sl-color-white: #181818;
     --sl-color-gray-1: #272727;
     --sl-color-gray-2: #383838;
     --sl-color-gray-3: #585858;
     --sl-color-gray-4: #8b8b8b;
-    --sl-color-gray-5: #c2c2c2;
+    --sl-color-gray-5: #f4dcd4;
     --sl-color-gray-6: #eeeeee;
     --sl-color-gray-7: #ffe7d2;
     --sl-color-black: #ffe7d2;
@@ -36,15 +36,31 @@
         'DejaVu Sans Mono', Menlo, Consolas, monospace !important;
     tab-size: 40px;
     scroll-behavior: smooth;
+    --global-shadow: 0 4px 8px #0000001a;
 }
 
 /* *   Shadows   * */
-.is-terminal {
-    box-shadow: 0 4px 8px #0000001a !important;
+.is-terminal,
+site-search>button,
+site-search>button>kbd {
+    box-shadow: var(--global-shadow) !important;
+}
+
+select {
+    border-radius: 0.5rem;
+}
+
+[data-theme="light"] select {
+    box-shadow: var(--global-shadow) !important;
+    border: 1px solid var(--sl-color-gray-5);
+}
+
+.social-icons svg {
+    filter: drop-shadow(var(--global-shadow)) !important;
 }
 
 main img {
-    filter: drop-shadow(0 4px 8px #0000001a);
+    filter: drop-shadow(var(--global-shadow)) !important;
 }
 
 /* *  File tree  * */
@@ -63,4 +79,16 @@ code[dir="auto"] {
 /* * Indent size * */
 .indent {
     letter-spacing: 6px !important;
+}
+
+/*
+Fix scrollbar sometimes
+being shown in VS Code
+*/
+.tablist-wrapper {
+    scrollbar-width: none;
+}
+
+.tablist-wrapper::-webkit-scrollbar {
+    display: none;
 }
