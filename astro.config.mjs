@@ -5,10 +5,6 @@ import starlight from '@astrojs/starlight';
 import { ExpressiveCodeTheme } from '@astrojs/starlight/expressive-code'
 import fs from 'node:fs' 
 
-// Load your saved theme JSONC file here and create a theme from it
-const jsoncString = fs.readFileSync(new URL(`./src/assets/xcode-colours.jsonc`, import.meta.url), 'utf-8')
-const xcodeTheme = ExpressiveCodeTheme.fromJSONString(jsoncString)
-
 // https://astro.build/config
 export default defineConfig({
 	integrations: [
@@ -28,7 +24,7 @@ export default defineConfig({
 			],
 			expressiveCode: {
 				styleOverrides: { borderRadius: '0.5rem' },
-				themes: [xcodeTheme]
+				themes: ['vesper']
 			},
 			sidebar: [
 				{

@@ -4,31 +4,35 @@ description: Getting started with DDBKit!
 ---
 
 import { Aside, FileTree, Code, LinkButton } from '@astrojs/starlight/components';
-import botSwift from "Bot.swift?raw";
+import botSwift from "/src/examples/Bot.swift?raw";
+import packageInitOutput from "/src/examples/package-init-output.sh?raw";
 
-1. If you haven't already, create your project's directory:
+This will guide you through the basics of setting up DDBKit and your bot. By the end,
+we should have something that can connect to Discord, and you can work from there afterward.
+
+## Prerequisites
+* A decent understanding of the Swift programming language.
+* Something that can compile Swift code. macOS and Linux are preferred.
+
+<Aside type="tip">
+On macOS you should use Xcode for DDBKit development.
+It is recommended you install [Xcodes](https://github.com/XcodesOrg/XcodesApp/releases/download/v2.2.0b27/Xcodes.zip)
+for easier version management.
+</Aside>
+
+## Making our directory and package
+We need to set up our bot's directory. Open a terminal and copy and
+paste the following command.
 ```sh
 mkdir MyNewBot && cd MyNewBot
 ```
-2. Then, make a new executable package in the directory:
-<Code class="dir-my-new-bot" lang="sh" code="swift package init --type executable" />
-This will create a new Package.swift for us in the root of the project. If you don't already know, this contains things like our project name and dependencies.
-
-<span>
-<span>Learn more about packages</span>
-<LinkButton
-  href="https://developer.apple.com/documentation/xcode/swift-packages"
-  variant="minimal"
-  target="_blank"
-  icon="external"
-  iconPlacement="end"
-  class="inline-external-link"
->
-  <span>here.</span>
-</LinkButton>
-</span>
-
-3. Open `Package.swift` in your preferred editor, and copy this configuration.
+`mkdir` makes a folder, `cd` changes the terminal to that folder.
+Now that we're in the folder, we can create our `Package.swift` file.
+Copy and paste the following command.
+<Code class="dir-my-new-bot" lang="sh" code={packageInitOutput} />
+We now have a `Package.swift`. This just kind of tells Swift how to
+run our program, a bot in this case. The defaults aren't exactly
+what we need, so copy and paste the following code into `Package.swift`.
 ```swift
 let package = Package(
   name: "rig",
@@ -54,30 +58,35 @@ let package = Package(
 )
 ```
 
-You’ve now configured the package to use DDBKit! Next, rename the file at `./Sources/main.swift` to anything that isn’t `main.swift`, such as `Bot.swift`. This will be the main part where we do things such as logging in, and handling what to do when the bot is ready.
+## Creating our entry point
+The entry point file is where the bot will be configured (token, intents, 
+etc.) and what to do when the bot is ready. You can name this anything
+but `main.swift`. We will just go with `Bot.swift` here.
 
-`Bot.swift` (or whatever you named it) should contain this:
+The command you ran earlier has already made a `Sources/main.swift` file.
+Rename this to your choice and copy and paste the following code into it.
 
-<Code code={botSwift} lang="swift" title="Bot.swift" />
+export const highlights = ['token: "Token Here"', 'intents: [.messageContent, .guildMessages]'];
 
-Change the token to your bot's token, and if any, specify the intents you need in `intents` under `BotGatewayManager`.
+<Code code={botSwift} lang="swift" title="Bot.swift" mark={highlights} />
 
-<Aside type="tip">
+Change the token to your bot's token, and if any, specify 
+the intents you need in `intents` under `BotGatewayManager`.
 
-<span>
-<span>**Don't have a bot yet?** Make one</span>
-<LinkButton
-  href="https://discord.com/developers/applications"
-  target="_blank"
-  variant="minimal"
-  icon="external"
-  iconPlacement="end"
-  class="inline-external-link"
->
-  <span>here.</span>
-</LinkButton>
-</span>
+<Aside type="note">
+You can invite your bot, change your token, and manage intents at
+the [Discord developer portal](https://discord.com/developers/applications).
+</Aside>
 
+<Aside type="danger">
+**Do not share your token.** This is what you use to
+login to your bot. What your bot does is your responsibility.
+If anyone gets access to your bot, they can spam the API,
+abuse permissions (ban people) and more.
+
+**In the case that you have committed your token or shared it**
+reset your token immediately. GitHub will tell Discord to reset
+it and disable the token if found on a repo.
 </Aside>
 
 Your final directory structure should look a little like this:
@@ -91,4 +100,9 @@ Your final directory structure should look a little like this:
   - Bot.swift
 </FileTree>
 
-Your bot is ready to run! Head to [running your bot](running-your-bot).
+You can make the `Commands and Events` folder for later. Find the
+instructions for running your bot for your OS in the sidebar to
+continue and connect your bot to Discord.
+
+If you're already experienced, your bot is pretty much ready to
+go and you don't have to continue. Good job 🎉
