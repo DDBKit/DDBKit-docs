@@ -42,7 +42,7 @@ export default defineConfig({
 					autogenerate: { directory: 'start-here' },
 				},
 				{
-					label: 'Reference',
+					label: 'API Reference',
 					autogenerate: { directory: 'reference' },
 				},
 			],
