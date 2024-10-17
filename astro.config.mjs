@@ -12,7 +12,7 @@ export default defineConfig({
 			title: 'DDBKit',
 			favicon: "./src/assets/ddbkit-icon.png",
 			logo: {
-				src: "./src/assets/ddbkit-icon.png"
+				src: "./src/assets/ddbkit-icon.webp"
 			},
 			social: {
 				github: 'https://github.com/llsc12/DDBKit',

@@ -101,6 +101,3 @@ figure.is-terminal code .ec-line:first-of-type::before {
 .dir-my-new-bot .is-terminal >figcaption > .title::after {
     content: "~/MyNewBot (zsh)";
 }
-main img {
-    border-radius: 0.3rem;
-}
