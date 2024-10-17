@@ -1,0 +1,94 @@
+---
+title: Getting started
+description: Getting started with DDBKit!
+---
+
+import { Aside, FileTree, Code, LinkButton } from '@astrojs/starlight/components';
+import botSwift from "bot.swift?raw";
+
+1. If you haven't already, create your project's directory:
+```sh
+mkdir MyNewBot && cd MyNewBot
+```
+2. Then, make a new executable package in the directory:
+<Code class="dir-my-new-bot" lang="sh" code="swift package init --type executable" />
+This will create a new Package.swift for us in the root of the project. If you don't already know, this contains things like our project name and dependencies.
+
+<span>
+<span>Learn more about packages</span>
+<LinkButton
+  href="https://developer.apple.com/documentation/xcode/swift-packages"
+  variant="minimal"
+  target="_blank"
+  icon="external"
+  iconPlacement="end"
+  class="inline-external-link"
+>
+  <span>here.</span>
+</LinkButton>
+</span>
+
+3. Open `Package.swift` in your preferred editor, and copy this configuration.
+```swift
+let package = Package(
+  name: "rig",
+  platforms: [
+    .macOS(.v13)
+  ],
+  dependencies: [
+    .package(url: "https://github.com/llsc12/DDBKit", exact: "0.1.4"), // change this to latest ver
+  ],
+  targets: [
+    // Targets are the basic building blocks of a package, defining a module or a test suite.
+    // Targets can depend on other targets in this package and products from dependencies.
+    .executableTarget(
+      name: "rig",
+      dependencies: [
+        .product(name: "DDBKit", package: "DDBKit"),
+        .product(name: "Database", package: "DDBKit"),
+        .product(name: "DDBKitUtilities", package: "DDBKit"),
+        .product(name: "DDBKitFoundation", package: "DDBKit"),
+      ]
+    ),
+  ]
+)
+```
+
+You’ve now configured the package to use DDBKit! Next, rename the file at `./Sources/main.swift` to anything that isn’t `main.swift`, such as `Bot.swift`. This will be the main part where we do things such as logging in, and handling what to do when the bot is ready.
+
+`Bot.swift` (or whatever you named it) should contain this:
+
+<Code code={botSwift} lang="swift" title="Bot.swift" />
+
+Change the token to your bot's token, and if any, specify the intents you need in `intents` under `BotGatewayManager`.
+
+<Aside type="tip">
+
+<span>
+<span>**Don't have a bot yet?** Make one</span>
+<LinkButton
+  href="https://discord.com/developers/applications"
+  target="_blank"
+  variant="minimal"
+  icon="external"
+  iconPlacement="end"
+  class="inline-external-link"
+>
+  <span>here.</span>
+</LinkButton>
+</span>
+
+</Aside>
+
+Your final directory structure should look a little like this:
+
+<FileTree>
+- Package.swift
+- Sources
+  - Commands and Events
+    - TestCommands.swift
+    - ...
+  - Bot.swift
+</FileTree>
+
+Your bot is ready to run! Head to [running your bot](running-your-bot).
