@@ -1,0 +1,113 @@
+---
+title: Commands
+description: Declaring commands and using modifiers
+sidebar:
+  order: 4
+---
+import { Aside, Code } from '@astrojs/starlight/components';
+
+Commands in DDBKit come with a bunch of modifiers to control its behaviour. DDBKit includes Discord API modifiers (modifiers that directly control the command during registration, or modifiers that provide callbacks for discord command events). You can find more utilities in the DDBKitUtilities module which provides tools like Message builders and some misc abstractions.
+
+To start, take a look at this command:
+```swift
+Command("embeds") { i, cmd, dbreq in
+  let randomcolor: DiscordColor = {
+    let colors: [DiscordColor] = [.red, .orange, .yellow, .green, .mint, .teal, .cyan, .blue, .indigo, .purple, .pink, .brown, .gray]
+    return colors.randomElement() ?? .red
+  }()
+  try? await bot.createInteractionResponse(to: i) {
+    Message {
+      MessageEmbed {
+        Title("gm")
+        Description {
+          Text("Did i mention how cool this is lmao")
+        }
+      }
+      .setColor(randomcolor)
+    }
+  }
+}
+.description("Test embeds")
+.integrationType(.all, contexts: .all)
+```
+
+This demonstrates a few things to note. We use the `createInteractionResponse(to:)` method on our `GatewayManager` to send a `Message` object.
+The `Message` object allows you to take a result builder approach to structuring your message payload. You fill the message with `MessageComponent` types like `MessageEmbed` as seen here, or `MessageContent` for the text content of the message. Send attachments with `MessageAttachment` and attach message components with `MessageComponents`.
+
+```swift
+Message {
+  MessageContent {
+    Text("hi mom")
+  }
+}
+```
+The above example sets up text content in the message, but if you only need to send text, you can skip `MessageContent` like below:
+```swift
+Message {
+  Text("hi mom")
+}
+```
+
+<Aside type="danger" title="Warning">
+Do not try to use this skip, especially when you need embeds, components or any other things aside from text. This is a utility shorthand for text only.
+</Aside>
+
+```swift
+Message {
+  MessageContent {
+    Text("gm")
+      .bold()
+      .underlined()
+  }
+  MessageAttachment(imgFileData, filename: "img.png")
+    .usage(.embed) 
+    // the above modifier marks attachment so that it isn't sent as 
+    // an actual attachment, but is included in the msg for use in embeds.
+  MessageEmbed {
+    Title("hello chat")
+    Description("how you doin")
+    Thumbnail(.attachment(name: "img.png"))
+    Footer("yea")
+  }
+  .setTimestamp() // defaults to current date
+}
+```
+This demonstrates the process of structuring an embed, and using attachments in embeds or elsewhere. If you wish to have the attachment actually attach to the message rather than be uploaded for use elsewhere, omit the usage modifier. 
+```swift
+Message {
+  MessageContent {
+    Text("buttons!")
+      .bold()
+      .underlined()
+  }
+  MessageComponents {
+    ActionRow {
+      Button("im a button")
+        .id("btn")
+      Button("im dangerous :3")
+        .style(.danger)
+        .id("scary")
+    }
+  }
+  .component(on: "btn") { int, _, _ in
+    try? await bot.createInteractionResponse(to: int) {
+      Message { Text("hii") }
+        .flags([.ephemeral])
+    }
+  }
+  .component(on: "scary") { int, _, _ in
+    try? await bot.createInteractionResponse(to: int) {
+      Message { Text("boo!") }
+        .flags([.ephemeral])
+    }
+  }
+}
+```
+This example demonstrates using components! 
+<Aside type="note" title="Note">
+A message requires an embed or some content (as the main body can't be empty) to be sent, so ensure you don't just declare some components on their own.
+</Aside>
+The component events can be received through the aptly named component modifiers. You can either specify a hardcoded component ID to respond to, or omit the `on` parameter entirely to receive all events. 
+<Aside type="danger" title="Warning">
+Ensure you ID your components well to avoid conflicts. If you receive all component events, ensure you do your own logic to differentiate components.
+</Aside>
