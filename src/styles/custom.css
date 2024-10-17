@@ -44,18 +44,6 @@ starlight-file-tree, code[dir="auto"] {
     transition: 0.2s color;
     font-weight: 500;
 }
-/* Uses a LinkButton for a custom external link with icon */
-.inline-external-link {
-    margin: 0 !important;
-    margin-left: 4px !important;
-    margin-right: 4px !important;
-    gap: 0;
-    color: var(--sl-color-asides-text-accent) !important;
-    height: 0;
-    font-weight: 500;
-    display: inline;
-    font-size: var(--sl-text-base) !important;
-}
 /* Starlight's default code styling looks terrible
    Most of the stuff next will make everything look
    similiar to Xcode's defaults.
@@ -112,4 +100,7 @@ figure.is-terminal code .ec-line:first-of-type::before {
 }
 .dir-my-new-bot .is-terminal >figcaption > .title::after {
     content: "~/MyNewBot (zsh)";
+}
+main img {
+    border-radius: 0.3rem;
 }
