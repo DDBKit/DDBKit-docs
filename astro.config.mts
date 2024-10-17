@@ -28,6 +28,7 @@ export default defineConfig({
 			customCss: [
 				'./src/styles/custom.css',
 				'./src/styles/headingLinks.css',
+				'./src/styles/paginationLinks.css',
 				'./src/styles/terminals.css',
 				'./src/styles/landing.css'
 			],

@@ -1,0 +1,71 @@
+.pagination-links a {
+    position: relative;
+    border: none !important;
+    background: linear-gradient(0deg, var(--sl-color-black), var(--sl-color-gray-7));
+}
+
+.pagination-links a > svg > path {
+    display: none;
+}
+
+.pagination-links a > svg {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M17.92 11.62a1.001 1.001 0 0 0-.21-.33l-5-5a1.003 1.003 0 1 0-1.42 1.42l3.3 3.29H7a1 1 0 0 0 0 2h7.59l-3.3 3.29a1.002 1.002 0 0 0 .325 1.639 1 1 0 0 0 1.095-.219l5-5a1 1 0 0 0 .21-.33 1 1 0 0 0 0-.76Z"/></svg>');
+    background-size: 100% 100%;
+    transition: transform 0.2s,
+                background-position 0.2s;
+    transform: scaleY(1);
+}
+
+[data-theme="light"] .pagination-links a > svg {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="black"><path d="M17.92 11.62a1.001 1.001 0 0 0-.21-.33l-5-5a1.003 1.003 0 1 0-1.42 1.42l3.3 3.29H7a1 1 0 0 0 0 2h7.59l-3.3 3.29a1.002 1.002 0 0 0 .325 1.639 1 1 0 0 0 1.095-.219l5-5a1 1 0 0 0 .21-.33 1 1 0 0 0 0-.76Z"/></svg>');
+}
+
+.pagination-links a {
+    outline: 1px solid transparent !important;
+    transition: outline 0.1s;
+}
+
+.pagination-links a:hover {
+    outline: 1px solid var(--sl-color-gray-3) !important;
+}
+
+.pagination-links a:hover > svg {
+    animation: pagination-arrow-squish 0.2s;
+}
+
+.pagination-links a[rel="prev"] > svg {
+    transform: scaleX(-1);
+}
+
+.pagination-links a[rel="prev"]:hover > svg {
+    transform: scaleX(-1);
+    animation: pagination-arrow-squish-prev 0.2s;
+}
+
+@keyframes pagination-arrow-squish {
+    0% {
+        transform: scaleY(1);
+        background-position: 0px 0;
+    }
+    50% {
+        transform: scaleY(0);
+    }
+    100% {
+        transform: scaleY(1);
+        background-position: 48px 0;
+    }
+}
+
+@keyframes pagination-arrow-squish-prev {
+    0% {
+        transform: scaleY(1) scaleX(-1);
+        background-position: 0px 0;
+    }
+    50% {
+        transform: scaleY(0) scaleX(-1);
+    }
+    100% {
+        transform: scaleY(1) scaleX(-1);
+        background-position: 48px 0;
+    }
+}
