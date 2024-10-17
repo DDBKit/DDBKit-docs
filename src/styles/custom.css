@@ -55,15 +55,10 @@ starlight-file-tree, code[dir="auto"] {
 }
 /* Terminal codeblocks */
 .is-terminal {
-    background: #1e1e1e !important;
     border: 1px solid #4e4e4e !important;
     box-shadow: 0 4px 8px #0000001a !important;
 }
-[data-theme="light"] .is-terminal {
-    background: #1e1e1e !important;
-    border: 1px solid black !important;
-}
-.is-terminal > figure, .is-terminal > figcaption, .is-terminal > pre {
+.is-terminal > figcaption, .is-terminal > pre {
     border: none !important;
 }
 .is-terminal > figcaption {
