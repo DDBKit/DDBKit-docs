@@ -1,0 +1,11 @@
+{
+  "project" : {
+    "projectName" : "Start Development Server"
+  },
+  "tasks" : [
+    {
+      "command" : "pnpm i && pnpm run dev",
+      "name" : "pnpm run dev"
+    }
+  ]
+}
