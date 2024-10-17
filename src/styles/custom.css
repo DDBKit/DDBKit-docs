@@ -92,3 +92,20 @@ being shown in VS Code
 .tablist-wrapper::-webkit-scrollbar {
     display: none;
 }
+
+.expressive-code .frame.has-title:not(.is-terminal) {
+    border-top-left-radius: 0;
+}
+
+.expressive-code .frame.has-title:not(.is-terminal) .title {
+    border-radius: 0 !important;
+}
+
+.expressive-code .frame.has-title:not(.is-terminal) figcaption {
+    border-top-left-radius: 0;
+}
+
+.expressive-code .frame.has-title:not(.is-terminal) .title::after {
+    border-bottom: none !important;
+    border-top: 1px solid var(--ec-frm-edActTabFg) !important;
+}
