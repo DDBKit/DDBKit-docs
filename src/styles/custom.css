@@ -1,99 +1,66 @@
 /* Dark mode colors. */
 :root {
-	--sl-color-accent-low: #391b00;
-	--sl-color-accent: #9d5400;
-	--sl-color-accent-high: #f5ba8e;
-	--sl-color-white: #ffffff;
-	--sl-color-gray-1: #eeeeee;
-	--sl-color-gray-2: #c2c2c2;
-	--sl-color-gray-3: #8b8b8b;
-	--sl-color-gray-4: #585858;
-	--sl-color-gray-5: #383838;
-	--sl-color-gray-6: #272727;
-	--sl-color-black: #181818;
+    --sl-color-accent-low: #391b00;
+    --sl-color-accent: #9d5400;
+    --sl-color-accent-high: #f5ba8e;
+    --sl-color-white: #ffffff;
+    --sl-color-gray-1: #eeeeee;
+    --sl-color-gray-2: #c2c2c2;
+    --sl-color-gray-3: #8b8b8b;
+    --sl-color-gray-4: #585858;
+    --sl-color-gray-5: #383838;
+    --sl-color-gray-6: #272727;
+    --sl-color-black: #181818;
 }
+
 /* Light mode colors. */
 :root[data-theme='light'] {
-	--sl-color-accent-low: #facdac;
-	--sl-color-accent: #a05500;
-	--sl-color-accent-high: #4e2600;
-	--sl-color-white: #181818;
-	--sl-color-gray-1: #272727;
-	--sl-color-gray-2: #383838;
-	--sl-color-gray-3: #585858;
-	--sl-color-gray-4: #8b8b8b;
-	--sl-color-gray-5: #c2c2c2;
-	--sl-color-gray-6: #eeeeee;
-	--sl-color-gray-7: #ffe7d2;
-	--sl-color-black: #ffe7d2;
+    --sl-color-accent-low: #facdac;
+    --sl-color-accent: #a05500;
+    --sl-color-accent-high: #4e2600;
+    --sl-color-white: #181818;
+    --sl-color-gray-1: #272727;
+    --sl-color-gray-2: #383838;
+    --sl-color-gray-3: #585858;
+    --sl-color-gray-4: #8b8b8b;
+    --sl-color-gray-5: #c2c2c2;
+    --sl-color-gray-6: #eeeeee;
+    --sl-color-gray-7: #ffe7d2;
+    --sl-color-black: #ffe7d2;
 }
+
 /* Some customization */
 :root {
     --sl-font: "SF Pro Display", Inter, -system-ui, sans-serif;
     --__sl-font-mono: 'SF Mono', SFMono-Regular, ui-monospace,
-    'DejaVu Sans Mono', Menlo, Consolas, monospace !important;
+        'DejaVu Sans Mono', Menlo, Consolas, monospace !important;
     tab-size: 40px;
     scroll-behavior: smooth;
 }
-starlight-file-tree, code[dir="auto"] {
+
+/* *   Shadows   * */
+.is-terminal {
+    box-shadow: 0 4px 8px #0000001a !important;
+}
+
+main img {
+    filter: drop-shadow(0 4px 8px #0000001a);
+}
+
+/* *  File tree  * */
+starlight-file-tree,
+code[dir="auto"] {
     border: none;
     border-radius: 0.3rem !important;
-    box-shadow: 0 0 1px var(--sl-color-gray-4) inset,
-                0 4px 8px #0000001a;
+    box-shadow: 0 0 1px var(--sl-color-gray-4) inset;
 }
+
 .tree-entry {
     transition: 0.2s color;
     font-weight: 500;
 }
-/* Starlight's default code styling looks terrible
-   Most of the stuff next will make everything look
-   similiar to Xcode's defaults.
-*/
 
+/* * Indent size * */
 .indent {
     letter-spacing: 6px !important;
-}
-/* Terminal codeblocks */
-.is-terminal {
-    border: 1px solid #4e4e4e !important;
-    box-shadow: 0 4px 8px #0000001a !important;
-}
-.is-terminal > figcaption, .is-terminal > pre {
-    border: none !important;
-}
-.is-terminal > figcaption {
-    background: #2d2d2d !important;
-}
-.is-terminal > figcaption::after {
-    border-color: black !important;
-}
-.is-terminal >figcaption > .title::after {
-    content: "~ (zsh)";
-    font-weight: 700;
-    color: #bcbdc0;
-    font-size: 14px;
-    opacity: 0.5 !important;
-}
-.is-terminal >figcaption::before {
-    content: '';
-    display: block;
-    width: 2.5rem !important;
-    height: 100%;
-    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 68 16' preserveAspectRatio='xMidYMid meet'%3E%3Ccircle cx='8' cy='8' r='8'/%3E%3Ccircle cx='35' cy='8' r='8'/%3E%3Ccircle cx='60' cy='8' r='8'/%3E%3C/svg%3E") !important;
-
-}
-figure.is-terminal code .ec-line:first-of-type::before {
-    content: "➜ ~";
-    margin-left: 16px;
-    margin-right: -6px;
-    color: gray;
-}
-.dir-my-new-bot code .ec-line:first-of-type::before {
-    content: "➜ ~/MyNewBot" !important;
-    margin-left: 16px;
-    margin-right: -6px;
-    color: gray;
-}
-.dir-my-new-bot .is-terminal >figcaption > .title::after {
-    content: "~/MyNewBot (zsh)";
 }
