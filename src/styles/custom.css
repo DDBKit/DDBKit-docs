@@ -33,6 +33,7 @@
     --__sl-font-mono: 'SF Mono', SFMono-Regular, ui-monospace,
     'DejaVu Sans Mono', Menlo, Consolas, monospace !important;
     tab-size: 40px;
+    scroll-behavior: smooth;
 }
 starlight-file-tree, code[dir="auto"] {
     border: none;
