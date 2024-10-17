@@ -1,0 +1,47 @@
+.is-terminal {
+    border: 1px solid #4e4e4e !important;
+}
+
+.is-terminal>figcaption,
+.is-terminal>pre {
+    border: none !important;
+}
+
+.is-terminal>figcaption {
+    background: #2d2d2d !important;
+}
+
+.is-terminal>figcaption::after {
+    border-color: black !important;
+}
+
+.is-terminal>figcaption>.title::after {
+    content: "~ (zsh)";
+    font-weight: 700;
+    color: #bcbdc0;
+    font-size: 14px;
+    opacity: 0.5 !important;
+}
+
+.is-terminal>figcaption::before {
+    width: 2.5rem !important;
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 68 16' preserveAspectRatio='xMidYMid meet'%3E%3Ccircle cx='8' cy='8' r='8'/%3E%3Ccircle cx='35' cy='8' r='8'/%3E%3Ccircle cx='60' cy='8' r='8'/%3E%3C/svg%3E") !important;
+}
+
+figure.is-terminal code .ec-line:first-of-type::before {
+    content: "➜ ~";
+    margin-left: 16px;
+    margin-right: -6px;
+    color: gray;
+}
+
+.dir-my-new-bot code .ec-line:first-of-type::before {
+    content: "➜ ~/MyNewBot" !important;
+    margin-left: 16px;
+    margin-right: -6px;
+    color: gray;
+}
+
+.dir-my-new-bot .is-terminal>figcaption>.title::after {
+    content: "~/MyNewBot (zsh)";
+}
