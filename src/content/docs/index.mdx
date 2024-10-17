@@ -20,45 +20,32 @@ import { Card, CardGrid, Code, Tabs, TabItem, LinkButton } from '@astrojs/starli
 
 <CardGrid stagger>
 	<Card title="Powerful" icon="rocket">
-I FUCKING LOVE MACOS
+DDBKit provides a clean and concise ResultBulder-based API to Discord, eliminating unnecessary boilerplate code.
 
-I WANT A FUCKING mature operating system that is robust and versatile, has a polished intuitive interface and hosts a healthy market of good-quality, actively developed apps which embrace the platforms respective conventions and philosophies.
-
-<Tabs>
-  <TabItem label="Code">
-  		<Code code="Message {
-		&#9;MessageContent {
-		&#9;&#9;Heading(&quot;gm&quot;)
-		&#9;&#9;Text(&quot;gm&quot;)
-		&#9;}
-		&#9;MessageComponents {
-        &#9;&#9;ActionRow {
-		&#9;&#9;&#9;LinkButton(&quot;Get Started&quot;)
-        &#9;&#9;}
-        &#9;}
-		}" lang="swift" />
-  </TabItem>
-  <TabItem label="Output">
-  ### gm
-  gm
-
-  <LinkButton href="/getting-started/">Get started</LinkButton>
-  </TabItem>
-</Tabs>
+    <Code code="Message {
+&#9;MessageContent {
+&#9;&#9;Heading(&quot;gm&quot;)
+&#9;&#9;Text(&quot;gm&quot;)
+&#9;}
+&#9;MessageComponents {
+&#9;&#9;ActionRow {
+&#9;&#9;&#9;LinkButton(&quot;Get Started&quot;, url: &quot;...&quot;)
+&#9;&#9;&#9;&#9;.id(&quot;mom-btn&quot;)
+&#9;&#9;}
+&#9;}
+}" lang="swift" />
 	</Card>
+    
 	<Card title="Fast" icon="seti:swift">
-I FUCKING LOVE MACOS
+Thanks to the safety and performance of Swift, your Discord bots respond rapidly and efficiently.
+Each event is ran on it's own `Task` context without blocking your main thread, and ensuring smooth operation.
 
-I WANT A FUCKING mature operating system that is robust and versatile, has a polished intuitive interface and hosts a healthy market of good-quality, actively developed apps which embrace the platforms respective conventions and philosophies.
+[DiscordBM](https://github.com/DiscordBM/DiscordBM) exposes fully-typed access to the Discord API with everything async/await.
 	</Card>
 	<Card title="Extensive" icon="setting">
-I FUCKING LOVE MACOS
-
-I WANT A FUCKING mature operating system that is robust and versatile, has a polished intuitive interface and hosts a healthy market of good-quality, actively developed apps which embrace the platforms respective conventions and philosophies.
+TBA.
 	</Card>
 	<Card title="And more" icon="open-book">
-I FUCKING LOVE MACOS
-
-I WANT A FUCKING mature operating system that is robust and versatile, has a polished intuitive interface and hosts a healthy market of good-quality, actively developed apps which embrace the platforms respective conventions and philosophies.
+TBA.
 	</Card>
 </CardGrid>
