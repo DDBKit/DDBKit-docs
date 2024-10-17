@@ -5,6 +5,7 @@ description: Getting started with DDBKit!
 
 import { Aside, FileTree, Code, LinkButton } from '@astrojs/starlight/components';
 import botSwift from "/src/examples/Bot.swift?raw";
+import testCommandsSwift from "/src/examples/TestCommands.swift?raw";
 import packageInitOutput from "/src/examples/package-init-output.sh?raw";
 
 This will guide you through the basics of setting up DDBKit and your bot. By the end,
@@ -107,20 +108,8 @@ The best way to organise your code is to extend your bot's structure with a comp
 Begin by making a new directory named `Commands and Events` or whatever suits your needs.
 
 Make a new swift file, naming it appropriately. Use the following code to get started.
-```swift
-import DDBKit
-import DDBKitUtilities
 
-extension MyNewBot {
-  var coolCommandGroup: Group {
-    Group {
-      Command("pong") { i,_,_ in
-        try? await bot.createInteractionResponse(to: i, "Ping!")
-      }
-    }
-  }
-}
-```
+<Code code={testCommandsSwift} lang="swift" title="TestCommands.swift" />
 
 
 Your final directory structure should look a little like this:
