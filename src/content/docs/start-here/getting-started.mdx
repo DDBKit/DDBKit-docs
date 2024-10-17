@@ -21,7 +21,6 @@ for easier version management.
 </Aside>
 
 ## Making our directory and package
-
 We need to set up our bot's directory. Open a terminal and copy and
 paste the following command.
 ```sh
@@ -64,26 +63,30 @@ The entry point file is where the bot will be configured (token, intents,
 etc.) and what to do when the bot is ready. You can name this anything
 but `main.swift`. We will just go with `Bot.swift` here.
 
-<Code code={botSwift} lang="swift" title="Bot.swift" />
+The command you ran earlier has already made a `Sources/main.swift` file.
+Rename this to your choice and copy and paste the following code into it.
 
-Change the token to your bot's token, and if any, specify the intents you need in `intents` under `BotGatewayManager`.
+export const highlights = ['token: "Token Here"', 'intents: [.messageContent, .guildMessages]'];
 
-<Aside type="tip">
+<Code code={botSwift} lang="swift" title="Bot.swift" mark={highlights} />
 
-<span>
-<span>**Don't have a bot yet?** Make one</span>
-<LinkButton
-  href="https://discord.com/developers/applications"
-  target="_blank"
-  variant="minimal"
-  icon="external"
-  iconPlacement="end"
-  class="inline-external-link"
->
-  <span>here.</span>
-</LinkButton>
-</span>
+Change the token to your bot's token, and if any, specify 
+the intents you need in `intents` under `BotGatewayManager`.
 
+<Aside type="note">
+You can invite your bot, change your token, and manage intents at
+the [Discord developer portal](https://discord.com/developers/applications).
+</Aside>
+
+<Aside type="danger">
+**Do not share your token.** This is what you use to
+login to your bot. What your bot does is your responsibility.
+If anyone gets access to your bot, they can spam the API,
+abuse permissions (ban people) and more.
+
+**In the case that you have committed your token or shared it**
+reset your token immediately. GitHub will tell Discord to reset
+it and disable the token if found on a repo.
 </Aside>
 
 Your final directory structure should look a little like this:
@@ -97,4 +100,9 @@ Your final directory structure should look a little like this:
   - Bot.swift
 </FileTree>
 
-Your bot is ready to run! Head to [running your bot](running-your-bot).
+You can make the `Commands and Events` folder for later. Find the
+instructions for running your bot for your OS in the sidebar to
+continue and connect your bot to Discord.
+
+If you're already experienced, your bot is pretty much ready to
+go and you don't have to continue. Good job 🎉
