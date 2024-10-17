@@ -21,7 +21,7 @@
 }
 
 .pagination-links a {
-    outline: 1px solid transparent !important;
+    outline: 1px solid var(--sl-color-gray-6) !important;
     transition: outline 0.1s;
 }
 
