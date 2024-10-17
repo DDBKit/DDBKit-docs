@@ -86,15 +86,14 @@ starlight-file-tree {
 /* Uses a LinkButton for a custom external link with icon */
 .inline-external-link {
     margin: 0 !important;
+    margin-left: 4px !important;
+    margin-right: 4px !important;
     gap: 0;
     color: var(--sl-color-accent-high) !important;
     height: 0;
     font-weight: 500;
     display: inline;
     font-size: var(--sl-text-base) !important;
-}
-.inline-external-link svg {
-    transform: translateY(5px);
 }
 /* Starlight's default code styling looks terrible
    Most of the stuff next will make everything look
