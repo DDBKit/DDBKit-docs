@@ -16,9 +16,21 @@ we should have something that can connect to Discord, and you can work from ther
 Get Swift [here](https://www.swift.org/install/).
 
 <Aside type="tip">
-On macOS, you should use Xcode for DDBKit development.
-It is recommended you install [Xcodes](https://github.com/XcodesOrg/XcodesApp/releases/download/v2.2.0b27/Xcodes.zip)
-for easier version management.
+<span>
+<span>On macOS, using Xcode for DDBKit development is recommended.<br></br>
+It offers Swift-oriented features to make editing code easier.<br></br>
+For easier version management, it is recommended that you use</span>
+<LinkButton
+  href="https://github.com/XcodesOrg/XcodesApp/releases/latest"
+  variant="minimal"
+  target="_blank"
+  icon="external"
+  iconPlacement="end"
+  class="inline-external-link"
+>
+  <span>Xcodes.</span>
+</LinkButton>
+</span>
 </Aside>
 
 ## Making our directory and package
@@ -36,7 +48,7 @@ run our program, a bot in this case. The defaults aren't exactly
 what we need, so copy and paste the following code into `Package.swift`.
 ```swift
 let package = Package(
-  name: "rig",
+  name: "MyNewBot",
   platforms: [
     .macOS(.v13)
   ],
@@ -47,7 +59,7 @@ let package = Package(
     // Targets are the basic building blocks of a package, defining a module or a test suite.
     // Targets can depend on other targets in this package and products from dependencies.
     .executableTarget(
-      name: "rig",
+      name: "MyNewBot",
       dependencies: [
         .product(name: "DDBKit", package: "DDBKit"),
         .product(name: "Database", package: "DDBKit"),
@@ -87,8 +99,29 @@ abuse permissions (ban people) and more.
 
 **In the case that you have committed your token or shared it**
 reset your token immediately. GitHub will tell Discord to reset
-it and disable the token if found on a repo.
+it and disable the token if found on a public repo.
 </Aside>
+
+## Organisation
+The best way to organise your code is to extend your bot's structure with a computed variable for groups of commands/events.
+Begin by making a new directory named `Commands and Events` or whatever suits your needs.
+
+Make a new swift file, naming it appropriately. Use the following code to get started.
+```swift
+import DDBKit
+import DDBKitUtilities
+
+extension MyNewBot {
+  var coolCommandGroup: Group {
+    Group {
+      Command("pong") { i,_,_ in
+        try? await bot.createInteractionResponse(to: i, "Ping!")
+      }
+    }
+  }
+}
+```
+
 
 Your final directory structure should look a little like this:
 
@@ -101,9 +134,6 @@ Your final directory structure should look a little like this:
   - Bot.swift
 </FileTree>
 
-You can make the `Commands and Events` folder for later. Find the
-instructions for running your bot for your OS in the sidebar to
-continue and connect your bot to Discord.
+As such, you can continue organising your code in a similar fashion or in any way you desire.
 
-If you're already experienced, your bot is pretty much ready to
-go and you don't have to continue. Good job 🎉
+Your bot is now ready to build and run, good job 🎉
