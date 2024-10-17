@@ -13,7 +13,11 @@ const xcodeTheme = ExpressiveCodeTheme.fromJSONString(jsoncString)
 export default defineConfig({
 	integrations: [
 		starlight({
-			title: 'DDBKit Documentation',
+			title: 'DDBKit',
+			favicon: "./src/assets/ddbkit-icon.png",
+			logo: {
+				src: "./src/assets/ddbkit-icon.png"
+			},
 			social: {
 				github: 'https://github.com/llsc12/DDBKit',
 			},
