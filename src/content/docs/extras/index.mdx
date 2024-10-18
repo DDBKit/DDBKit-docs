@@ -1,0 +1,128 @@
+---
+title: Extras
+description: An index of extra information that may be useful
+sidebar:
+  order: 1
+---
+This page runs you through any modules aside DDBKit in summaries, and extra bits of information not noted elsewhere. If you need help, please refer to the [FAQ](https://github.com/llsc12/DDBKit/wiki/Extras-%E2%80%90-FAQ).
+
+## Organising your code
+You can store commands and events in `Group` scenes. Storing them in such groups, you can organise your code into groups stored in computed properties in your `DiscordBotApp` structure. You can take this further by moving your computed properties into extensions which you can put in individual files in your project!
+
+An example of such an extension:
+```swift
+extension MyNewBot {
+  var Events: Group {
+    Group {
+      MessageCreateEvent { msg in
+        print("[\(msg!.author!.username)] \(msg!.content)")
+      }
+    }
+  }
+}
+```
+And its usage:
+```swift
+@main
+struct MyNewBot: DiscordBotApp {
+  init() async {
+    // ...
+  }
+  
+  var body: [any BotScene] {
+    ReadyEvent { ready in
+      print("hi mom")
+    }
+    
+    Commands
+    Events
+  }
+  
+  var bot: Bot
+  var cache: Cache
+}
+```
+
+Hence, you can organise your bot into files for moderation, XP levels or whatever your bot may cater for.
+## DDBKitUtilities
+Utility abstractions are separated into this module to help organise extensions and keep namespaces free unless required.
+You can find detailed information on available abstractions in the [DDBKitUtilities Chapter](https://github.com/llsc12/DDBKit/wiki/Extras-%E2%80%90-DDBKitUtilities).
+
+Using these abstractions reduces the need of using the `DiscordClient` methods as much (which requires making the payloads yourself). The abstractions allow you to just write functionally rather than performing API requests to make functionality.
+
+## Database
+DDBKit comes with a module for a rudimentary database. It's passed into commands by default and makes it easy to store data in different contexts.
+
+```swift
+// ...
+
+Command("test") { interaction, cmd, db in
+  /// Don't forget that your transaction could end up being held in a
+  /// queue. Whilst we're only accessing a member's data, it's still
+  /// better to just defer when using the database.
+  interaction.defer()
+  
+  /// You should define models in another file for cleaner code.
+  /// Types must be Codable to use in `DatabaseModel`s.
+  struct GuildMemberTest: DatabaseModel {
+    var val: Int = 0
+  }
+  
+  /// Don't assume this will always work, this is just for the example
+  /// We create the `FetchRequest` object from automatic request builder method on db argument.
+  /// The `db` variable is of type `DatabaseBranches`.
+  let req = try! db.member(ofType: GuildMemberTest.self)
+  
+  /// Using `transaction(_:)` method returns the model if you want it,
+  /// this result is marked as discardable in case you only need to write values
+  /// rather than bringing values back after the transaction
+  let model = await database.transaction(req) { model in
+    var model = model ?? .init() // create if it doesnt exist
+    model.val = (try? cmd.requireOption(named: "number").requireInt()) ?? 0
+    /// return the model to store back in the database, or nil if you want to delete it
+    return model
+  }
+  /// If you wanted to read the value outside the transaction context, just
+  /// return the model argument.
+  
+  interaction.reply("Stored \(model?.val ?? 0)!")
+}
+.description("test command for database example")
+.addingOptions {
+  IntOption(name: "number", description: "Stores this value per guild member.")
+    .required()
+}
+
+// ...
+
+// elsewhere in your bot structure
+let database = Database.shared
+```
+
+That details pretty much all there is to know about the transaction-based approach of the database!
+
+> [!NOTE]
+> Don't forget to import `DDBKitUtilities`, else you won't have access to abstractions (`interaction.defer()`, `interaction.reply(:)`).
+
+Advanced information about the database can be found in the [Database Chapter](https://github.com/llsc12/DDBKit/wiki/Extras-%E2%80%90-Database). 
+
+## Hosting on iOS/iPadOS etc.
+I was crazy once, so I made a shell app that you can transplant your Discord bot into. This shell app will keep itself alive permanently unless you close it from the app switcher, maintaining its connection to Discord.
+
+You can find the template project at [DiscordBotShell Repo](https://github.com/llsc12/DiscordBotShell).
+
+> [!NOTE]
+> When using this template project, avoid editing the shell app's code; keep within the bot folder when working. Editing the shell app makes you exempt from support.
+
+## DDBKitFoundation
+The curious ones are the ones who shall be rewarded; this will prove to be a useful resource to those who want to go from scratch to something solid fast.
+
+DDBKitFoundation gives you ready-made utilities, and gives your users ready-made a good experience with less hassle to you, the developer.
+
+The main showcase is Configurator; users easily configure your discord bot for their use-cases in their server, whilst simultaneously handling the burden of setting it all up for you. The only thing you’ll need to do is create your bot’s settings. Configurator will automatically handle settings storage and provide you with an interface to access per-guild configuration during interactions synchronously.
+
+DDBKitFoundation also extends DDBKit with more modifiers
+
+
+
+If you like what you see, check out the [DDBKitFoundation Chapter](https://github.com/llsc12/DDBKit/wiki/Extras-%E2%80%90-DDBKitFoundation) for code examples and setup walkthroughs.

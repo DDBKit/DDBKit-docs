@@ -41,6 +41,10 @@ export default defineConfig({
 					autogenerate: { directory: 'start-here' },
 				},
 				{
+					label: 'Extras',
+					autogenerate: { directory: 'extras' },
+				},
+				{
 					label: 'Reference',
 					autogenerate: { directory: 'reference' },
 				},
