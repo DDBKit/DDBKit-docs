@@ -48,7 +48,8 @@ Hence, you can organise your bot into files for moderation, XP levels or whateve
 Utility abstractions are separated into this module to help organise extensions and keep namespaces free unless required.
 You can find detailed information on available abstractions in the [DDBKitUtilities Chapter](https://github.com/llsc12/DDBKit/wiki/Extras-%E2%80%90-DDBKitUtilities).
 
-Using these abstractions reduces the need of using the `DiscordClient` methods as much (which requires making the payloads yourself). The abstractions allow you to just write functionally rather than performing API requests to make functionality.
+Using these abstractions reduces the need of using the `DiscordClient` methods as much (which requires making the payloads yourself). 
+The abstractions allow you to just write functionally rather than performing API requests to make functionality.
 
 ## Database
 DDBKit comes with a module for a rudimentary database. It's passed into commands by default and makes it easy to store data in different contexts.
@@ -56,11 +57,11 @@ DDBKit comes with a module for a rudimentary database. It's passed into commands
 ```swift
 // ...
 
-Command("test") { interaction, cmd, db in
+Command("test") { interaction, cmd, reqs in
   /// Don't forget that your transaction could end up being held in a
   /// queue. Whilst we're only accessing a member's data, it's still
   /// better to just defer when using the database.
-  interaction.defer()
+  try? await bot.createInteractionResponse(to: i, type: .deferredChannelMessageWithSource())
   
   /// You should define models in another file for cleaner code.
   /// Types must be Codable to use in `DatabaseModel`s.
@@ -68,10 +69,11 @@ Command("test") { interaction, cmd, db in
     var val: Int = 0
   }
   
-  /// Don't assume this will always work, this is just for the example
+  /// Don't assume this will always work, this is just for the example.
+  /// The request could fail if the command is ran in a DM, or used as a user-app.
   /// We create the `FetchRequest` object from automatic request builder method on db argument.
   /// The `db` variable is of type `DatabaseBranches`.
-  let req = try! db.member(ofType: GuildMemberTest.self)
+  let req = try! reqs.member(ofType: GuildMemberTest.self)
   
   /// Using `transaction(_:)` method returns the model if you want it,
   /// this result is marked as discardable in case you only need to write values
@@ -85,7 +87,7 @@ Command("test") { interaction, cmd, db in
   /// If you wanted to read the value outside the transaction context, just
   /// return the model argument.
   
-  interaction.reply("Stored \(model?.val ?? 0)!")
+  try? await bot.createInteractionResponse(to: interaction, "Stored \(model?.val ?? 0)!")
 }
 .description("test command for database example")
 .addingOptions {
@@ -95,7 +97,7 @@ Command("test") { interaction, cmd, db in
 
 // ...
 
-// elsewhere in your bot structure
+// elsewhere in your bot structure if you want the shorthand.
 let database = Database.shared
 ```
 
@@ -122,7 +124,5 @@ DDBKitFoundation gives you ready-made utilities, and gives your users ready-made
 The main showcase is Configurator; users easily configure your discord bot for their use-cases in their server, whilst simultaneously handling the burden of setting it all up for you. The only thing you’ll need to do is create your bot’s settings. Configurator will automatically handle settings storage and provide you with an interface to access per-guild configuration during interactions synchronously.
 
 DDBKitFoundation also extends DDBKit with more modifiers
-
-
 
 If you like what you see, check out the [DDBKitFoundation Chapter](https://github.com/llsc12/DDBKit/wiki/Extras-%E2%80%90-DDBKitFoundation) for code examples and setup walkthroughs.
