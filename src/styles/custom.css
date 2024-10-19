@@ -1,3 +1,10 @@
+@font-face {
+    font-family: 'gg sans';
+    font-style: normal;
+    font-weight: normal;
+    src: url('/fonts/gg sans.woff') format('woff');
+}
+
 /* Dark mode colors. */
 :root {
     --sl-color-accent-low: #391b00;
@@ -35,6 +42,7 @@
     --sl-font: "SF Pro Display", Inter, -system-ui, sans-serif;
     --__sl-font-mono: 'SF Mono', SFMono-Regular, ui-monospace,
         'DejaVu Sans Mono', Menlo, Consolas, monospace !important;
+    --gg-sans: "gg sans", --__sl-font-mono;
     tab-size: 40px;
     scroll-behavior: smooth;
     --global-shadow: 0 4px 8px #0000001a;
@@ -75,6 +83,37 @@ code[dir="auto"] {
 .tree-entry {
     transition: 0.2s color;
     font-weight: 500;
+}
+
+/* * Discord Slash Command style * */
+code[type="cmd"] {
+    font-family: var(--gg-sans);
+    border: none;
+    border-radius: 3px !important;
+    box-shadow: 0 0 1px var(--sl-color-gray-4) inset;
+
+    /* Colors 
+    bg when not hovered: #3b4370
+    text when not hovered: #c9cdfc
+
+    bg when hovered: #5865f2
+    text when hovered: #ffffff
+    */
+
+    background-color: #3b4370;
+    color: #c9cdfc;
+    
+    transition: 0.1s background-color, 0.1s color;
+
+    /* Hover */
+    &:hover {
+        background-color: #5865f2;
+        color: #ffffff;
+    }
+
+    /* disable font-size specified earlier */
+    font-size: unset;
+    padding: 0 2px;
 }
 
 /* * Indent size * */

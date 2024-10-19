@@ -37,7 +37,7 @@ Instructions are available per platform.
     If you have no other choice, you can run your bot on an iDevice.
     It's not recommended, but it's possible. DDBKit does not regularly
     test on iDevices, so you may run into issues. If you do, please
-    report them in a [GitHub issue](https://github.com/DDBKit/DDBKit/issues).
+    report them in a [GitHub issue](https://github.com/DDBKit/DiscordBotShell/issues).
     <Tabs>
       <TabItem label="Non-Jailbroken" icon="apple">
         ### DiscordBotShell
@@ -65,17 +65,20 @@ Instructions are available per platform.
         Next, copy your bot code from your `Sources` folder to the `Bot` folder.
         > You can remove `BotMain.swift` if your bot's entrypoint is in a different file.
 
-        > If your bot has any SPM dependencies, add them to the app now.
-        > Do this by right-clicking in the empty space of the file navigator, then selecting `Add package dependencies`
+        <Aside type="tip">
+        If your bot has any SPM dependencies, add them to the app now.
+        Do this by right-clicking in the empty space of the file navigator, then selecting `Add package dependencies`.
+        </Aside>
 
         Go to your bot's entrypoint struct, remove the `@main` attribute. DiscordBotShell will handle the entrypoint.
         Rename the struct to `MyDiscordBot`, since that's what the shell app is looking for at launch.
 
-        <Aside type="note">
+        Finally, build and run your bot on your iDevice.
 
+        <Aside type="note">
+        Your build may fail if you rely on macOS frameworks. You will need to switch to the iOS alternatives.
         </Aside>
 
-        Finally, build and run your bot on your iDevice.
       </TabItem>
 
       <TabItem label="Jailbroken" icon="seti:lock">
@@ -95,7 +98,7 @@ Instructions are available per platform.
 
 ## Deployment
 
-<Aside type="caution">
+<Aside type="danger">
   **Remember to keep your token secure.** Do not share it with anyone.
   If you do, you can regenerate it at the Discord developer portal.
   Do not commit your token to a public repository accidentally.

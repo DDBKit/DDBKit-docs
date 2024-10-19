@@ -1,7 +1,6 @@
 import DDBKit
 
 @main
-
 struct MyNewBot: DiscordBotApp {
   init() async {
     let httpClient = HTTPClient()

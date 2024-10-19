@@ -20,20 +20,21 @@ import { Card, CardGrid, Code, Tabs, TabItem, LinkButton } from '@astrojs/starli
 
 <CardGrid stagger>
 	<Card title="Powerful" icon="rocket">
-DDBKit provides a clean and concise ResultBulder-based API to Discord, eliminating unnecessary boilerplate code.
-
-    <Code code="Message {
-&#9;MessageContent {
-&#9;&#9;Heading(&quot;gm&quot;)
-&#9;&#9;Text(&quot;gm&quot;)
-&#9;}
-&#9;MessageComponents {
-&#9;&#9;ActionRow {
-&#9;&#9;&#9;LinkButton(&quot;Get Started&quot;, url: &quot;...&quot;)
-&#9;&#9;&#9;&#9;.id(&quot;mom-btn&quot;)
-&#9;&#9;}
-&#9;}
-}" lang="swift" />
+DDBKit provides a clean and concise ResultBuilder-based API to Discord, eliminating unnecessary boilerplate code.
+```swift
+Message {
+  MessageContent {
+    Heading("gm")
+    Text("gm")
+  }
+  MessageComponents {
+    ActionRow {
+      LinkButton("Get Started", url: "...")
+        .id("mom-btn")
+    }
+  }
+}
+```
 	</Card>
     
 	<Card title="Fast" icon="seti:swift">
