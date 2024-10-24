@@ -1,6 +1,73 @@
 ---
 title: DDBKitUtilities
-description: DDBKit module with utility abstractions
+description: Extra DDBKit module with utility abstractions
 sidebar:
-  order: 3
+  order: 4
 ---
+import { Aside } from '@astrojs/starlight/components';
+
+<Aside type="danger">
+  This documentation is a complete lie.
+  This is PoC documentation for reference during development.
+</Aside>
+
+# Builders
+DDBKitUtilities provides a collection of utiltity builders for various structured types. This allows for a more concise and readable way to instance these types.
+
+## Message builder
+You can build a simple message with text content with the `Message` struct. 
+
+### Text Content
+```swift
+Message {
+  Text("Hello World!")
+}
+```
+<div class="discord-messages">
+  <div class="discord-message">
+    <div class="discord-message-content">
+      <div class="discord-author-avatar">
+        <img src="https://cdn.discordapp.com/embed/avatars/2.png" alt=""></img>
+      </div>
+      <div class="discord-message-body">
+        <div><span class="discord-author-info"><span class="discord-author-username">MyNewBot</span><span class="discord-author-bot-tag"> Bot </span></span><span class="discord-message-timestamp">10/23/2024</span></div>
+        <span>Hello World!</span>
+      </div>
+    </div>
+  </div>
+</div>
+> `MessageContentComponent` types such as `Text` can be used at the root of a `Message` builder to set the message content easily.
+
+### Text Formatting
+The following example demonstrates many of the available modifiers and components.
+```swift
+Message {
+  Heading {
+    Text {
+      Text("Welcome to ")
+      Text("The Test")
+        .italic()
+      Text("!")
+    }
+    .underlined()
+  }
+  Heading("We're testing the Message DSL")
+    .medium()
+  Text("Actually scratch that")
+    .strikethrough()
+  Link("https://llsc12.me")
+    .disableEmbedding()
+    .maskedWith {
+      Text("check out this!")
+        .bold()
+    }
+  Blockquote {
+    Heading {
+      Text("Blockquote!")
+        .underlined()
+    }
+    .medium()
+    Text("yep, we got em")
+  }
+}
+```
