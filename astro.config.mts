@@ -30,7 +30,8 @@ export default defineConfig({
 				'./src/styles/headingLinks.css',
 				'./src/styles/paginationLinks.css',
 				'./src/styles/terminals.css',
-				'./src/styles/landing.css'
+				'./src/styles/landing.css',
+				'./src/styles/discord.css',
 			],
 			expressiveCode: {
 				styleOverrides: { borderRadius: '0.5rem' },

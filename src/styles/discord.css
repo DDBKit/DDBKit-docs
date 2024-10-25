@@ -1,4 +1,4 @@
-.discord-message-content, .discord-message-body, .discord-reactions {
+.discord-message-content, .discord-message-body, .discord-reactions, .discord-embed-container {
   margin-top: 0 !important;
 }
 
@@ -109,7 +109,7 @@ div.discord-messages {
 }
 
 .discord-embed .discord-embed-left-border {
-  background-color: #202225 !important;
+  background-color: #202225;
   flex-shrink: 0 !important;
   width: 4px !important;
   border-radius:4px 0 0 4px
