@@ -1,0 +1,16 @@
+---
+title: Database
+description: Small-scale database for storing data
+sidebar:
+  order: 3
+---
+import { Aside } from '@astrojs/starlight/components';
+
+<Aside type="danger">
+  This database is very crude and not suited for large-scale applications.
+  For large scale use, consider using something like [GRDB](https://github.com/groue/GRDB.swift).
+</Aside>
+
+Using the database is straight forward, and a utility structure is passed into commands by default that exposes predefined database requests based on context.
+
+

@@ -10,6 +10,21 @@ This page runs you through any modules aside DDBKit in summaries,
 and extra bits of information not noted elsewhere. 
 If you need help, please refer to the [FAQ](/extras/faq).
 
+## Learning by example
+Some people learn best by example, and that's okay! I recommend checking out the Example package embedded inside DDBKit.
+It's used for testing and showcases how to use DDBKit in a real-world scenario, with some random commands and events to get you started.
+<Aside type="note">
+Note that the Example package is not meant to be used in production, but rather as a learning tool.
+Also note that the Example package tends to change during development. If you're using particular parts of it as a reference, 
+be sure to remember what version you on when looking at it just in case you need it again later.
+</Aside>
+
+You can also take a look at [Rig](https://github.com/llsc12/rig), a moderation bot that uses DDBKit. 
+It's a more real-world example of how to use DDBKit in a production environment.
+<Aside type="note">
+Rig may not yet be publicly available at the time of writing, this note will be eventually removed when it is.
+</Aside>
+
 ## Organising your code
 You can store commands and events in `Group` scenes. Storing them in such groups, you can organise your code into groups stored in computed properties in your `DiscordBotApp` structure. You can take this further by moving your computed properties into extensions which you can put in individual files in your project!
 
@@ -111,7 +126,7 @@ That details pretty much all there is to know about the transaction-based approa
 Don't forget to import `DDBKitUtilities`, else you won't have access to abstractions (`bot.createInteractionResponse(to:)`).
 </Aside>
 
-Advanced information about the database can be found in the [Database Chapter](https://github.com/llsc12/DDBKit/wiki/Extras-%E2%80%90-Database). 
+Advanced information about the database can be found in the [Database Chapter](/extras/database). 
 
 ## Hosting on iOS/iPadOS etc.
 I was crazy once, so I made a shell app that you can transplant your Discord bot into. This shell app will keep itself alive permanently unless you close it from the app switcher, maintaining its connection to Discord.
