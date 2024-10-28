@@ -7,8 +7,9 @@ sidebar:
 import { Aside } from '@astrojs/starlight/components';
 
 <Aside type="danger">
-  This database is very crude and not suited for large-scale applications.
-  For large scale use, consider using something like [GRDB](https://github.com/groue/GRDB.swift).
+  This database is very crude and not suited for large-scale applications.<br></br>
+  For larger scale use, consider using something like [GRDB](https://github.com/groue/GRDB.swift).<br></br>
+  For really large scale use, consider using a dedicated database server combined with one of Vapor's database packages.
 </Aside>
 
 Using the database is straight forward, and a utility structure is passed into commands by default that exposes predefined database requests based on context.
