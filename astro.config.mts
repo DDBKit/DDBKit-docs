@@ -19,11 +19,11 @@ export default defineConfig({
 				src: "./src/assets/ddbkit-icon.webp"
 			},
 			social: {
-				github: 'https://github.com/llsc12/DDBKit',
-				discord: 'https://discord.gg/'
+				github: 'https://github.com/DDBKit/DDBKit',
+				discord: 'https://discord.gg/CkB2QzVsCz'
 			},
 			editLink: {
-                baseUrl: "https://github.com/darwinx64/DDBKit-docs/tree/main/"
+                baseUrl: "https://github.com/DDBKit/DDBKit-docs/tree/main/"
             },
 			customCss: [
 				'./src/styles/custom.css',

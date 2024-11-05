@@ -149,3 +149,14 @@ being shown in VS Code
     border-bottom: none !important;
     border-top: 1px solid var(--ec-frm-edActTabFg) !important;
 }
+
+.inline-external-link {
+    display: inline;
+}
+
+code[dir="auto"] {
+    color: var(--sl-color-accent-high);
+    filter: brightness(1.2);
+    background-color: var(--sl-color-accent-low) !important;
+    border-radius: 0.4rem;
+}

@@ -2,7 +2,7 @@
 title: Handling Errors
 description: Throwing and catching errors at scope
 sidebar:
-  order: 5
+  order: 6
 ---
 import { Aside, Code } from '@astrojs/starlight/components';
 
@@ -72,7 +72,7 @@ struct MyNewBot: DiscordBotApp {
   var cache: Cache
 }
 ```
-Which will result in the following message being sent:
+Running the new <code type="cmd">/failable</code> command will result in the following:
 
 <div class="discord-messages">
   <div class="discord-message">
@@ -176,3 +176,23 @@ I feel this is relatively self-explanatory. The `catch` closure is called when a
     </div>
   </div>
 </div>
+
+### Propagating errors
+You can propagate errors from command scope to global scope by rethrowing the error. 
+This is useful if you want to handle errors differently at the global scope after some implicit work or just transforming the error at command scope
+
+```swift
+Command("failable") { i, _, _ in
+  struct Egg: Decodable {
+    var gm: String
+  }
+  let data = "{}".data(using: .utf8)!
+  _ = try JSONDecoder().decode(Egg.self, from: data)
+}
+.catch { error, interaction
+  // ...
+  let transformedError = /* new error or something (maybe more user friendly? who knows) */
+  throw transformedError
+  // this will now be caught by global scope (if any)
+}
+```

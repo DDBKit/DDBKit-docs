@@ -1,4 +1,4 @@
-.discord-message-content, .discord-message-body, .discord-reactions, .discord-embed-container {
+.discord-message-content, .discord-message-body, .discord-reactions, .discord-embed-container, .discord-buttons {
   margin-top: 0 !important;
 }
 
