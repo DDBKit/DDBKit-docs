@@ -8,6 +8,7 @@ import { Aside, Code } from '@astrojs/starlight/components';
 
 So far, we've been implicitly ignoring errors. We've used `try?` to suppress errors and `try!` to crash the program if an error occurs. But this means we never handle errors gracefully. In this section, we'll learn how to throw and catch errors with DDBKit's error handling system.
 
+This is preferred over the usual `do {} catch {_ in}` like we're used to since we can avoid nesting and keep our code clean.
 ## Throwing Errors
 Change any instances of `try?` to `try` and `try!` to `try`. This will make the function throw an error if it encounters one. You can throw errors with the `throw` keyword. Errors thrown from commands will propagate up to the command handler.
 
