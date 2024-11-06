@@ -7,11 +7,81 @@ sidebar:
 import { Aside } from '@astrojs/starlight/components';
 
 <Aside type="danger">
-  This database is very crude and not suited for large-scale applications.<br></br>
+  This database is very basic and not suited for large-scale applications.<br></br>
   For larger scale use, consider using something like [GRDB](https://github.com/groue/GRDB.swift).<br></br>
   For really large scale use, consider using a dedicated database server combined with one of Vapor's database packages.
 </Aside>
 
-Using the database is straight forward, and a utility structure is passed into commands by default that exposes predefined database requests based on context.
+<Aside type="note">
+You may wish to just use the database module for storing basic data like preferences of users or guilds, 
+or for storing other small-scale data that doesn't need to be queried in complex ways. In this case,
+the database module is adequate for your needs, as it also ensures that collisions are avoided.
+> If any professionals are reading this, can you check it out to verify? Thanks.
 
+</Aside>
 
+Using the database is straight forward, and a utility structure is passed into commands by default that 
+exposes predefined database requests based on interaction context.
+
+You use the database by accessing the singleton instance of it.
+
+```swift
+import Database
+
+let db = Database.shared
+```
+
+The database stores models, which are structs that conform to `DatabaseModel` (it's just `Codable`).
+
+```swift
+struct UserPrefs: DatabaseModel {
+  /// Whether the user likes cheese or not
+  var theyReallyLikeCheese: Bool
+  /// The user's XP points
+  var xp: UInt
+
+  // helpful for setting default values quickly
+  static var `default`: UserPrefs { 
+    UserPrefs(theyReallyLikeCheese: false, xp: 0)
+  }
+}
+```
+
+You can then use the database to store and retrieve data in the format of said models.
+
+```swift
+// in your bot
+
+Command("cheese") { i, cmd, reqs in
+  // defer, since database operations can be held up
+  try await bot.createInteractionResponse(to: i, type: .deferredChannelMessageWithSource())
+  // get option data
+  let bool = try cmd.requireOption(named: "bool").requireBool()
+  // get the user's prefs, this means it shares across servers.
+  let prefs = try await db.transaction(reqs.user(ofType: UserPrefs.self)) { prefs in
+    var prefs = prefs ?? .default // if the user doesn't have prefs, use default
+    prefs.theyReallyLikeCheese = bool
+    return prefs // return modified prefs to be saved
+  }! // force unwrap, we know it exists
+  // the prefs returned from the transaction are the updated prefs we returned from the closure
+  // so we can use them here in the response.
+  try await bot.createInteractionResponse(to: i) {
+    Message {
+      MessageEmbed {
+        Title("Cheese")
+        Description {
+          Text("You \(prefs.theyReallyLikeCheese ? "like" : "don't like") cheese.")
+        }
+      }
+      .setColor(prefs.theyReallyLikeCheese ? .yellow : .red)
+    }
+  }
+}
+.integrationType(.all, contexts: .all)
+.isUsableInDMS(true)
+```
+
+The `transaction` method is used to ensure that the data is not modified by another command while it is being modified by this one.
+If another thread tries to modify the same data while the transaction is in progress, it will wait until the existing transaction is complete before modifying the data.
+
+The reqs object is of type `DatabaseBranches`, which is a utility structure that contains all the predefined database requests based on interaction context.

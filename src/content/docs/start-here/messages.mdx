@@ -37,7 +37,7 @@ They accept `Message` types instead of the normal payloads as `Message` does the
 You start off by instanciating a message with
 ```swift
 Message {
-
+  // a tumbleweed tumbles...
 }
 ```
 
@@ -142,3 +142,229 @@ The following components exist:
 
 > Items marked with `*` are singular, and only the last declared instance will be used if any.
 
+## MessageContent
+
+This is the main content of the message, and either this or an embed is required in a message to be sent.
+
+The following `MessageContentComponent` types exist:
+- `Text`
+- `URL`
+- `Heading`
+- `Blockquote`
+- `Code`
+- `Codeblock`
+- `OrderedList`
+- `UnorderedList`
+
+We'll go through the usage of each one.
+
+### `Text`
+
+The most basic component, just `text`. It also has many modifiers to change it's style.
+
+```swift
+Text("hi mom")
+// hi mom\n
+
+Text("hi mom")
+  .bold()
+// **hi mom**\n
+
+Text("hi mom")
+  .italic()
+// *hi mom*\n
+
+Text("hi mom")
+  .strikethrough()
+// ~~hi mom~~\n
+
+Text("hi mom")
+  .underlined()
+// __hi mom__\n
+
+Text("hi mom")
+  .spoilered()
+// ||hi mom||\n
+```
+> You can chain these modifiers together if you'd like. 
+
+Sometimes, you may need to have many `Text` components on a single line sometimes, so use the grouped convenience initialiser.
+```swift
+Text {
+  Text("hi")
+    .bold()
+  Text(" mom")
+}
+// **hi** mom\n
+```
+
+### `URL`
+
+URLs are just `Text` components with a URL inside them. This component lets you conveniently mask links or disable embeds (link previews).
+
+```swift
+URL("https://example.com")
+  .disableEmbedding()
+  .maskedWith {
+    Text("click me")
+      .bold()
+  }
+// [click me](<https://example.com>)<https://example.com>\n
+```
+
+### `Heading`
+
+Headings are single line, hence only one `Text` component is allowed.
+
+```swift
+Heading("wagwan") /// defaults to h1 (biggest), but you can use .large() modifier if you'd like lol
+// # wagwan\n
+
+Heading("wagwan")
+  .medium()
+// ## wagwan\n
+
+Heading("wagwan")
+  .small()
+// ### wagwan\n
+```
+
+Or use the `Text` component convenience initialiser.
+
+```swift
+Heading {
+  Text("wagwan")
+    .bold()
+}.medium()
+// ## **wagwan**\n
+```
+
+### `Blockquote`
+
+Blockquotes can accept all `MessageContentComponent` types, though I wouldn't recommend using another `Blockquote` in it.
+
+```swift
+Blockquote {
+  Text("hi mom")
+  Text("hi dad")
+}
+// > hi mom\n
+// > hi dad\n
+```
+
+### `Code`
+Code is the inline form of codeblocks, and just takes a `String` type.
+
+```swift
+Code("print(\"hi mom\")")
+// `print("hi mom")`\n
+```
+
+### `Codeblock`
+
+Codeblocks are cool, and can have a language specified.
+
+```swift
+Codeblock("swift", """
+for i in 0..<10 {
+  print(i)
+}
+""")
+.language("swift")
+// ```swift\n
+// for i in 0..<10 {\n
+//   print(i)\n
+// }\n
+// ```
+```
+
+### `OrderedList` and `UnorderedList`
+
+OrderedList can accept `Text` and `UnorderedList` components.
+<Aside tip="note">
+List inception is currently not supported, this was an accidental oversight and will be amended.
+</Aside>
+```swift
+OrderedList {
+  Text("gm")
+  Text("gn")
+}
+// 1. gm\n
+// 2. gn\n
+```
+
+And you can put lists inside lists.
+```swift
+OrderedList {
+  Text("gm")
+  Text("gn")
+  UnorderedList {
+    Text("hi mom")
+    Text("hi dad")
+    Text("hi brother")
+    Text("hi sister")
+  }
+}
+// 1. gm\n
+// 2. gn\n
+//   - hi mom\n
+//   - hi dad\n
+//   - hi brother\n
+//   - hi sister\n
+```
+
+## `MessageEmbed`
+
+Embeds are cool, and can have a lot of stuff in them in a nice, formatted manner.
+
+The following `MessageEmbedComponent` types exist:
+- `Title`
+- `Description`
+- `Image`
+- `Thumbnail`
+- `Video`
+- `Field`
+- `Footer`
+
+The `MessageEmbed` component also has modifiers, which include:
+- `func setKind(_ kind: Embed.Kind)`
+- `func setTimestamp(_ date: Date = .now)`
+- `func setColor(_ color: DiscordColor?)`
+- `func setURL(_ url: String)`
+- `func setProvider(_ name: String, url: String? = nil)`
+- `func setAuthor(_ name: String, url: String? = nil, icon_url: Embed.DynamicURL? = nil)`
+
+## MessageEmbed - Components
+
+### `Title`
+The title of the embed, which is a single line `String` type.
+
+```swift
+MessageEmbed {
+  Title("wagwan")
+}
+```
+
+<div class="discord-messages">
+  <div class="discord-message">
+    <div class="discord-message-content">
+      <div class="discord-author-avatar">
+        <img src="https://cdn.discordapp.com/embed/avatars/2.png" alt=""></img>
+      </div>
+      <div class="discord-message-body">
+        <div><span class="discord-author-info"><span class="discord-author-username">MyNewBot</span><span class="discord-author-bot-tag"> Bot </span></span><span class="discord-message-timestamp">05/11/2024</span></div>
+        <div class="discord-embed">
+          <div class="discord-embed-left-border"></div>
+          <div class="discord-embed-container">
+            <div class="discord-embed-content">
+              <div>
+                <div class="discord-embed-title">embed #1</div>
+                <div class="discord-embed-description">wagwan gs</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
