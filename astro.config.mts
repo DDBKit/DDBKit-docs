@@ -23,7 +23,7 @@ export default defineConfig({
 				discord: 'https://discord.gg/CkB2QzVsCz'
 			},
 			editLink: {
-                baseUrl: "https://github.com/DDBKit/DDBKit-docs/tree/main/"
+                baseUrl: "https://github.com/DDBKit/DDBKit-docs/tree/master/"
             },
 			customCss: [
 				'./src/styles/custom.css',
