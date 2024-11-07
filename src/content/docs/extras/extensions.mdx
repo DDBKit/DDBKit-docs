@@ -153,6 +153,8 @@ extension ExtensibleCommand {
 
     public func postAction(_ action: @escaping (BaseContextCommand, any GatewayManager, DiscordCache, Interaction, DatabaseBranches) -> Void) -> Self
 
+    public func catchAction(_ action: @escaping (any Error, BaseContextCommand, any GatewayManager, DiscordCache, Interaction, DatabaseBranches) -> Void) -> Self
+
     public func boot(_ action: @escaping (BaseContextCommand) async throws -> Void) -> Self
 
     public var preActions: [(BaseContextCommand, any GatewayManager, DiscordCache, Interaction, DatabaseBranches) async throws -> Void]
