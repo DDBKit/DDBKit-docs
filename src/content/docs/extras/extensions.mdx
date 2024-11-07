@@ -6,13 +6,11 @@ sidebar:
 ---
 import { Aside } from '@astrojs/starlight/components';
 
-<Aside type="caution">
-  This documentation is incomplete.
-</Aside>
-
 <Aside type="danger">
 The extensions API provided by DDBKit is not API stable and may change in the future.
 Try not to make production-level extension since it may break in future versions.
+
+This note does not apply to v0.x versions of DDBKit.
 </Aside>
 
 Extensions are a very powerful resource in DDBKit that allows you to incorporate middleware functionality into your bot interactions.
@@ -206,3 +204,4 @@ Command("failable") { i, _, _ in
 In this example, this command will fail, and the modifier will print the command name, 
 the user who started the command, and the error it threw. The postAction will not run in this case.
 
+You can then combine all of the above with your existing skills to make a powerful extension that'll help make people's bots better.
