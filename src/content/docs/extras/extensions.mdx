@@ -1,0 +1,84 @@
+---
+title: Extensions
+description: Creating and using extensions
+sidebar:
+  order: 4
+---
+import { Aside } from '@astrojs/starlight/components';
+
+<Aside type="danger">
+  This documentation is incomplete.
+</Aside>
+
+<Aside type="danger">
+The extensions API provided by DDBKit is not API stable and may change in the future.
+Try not to make production-level extension since it may break in future versions.
+</Aside>
+
+Extensions are a very powerful resource in DDBKit that allows you to incorporate middleware functionality into your bot interactions.
+
+There are two ways to use extensions:
+- Registering a `DDBKitExtension` type to your `BotInstance`.
+- Using modifiers exposed by the extension to intercept commands.
+
+## Registering an extension
+
+This is important to all end-users of extensions. If you need to use an extension that acts on a global level,
+you need to add some code to your bot app that runs on startup.
+
+```swift
+@main
+struct MyNewBot: DiscordBotApp {
+  init() async {
+    // ...
+  }
+
+  func boot() async throws {
+    // Register the extension
+    RegisterExtension(MyExtension())
+  }
+}
+```
+
+When your bot launches, the extension will be registered and will be able to intercept commands, as well as adding and removing commands and events.
+
+<Aside type="caution">
+**Third-party extensions can be dangerous.**<br></br>
+Make sure you trust the source of the extension before using it in your bot.
+Extensions can **access all data** in your bot, **including tokens**.
+In the end, using a Swift package is running someone else's code on your machine, always be cautious.
+</Aside>
+
+## Using extension modifiers
+
+This is important to all end-users of extensions. This is for using an extension-provided modifier that acts on a command-scope.
+
+Extensions can expose modifiers that can intercept actions of the command they're attached to.
+
+```swift
+Command("ping") { i, cmd, reqs in
+  // ...
+}
+.levelRequirement(at: 20) // has to be xp level 20 to use the command
+```
+
+In this hypothetical example, the `levelRequirement` modifier is provided by an extension and will only allow the command to be executed if the user has an XP level of 20 or higher.
+The modifier can throw early if the requirement is not met, plus they could add their own error handling too, but that wouldn't be cool.
+
+## Example extension ideas
+
+- **XP System**: An extension that tracks user XP and levels, from messages ***and*** command interactions.
+- **Moderation**: An extension that layers a permission system for moderation commands where your server consists of different rankings rather than moderator and admin.
+- **Logging**: An extension that logs all events, commands and interactions to a database for later review.
+- **Custom Commands**: An extension that aggregates some data and creates a command to view that data.
+- **Ratelimiting**: An extension that limits the number of commands a user can run in a certain time frame or bucket.
+
+<Aside type="tip">
+DDBKit comes with two built-in extensions that may be convenient to most people.<br></br>
+[**DDBKitUtilities**](/extras/ddbkitutilities) provides some extension modifiers for bucket-based ratelimiting and other utilities.<br></br>
+[**DDBKitFoundation**](/extras/ddbkitfoundation) provides a complete solution for bots that need initial configuration and setup, plus automatic guild and member preferences storage, retrieval and commands.
+</Aside>
+
+## Creating an extension
+
+TBA.
