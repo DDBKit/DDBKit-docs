@@ -81,4 +81,128 @@ DDBKit comes with two built-in extensions that may be convenient to most people.
 
 ## Creating an extension
 
-TBA.
+<Aside type="note">
+Making an extension requires that you use the `@_spi` attribute to access the relevant APIs for creating an extension.
+```swift
+@_spi(Extensions) import DDBKit
+import DDBKit 
+// the second import is a weird issue with spi that
+// requires this import for exposing conforming types
+
+// ...
+```
+</Aside>
+
+### Registerable Extension
+
+To create an extension, you need to create a struct that conforms to the `DDBKitExtension` protocol.
+
+```swift
+struct MyExtension: DDBKitExtension {
+  func onBoot(_ instance: inout BotInstance) async throws {
+    // ...
+  }
+}
+```
+
+From in this `onBoot(_:)` function, you can interact with `BotInstance`, which is the main class behind the user's Discord bot.
+It contains a bunch of useful properties and functions that you can use to interact with the bot.<br></br>
+The `onBoot(_:)` function is called when `BotInstance` finishes setting up the environment and is ready to start the bot. 
+It then calls the function of all registered extensions in the order they were registered.
+
+Here's the interface of `BotInstance`:
+
+```swift
+public class BotInstance {
+  public var globalErrorHandle: ((any GatewayManager, any Error, Interaction) async throws -> Void)?
+
+  public var events: [any BaseEvent]
+
+  public var commands: [any BaseContextCommand]
+
+  public var modalReceives: [String : [(Interaction, Interaction.ModalSubmit, DatabaseBranches) async throws -> Void]]
+
+  public var componentReceives: [String : [(Interaction, Interaction.MessageComponent, DatabaseBranches) async throws -> Void]]
+
+  /// Unique stable identifier for the app
+  public let id: ApplicationSnowflake
+}
+```
+
+If you didn't already notice `inout`, it means you've been passed a reference to the `BotInstance` and not a copy, 
+and you can modify it directly and your changes will be reflected in the original instance.
+
+Here's an example to print all registered commands.
+
+```swift
+struct PrintAllCommandsExtension: DDBKitExtension {
+  func onBoot(_ instance: inout BotInstance) async throws {
+    let registeredCommands = instance.commands.map(\.baseInfo.name)
+    print(registeredCommands)
+  }
+}
+```
+
+### Modifiers
+
+To create a modifier, you just extend `ExtensibleCommand` with new methods that return type `Self`.
+
+Here's some of the interface for `ExtensibleCommand`:
+
+```swift
+extension ExtensibleCommand {
+    public func preAction(_ action: @escaping (BaseContextCommand, any GatewayManager, DiscordCache, Interaction, DatabaseBranches) -> Void) -> Self
+
+    public func postAction(_ action: @escaping (BaseContextCommand, any GatewayManager, DiscordCache, Interaction, DatabaseBranches) -> Void) -> Self
+
+    public func boot(_ action: @escaping (BaseContextCommand) async throws -> Void) -> Self
+
+    public var preActions: [(BaseContextCommand, any GatewayManager, DiscordCache, Interaction, DatabaseBranches) async throws -> Void]
+
+    public var postActions: [(BaseContextCommand, any GatewayManager, DiscordCache, Interaction, DatabaseBranches) async throws -> Void]
+}
+```
+
+You can combine these modifiers inside of your own modifier to create a chain of actions that will be executed as part of an interaction.
+The `boot` modifier runs your closure immediately so you can do initial setup if needed, avoiding the need for work with registered extensions.
+
+Here's an example of a modifier that prints something before and after a command is run:
+
+```swift
+extension ExtensibleCommand {
+  func logUsages() -> Self {
+    self
+      .boot { cmd in
+        print("\(cmd.baseInfo.name) command exists!")
+      }
+      .catchAction { error, cmd, _, _, i, _ in
+        print("\(cmd.baseInfo.name) command errored for \(i.member?.user?.username ?? "unknown user") with error: \(error)")
+      }
+      .preAction { cmd, _, _, i, _ in
+        print("\(cmd.baseInfo.name) command started by \(i.member?.user?.username ?? "unknown user")")
+      }
+      .postAction { cmd, _, _, i, _ in
+        print("\(cmd.baseInfo.name) command completed for \(i.member?.user?.username ?? "unknown user")")
+      }
+  }
+}
+```
+
+This modifier will print the command name when the bot boots, 
+when the command is started, when the command is completed, and when the command errors.
+
+```swift
+Command("failable") { i, _, _ in
+  struct Egg: Decodable {
+    var gm: String
+  }
+  let data = "{}".data(using: .utf8)!
+  _ = try JSONDecoder().decode(Egg.self, from: data)
+}
+.integrationType(.all, contexts: .all)
+.logUsages()
+```
+
+In this example, this command will fail, and the modifier will print the command name, 
+the user who started the command, and the error it threw. The postAction will not run in this case.
+
