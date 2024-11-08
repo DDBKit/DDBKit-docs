@@ -160,3 +160,17 @@ code[dir="auto"] {
     background-color: var(--sl-color-accent-low) !important;
     border-radius: 0.4rem;
 }
+
+/* star-chart */
+.star-chart > picture > img {
+    border-radius: 0.5rem;
+    box-shadow: var(--global-shadow);
+    border: 2px solid var(--sl-color-gray-5);
+    margin-bottom: 1rem;
+}
+:root[data-theme='dark'] .star-chart > picture > img {
+    content: url(https://api.star-history.com/svg?repos=ddbkit/ddbkit&type=Date&theme=dark)
+}
+:root[data-theme='light'] .star-chart > picture > img {
+    content: url(https://api.star-history.com/svg?repos=ddbkit/ddbkit&type=Date)
+}
