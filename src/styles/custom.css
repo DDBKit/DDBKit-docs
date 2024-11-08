@@ -169,8 +169,8 @@ code[dir="auto"] {
     margin-bottom: 1rem;
 }
 :root[data-theme='dark'] .star-chart > picture > img {
-    content: url(https://api.star-history.com/svg?repos=ddbkit/ddbkit&type=Date&theme=dark)
+    content: url(https://api.star-history.com/svg?repos=DDBKit/DDBKit&type=Date&theme=dark)
 }
 :root[data-theme='light'] .star-chart > picture > img {
-    content: url(https://api.star-history.com/svg?repos=ddbkit/ddbkit&type=Date)
+    content: url(https://api.star-history.com/svg?repos=DDBKit/DDBKit&type=Date)
 }
