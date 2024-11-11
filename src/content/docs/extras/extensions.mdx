@@ -7,7 +7,7 @@ sidebar:
 import { Aside } from '@astrojs/starlight/components';
 
 <Aside type="danger">
-The extensions API provided by DDBKit is not API stable and may change in the future.
+The extensions API provided by DDBKit is not API stable and will change in the future.
 Try not to make production-level extension since it may break in future versions.
 
 This note does not apply to v1.x versions of DDBKit.
@@ -18,6 +18,20 @@ Extensions are a very powerful resource in DDBKit that allows you to incorporate
 There are two ways to use extensions:
 - Registering a `DDBKitExtension` type to your `BotInstance`.
 - Using modifiers exposed by the extension to intercept commands.
+
+<Aside type="note">
+Using or making an extension requires that you use the `@_spi` attribute to access the relevant APIs for extensions.
+```swift
+// Regular users: Import the module with 
+// the extension you need with `@_spi`.
+@_spi(Extensions) import DDBKitFoundation
+
+// Extension developers: Use the `@_spi` attribute
+// to gain access to the APIs you need.
+@_spi(Extensions) import DDBKit
+// ...
+```
+</Aside>
 
 ## Registering an extension
 
@@ -41,7 +55,7 @@ struct MyNewBot: DiscordBotApp {
 When your bot launches, the extension will be registered and will be able to intercept commands, as well as adding and removing commands and events.
 
 <Aside type="caution">
-**Third-party extensions can be dangerous.**<br></br>
+**Third-party extensions can be dangerous.**<br />
 Make sure you trust the source of the extension before using it in your bot.
 Extensions can **access all data** in your bot, **including tokens**.
 In the end, using a Swift package is running someone else's code on your machine, always be cautious.
@@ -72,24 +86,12 @@ The modifier can throw early if the requirement is not met, plus they could add 
 - **Ratelimiting**: An extension that limits the number of commands a user can run in a certain time frame or bucket.
 
 <Aside type="tip">
-DDBKit comes with two built-in extensions that may be convenient to most people.<br></br>
-[**DDBKitUtilities**](/extras/ddbkitutilities) provides some extension modifiers for bucket-based ratelimiting and other utilities.<br></br>
+DDBKit comes with two built-in extensions that may be convenient to most people.<br />
+[**DDBKitUtilities**](/extras/ddbkitutilities) provides some extension modifiers for bucket-based ratelimiting and other utilities.<br />
 [**DDBKitFoundation**](/extras/ddbkitfoundation) provides a complete solution for bots that need initial configuration and setup, plus automatic guild and member preferences storage, retrieval and commands.
 </Aside>
 
 ## Creating an extension
-
-<Aside type="note">
-Making an extension requires that you use the `@_spi` attribute to access the relevant APIs for creating an extension.
-```swift
-@_spi(Extensions) import DDBKit
-import DDBKit 
-// the second import is a weird issue with spi that
-// requires this import for exposing conforming types
-
-// ...
-```
-</Aside>
 
 ### Registerable Extension
 
@@ -104,7 +106,7 @@ struct MyExtension: DDBKitExtension {
 ```
 
 From in this `onBoot(_:)` function, you can interact with `BotInstance`, which is the main class behind the user's Discord bot.
-It contains a bunch of useful properties and functions that you can use to interact with the bot.<br></br>
+It contains a bunch of useful properties and functions that you can use to interact with the bot.<br />
 The `onBoot(_:)` function is called when `BotInstance` finishes setting up the environment and is ready to start the bot. 
 It then calls the function of all registered extensions in the order they were registered.
 
@@ -155,11 +157,7 @@ extension ExtensibleCommand {
 
     public func catchAction(_ action: @escaping (any Error, BaseContextCommand, any GatewayManager, DiscordCache, Interaction, DatabaseBranches) async throws -> Void) -> Self
 
-    public func boot(_ action: @escaping (BaseContextCommand) async throws -> Void) -> Self
-
-    public var preActions: [(BaseContextCommand, any GatewayManager, DiscordCache, Interaction, DatabaseBranches) async throws -> Void]
-
-    public var postActions: [(BaseContextCommand, any GatewayManager, DiscordCache, Interaction, DatabaseBranches) async throws -> Void]
+    public func boot(_ action: @escaping (BaseContextCommand, BotInstance) async throws -> Void) -> Self
 }
 ```
 
@@ -172,7 +170,7 @@ Here's an example of a modifier that prints something before and after a command
 extension ExtensibleCommand {
   func logUsages() -> Self {
     self
-      .boot { cmd in
+      .boot { cmd, _ in
         print("\(cmd.baseInfo.name) command exists!")
       }
       .catchAction { error, cmd, _, _, i, _ in
@@ -207,3 +205,27 @@ In this example, this command will fail, and the modifier will print the command
 the user who started the command, and the error it threw. The postAction will not run in this case.
 
 You can then combine all of the above with your existing skills to make a powerful extension that'll help make people's bots better.
+
+#### Modifier utilities
+
+You may need to interact with your global extension from within a modifier, 
+but you can't store a reference to it anywhere that you can access easily.
+
+To solve this, DDBKit exposes some utilities, one of which can pull a reference from the `BotInstance`
+for you quickly and easily.
+
+```swift
+// In your modifier
+extension ExtensibleCommand {
+  func myModifier() -> Self {
+    self
+      .boot { cmd, i in
+        let myExtension = Self.GetExtension(of: Configurator.self, from: i)
+        myExtension.doSomething()
+      }
+  }
+}
+```
+
+> As you can tell, this is very Proof-of-Concept and will be changed 
+in the future for a clearner and more robust API.
