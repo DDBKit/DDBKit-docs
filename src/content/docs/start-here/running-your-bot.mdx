@@ -108,7 +108,7 @@ Instructions are available per platform.
 
 ### Binary (for macOS)
 We recommend this if you're hosting on a macOS server, and your bot relies
-on macOS frameworks. 
+on macOS frameworks.
 
 Begin by building your bot for release with the following command:
 <Code class="dir-my-new-bot" lang="sh" code="swift build -c release" />
@@ -125,11 +125,44 @@ You can find more information on launchd plists at [Apple's developer documentat
 We recommend this if you're hosting on a Linux server, or if you're
 hosting on a macOS server but don't deal with macOS frameworks.
 
-TBA.
+First, make sure you have `docker` and `docker-compose` installed.
+You can install them using your distro's package manager, or by
+using the official Docker installation script, located
+[here](https://github.com/docker/docker-install).
+
+Start by making a `Dockerfile` in your bot project directory.
+It might look something like this:
+```dockerfile
+FROM swift:6.0.2-jammy AS build
+
+WORKDIR /app
+
+COPY . .
+
+RUN swift build -c release
+
+FROM swift:6.0.2-jammy-slim AS runtime
+
+COPY --from=build /app/.build/release/your-app /usr/local/bin/your-app
+
+ENTRYPOINT ["your-app"]
+```
+This example `Dockerfile` builds your bot using a full swift image, and runs it on a smaller, more optimized image.
+
+You can then run the newly-created docker image with `docker run`, however it is *highly* recommended to use docker-compose.
+A minimal `docker-compose.yml` may look like this:
+```yaml
+services:
+  your-app:
+    build: .
+```
+Start the docker image by running `docker compose up -d` in the same directory as the compose file.
+
+If you need to specify environment variables or other options, you can find a more in-depth example [here](https://github.com/circularsprojects/foodbot-swift/blob/main/docker-compose.yml).
 
 ### Special
 If you're hosting on an iDevice, you can use the same instructions as running on an iDevice.
 There is no better way to deploy on an iDevice, as it's not recommended. You can be assured that
-it's at least safe and sandboxed unless you used the jailbroken method. 
+it's at least safe and sandboxed unless you used the jailbroken method.
 But it's not recommended for production use anyways. Maybe just useful
 for flexing on your friends idk.
