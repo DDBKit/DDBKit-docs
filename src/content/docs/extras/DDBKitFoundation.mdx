@@ -9,3 +9,62 @@ import { Aside } from '@astrojs/starlight/components';
 <Aside type="danger">
   This module is incomplete.
 </Aside>
+
+DDBKitFoundation is a module that provides extra utilities to cover generic boilerplate work, in the form of many extensions. 
+It offers a number of pre-built interactive commands for end-users to discover your bot and easily configure it.
+It also offers an easy-to-use way of configuration since handling configuration is done by the extension itself,
+you just need to provide the available properties for configuration and read configuration values as needed.
+
+## Setup - `Configurator`
+
+To use DDBKitFoundation, you need to import the module into your project. 
+```swift
+// Remember to use @_spi to access extensions.
+@_spi(Extensions) import DDBKitFoundation
+```
+
+Register the `Configurator` extension in your bot app.
+```swift
+@main
+struct MyNewBot: DiscordBotApp {
+  init() async {
+    // ...
+  }
+
+  func boot() async throws {
+    // we pass in the configuration template type to the configurator instance
+    let configExtension = Configurator(guildConfiguation: GuildConfigTemplate.self)
+    RegisterExtension(configExtension)
+  }
+}
+
+// ... elsewhere
+
+struct GuildConfigTemplate: ConfigTemplate {
+  @Config(name: "prefix", description: "The prefix for the bot", initialValue: "!")
+  var prefix: String
+}
+```
+
+And with that, basic setup is done! `Configurator` has added <code type="cmd" >/config guild</code> to your bot,
+which allows members of a guild with the **Manage Server** permission to configure the bot's prefix.
+
+The kicker is that you don't need to worry about the configuration process or storage, 
+you can just read the configuration values as needed during the bot's lifecycle.
+
+<Aside type="tip">
+`Configurator` will automatically create more subcommands for types of `ConfigurationTemplate` that you provide in the initialiser.<br />
+Available template parameters include:
+- guildConfiguration
+- channelConfiguration
+- memberConfiguration
+- roleConfiguration
+- userConfiguration
+These should cover all the bases for your bot's configuration needs.
+</Aside>
+
+
+
+# SOON!
+
+DDBKitFoundation will have more features in the future!
