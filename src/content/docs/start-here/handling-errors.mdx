@@ -13,7 +13,7 @@ This is preferred over the usual `do {} catch {_ in}` like we're used to since w
 Change any instances of `try?` to `try` and `try!` to `try`. This will make the function throw an error if it encounters one. You can throw errors with the `throw` keyword. Errors thrown from commands will propagate up to the command handler.
 
 ```swift
-Command("failable") { i, _, _ in
+Command("failable") { i in
   struct Egg: Decodable {
     var gm: String
   }
@@ -44,8 +44,8 @@ struct MyNewBot: DiscordBotApp {
   }
 
   func boot() async throws {
-    AssignGlobalCatch { bot, error, i in
-      try? await bot.createInteractionResponse(to: i) {
+    AssignGlobalCatch { error, i in
+      try? await i.respond {
         Message {
           MessageEmbed {
             Title("Your command ran into a problem")
@@ -60,7 +60,7 @@ struct MyNewBot: DiscordBotApp {
   }
 
   var body: [any BotScene] {
-    Command("failable") { i, _, _ in
+    Command("failable") { i in
       struct Egg: Decodable {
         var gm: String
       }
@@ -125,7 +125,7 @@ Command("failable") { i, _, _ in
   _ = try JSONDecoder().decode(Egg.self, from: data)
 }
 .catch { error, interaction
-  try? await bot.createInteractionResponse(to: interaction) {
+  try? await interaction.respond {
     Message {
       MessageEmbed {
         Title("Failable failed, who could've guessed")
@@ -183,14 +183,14 @@ You can propagate errors from command scope to global scope by rethrowing the er
 This is useful if you want to handle errors differently at the global scope after some implicit work or just transforming the error at command scope
 
 ```swift
-Command("failable") { i, _, _ in
+Command("failable") { i in
   struct Egg: Decodable {
     var gm: String
   }
   let data = "{}".data(using: .utf8)!
   _ = try JSONDecoder().decode(Egg.self, from: data)
 }
-.catch { error, interaction
+.catch { error, _ in
   // ...
   let transformedError = /* new error or something (maybe more user friendly? who knows) */
   throw transformedError

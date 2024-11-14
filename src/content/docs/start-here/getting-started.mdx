@@ -18,8 +18,7 @@ we should have something that can connect to Discord, and you can work from ther
 Get Swift [here](https://www.swift.org/install/).
 <Aside type="tip">
 A great place to start learning Swift is the 
-[Swift book](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/).
-
+[Swift book](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/).<br />
 You can also use the [Swift Guided Tour](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/guidedtour)
 for a quick introduction to the language.
 </Aside>
@@ -50,7 +49,7 @@ let package = Package(
     .macOS(.v13)
   ],
   dependencies: [
-    .package(url: "https://github.com/llsc12/DDBKit", exact: "0.1.4"), // change this to latest ver
+    .package(url: "https://github.com/llsc12/DDBKit", exact: "0.2.0"), // change this to latest ver
   ],
   targets: [
     // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -102,11 +101,11 @@ it and disable the token if found on a public repo.
 ## First Command
 Let's make a simple command to test the waters. In your `Bot.swift` file, add the following code.
 ```swift
-Command("ping") { interaction, _,_ in
-  try? await bot.createInteractionResponse(to: interaction, "Pong!")
+Command("ping") { interaction in
+  try? await interaction.respond(with: "Pong!")
 }
 ```
-Don't yet concern yourself with the last two arguments passed into your command, those aren't too important right now.
+Don't yet concern yourself with `try?`, it's not too important right now.
 
 Try running your bot. After a minute or two, you'll find a new <code type="cmd">/ping</code> command available for use.
 
@@ -148,8 +147,8 @@ import DDBKitUtilities
 extension MyNewBot {
   var coolCommandGroup: Group {
     Group {
-      Command("pong") { i,_,_ in
-        try? await bot.createInteractionResponse(to: i, "Ping!")
+      Command("pong") { i
+        try await i.respond(with: "ping!")
       }
     }
   }

@@ -10,16 +10,20 @@ import { Aside, Code } from '@astrojs/starlight/components';
   This documentation is incomplete.
 </Aside>
 
-Commands in DDBKit come with a bunch of modifiers to control its behaviour. DDBKit includes Discord API modifiers (modifiers that directly control the command during registration, or modifiers that provide callbacks for discord command events). You can find more utilities in the DDBKitUtilities module which provides tools like Message builders and some misc abstractions.
+Commands in DDBKit come with a bunch of modifiers to control its behaviour. 
+DDBKit includes Discord API modifiers (modifiers that directly control the command 
+during registration, or modifiers that provide callbacks for discord command events). 
+You can find more utilities in the DDBKitUtilities module which provides tools 
+like Message builders and some misc abstractions.
 
 To start, take a look at this command:
 ```swift
-Command("embeds") { i, cmd, dbreq in
+Command("embeds") { interaction in
   let randomcolor: DiscordColor = {
-    let colors: [DiscordColor] = [.red, .orange, .yellow, .green, .mint, .teal, .cyan, .blue, .indigo, .purple, .pink, .brown, .gray]
-    return colors.randomElement() ?? .red
+    let colors: [DiscordColor] = [.red, .orange, .yellow, .green, .mint, .teal, .cyan, .blue, .indigo, .purple, .pinks]
+    return colors.randomElement()!
   }()
-  try? await bot.createInteractionResponse(to: i) {
+  try? await interaction.respond {
     Message {
       MessageEmbed {
         Title("gm")
@@ -35,8 +39,13 @@ Command("embeds") { i, cmd, dbreq in
 .integrationType(.all, contexts: .all)
 ```
 
-This demonstrates a few things to note. We use the `createInteractionResponse(to:)` method on our `GatewayManager` to send a `Message` object.
-The `Message` object allows you to take a result builder approach to structuring your message payload. You fill the message with `MessageComponent` types like `MessageEmbed` as seen here, or `MessageContent` for the text content of the message. Send attachments with `MessageAttachment` and attach message components with `MessageComponents`.
+This demonstrates a few things to note. We use the `respond(:)` method on our `InteractionExtras` to send a `Message` object.
+The `Message` object allows you to take a result builder approach to structuring your message payload. You fill the message 
+with `MessageComponent` types like `MessageEmbed` as seen here, or `MessageContent` for the text content of the message. 
+Send attachments with `MessageAttachment` and attach message components with `MessageComponents`.
+
+`InteractionExtras` is a special wrapper type around DiscordBM's `Interaction` type. It provides a few extra utilities 
+for handling interactions, such as the `respond(:)` method and more.
 
 ```swift
 Message {
@@ -78,32 +87,39 @@ Message {
 ```
 This demonstrates the process of structuring an embed, and using attachments in embeds or elsewhere. If you wish to have the attachment actually attach to the message rather than be uploaded for use elsewhere, omit the usage modifier. 
 ```swift
-Message {
-  MessageContent {
-    Text("buttons!")
-      .bold()
-      .underlined()
-  }
-  MessageComponents {
-    ActionRow {
-      Button("im a button")
-        .id("btn")
-      Button("im dangerous :3")
-        .style(.danger)
-        .id("scary")
+Command("components") { i in 
+  try? await i.respond {
+    Message {
+      MessageContent {
+        Text("buttons!")
+          .bold()
+          .underlined()
+      }
+      MessageComponents {
+        ActionRow {
+          Button("im a button")
+            .id("btn")
+          Button("im dangerous :3")
+            .style(.danger)
+            .id("scary")
+        }
+      }
     }
   }
-  .component(on: "btn") { int, _, _ in
-    try? await bot.createInteractionResponse(to: int) {
-      Message { Text("hii") }
-        .flags([.ephemeral])
+}
+.component(on: "btn") { i in
+  try? await i.respond {
+    Message {
+      Text("hii")
     }
   }
-  .component(on: "scary") { int, _, _ in
-    try? await bot.createInteractionResponse(to: int) {
-      Message { Text("boo!") }
-        .flags([.ephemeral])
+}
+.component(on: "scary") { i in
+  try? await i.respond {
+    Message {
+      Text("boo!")
     }
+    .ephemeral()
   }
 }
 ```
