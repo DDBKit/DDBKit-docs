@@ -42,7 +42,7 @@
     --sl-font: "SF Pro Display", Inter, -system-ui, sans-serif;
     --__sl-font-mono: 'SF Mono', SFMono-Regular, ui-monospace,
         'DejaVu Sans Mono', Menlo, Consolas, monospace !important;
-    --gg-sans: "gg sans", --__sl-font-mono;
+    --whitney: "Whitney", --__sl-font-mono;
     tab-size: 40px;
     scroll-behavior: smooth;
     --global-shadow: 0 4px 8px #0000001a;
@@ -87,7 +87,9 @@ code[dir="auto"] {
 
 /* * Discord Slash Command style * */
 code[type="cmd"] {
-    font-family: var(--gg-sans);
+    font-family: var(--whitney);
+    /* make bold */
+    font-weight: 700;
     border: none;
     border-radius: 3px !important;
     box-shadow: 0 0 1px var(--sl-color-gray-4) inset;
@@ -105,15 +107,15 @@ code[type="cmd"] {
     
     transition: 0.1s background-color, 0.1s color;
 
+    /* disable font-size specified earlier */
+    font-size: unset;
+    padding: 2px;
+
     /* Hover */
     &:hover {
         background-color: #5865f2;
         color: #ffffff;
     }
-
-    /* disable font-size specified earlier */
-    font-size: unset;
-    padding: 0 2px;
 }
 
 /* * Indent size * */
