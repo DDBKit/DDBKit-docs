@@ -10,6 +10,46 @@ import { Aside } from '@astrojs/starlight/components';
   This documentation is incomplete.
 </Aside>
 
+# Extensions
+DDBKitUtilities exposes a collection of useful extensions for your Discord bots.
+
+## BucketRatelimiting
+Your Discord bot may have a number of commands that use expensive resources or external service limits.
+To prevent abuse, you can use the `BucketRatelimiting` extension to rate limit these commands.
+
+To get started, register the extension at boot.
+
+```swift
+@_spi(Extensions) import DDBKitUtilities
+
+struct MyNewBot: DiscordBotApp {
+  func onBoot() async throws {
+    // ...
+
+    RegisterExtension(BucketRatelimiting())
+  }
+}
+```
+
+You can now use the `ratelimited()` modifier on your commands to rate limit them.
+
+```swift
+Command("ratelimited") { i in
+  try await i.respond(with: "This command is rate limited!")
+}
+.ratelimited()
+```
+
+You can customise it by passing in a configuration object.
+```swift
+Command("ratelimited") { i in
+  try await i.respond(with: "This command is rate limited!")
+}
+.ratelimited(.init(maxUses: 10, timeWindow: 60))
+```
+
+The example above would rate limit the command to 10 uses per minute.
+
 # Builders
 DDBKitUtilities provides a collection of utiltity builders for various structured types. This allows for a more concise and readable way to instance these types.
 

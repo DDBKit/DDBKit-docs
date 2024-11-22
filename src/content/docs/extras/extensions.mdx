@@ -18,8 +18,9 @@ Extensions are a very powerful resource in DDBKit that allows you to incorporate
 There are two ways to use extensions:
 - Registering a `DDBKitExtension` type to your `BotInstance`.
 - Using modifiers exposed by the extension to intercept commands.
+And you can combine both to create a powerful extension that can do a lot of things.
 
-<Aside type="note">
+<Aside type="tip">
 Using or making an extension requires that you use the `@_spi` attribute to access the relevant APIs for extensions.
 ```swift
 // Regular users: Import the module with 
@@ -67,8 +68,14 @@ This is important to all end-users of extensions. This is for using an extension
 
 Extensions can expose modifiers that can intercept actions of the command they're attached to.
 
+<Aside>
+Modifiers may require their global extensions to be registered to work properly.<br />
+Check with the extension's documentation to see if this is the case.
+</Aside>
+
+Check out this example of a hypothetical extension modifier:
 ```swift
-Command("ping") { i, cmd, reqs in
+Command("ping") { i in
   // ...
 }
 .levelRequirement(at: 20) // has to be xp level 20 to use the command
@@ -76,6 +83,8 @@ Command("ping") { i, cmd, reqs in
 
 In this hypothetical example, the `levelRequirement` modifier is provided by an extension and will only allow the command to be executed if the user has an XP level of 20 or higher.
 The modifier can throw early if the requirement is not met, plus they could add their own error handling too, but that wouldn't be cool.
+
+Maybe the modifier requires its extension to be registered for storing and retrieving XP levels.
 
 ## Example extension ideas
 
@@ -91,19 +100,32 @@ DDBKit comes with two built-in extensions that may be convenient to most people.
 [**DDBKitFoundation**](/extras/ddbkitfoundation) provides a complete solution for bots that need initial configuration and setup, plus automatic guild and member preferences storage, retrieval and commands.
 </Aside>
 
+A Discord bot could encapsulate functionality and behaviour to be more modular, or just be a drop-in system.
+It depends on your preference and goals. 
+
 ## Creating an extension
+
+<Aside type="tip">
+Making an extension? Cool! If you feel like open-sourcing it, be sure to tag the repo with **DDBKit** so others can find it!
+</Aside>
 
 ### Registerable Extension
 
-To create an extension, you need to create a struct that conforms to the `DDBKitExtension` protocol.
+To create an extension, you need to create an actor that conforms to the `DDBKitExtension` protocol.
 
 ```swift
-struct MyExtension: DDBKitExtension {
+actor MyExtension: DDBKitExtension {
   func onBoot(_ instance: inout BotInstance) async throws {
     // ...
   }
 }
 ```
+<Aside type="note">
+Actors are a feature in Swift that allows you to create objects that can be interacted with concurrently.
+This is useful for extensions, as they can be interacted with by multiple parts of the bot at the same time.
+The actor system prevents simultaneous access to the same data, which can cause a crash. Extensions are accessed
+from many concurrent contexts since commands run in different `Task`s.
+</Aside>
 
 From in this `onBoot(_:)` function, you can interact with `BotInstance`, which is the main class behind the user's Discord bot.
 It contains a bunch of useful properties and functions that you can use to interact with the bot.<br />
@@ -118,7 +140,7 @@ public class BotInstance {
 
   public var events: [any BaseEvent]
 
-  public var commands: [any BaseContextCommand]
+  public var commands: [ExtensibleCommand]
 
   public var modalReceives: [String : [(Interaction, Interaction.ModalSubmit, DatabaseBranches) async throws -> Void]]
 
@@ -129,16 +151,71 @@ public class BotInstance {
 }
 ```
 
-If you didn't already notice `inout`, it means you've been passed a reference to the `BotInstance` and not a copy, 
+If you didn't already notice `inout`, it means you've been passed a reference to the `BotInstance`, 
 and you can modify it directly and your changes will be reflected in the original instance.
 
 Here's an example to print all registered commands.
 
 ```swift
-struct PrintAllCommandsExtension: DDBKitExtension {
+actor PrintAllCommandsExtension: DDBKitExtension {
   func onBoot(_ instance: inout BotInstance) async throws {
     let registeredCommands = instance.commands.map(\.baseInfo.name)
     print(registeredCommands)
+  }
+}
+```
+
+You can edit the commands from here too, such as adding new commands, 
+removing commands, or modifying existing commands.
+
+```swift
+actor PrintAllCommandsExtension: DDBKitExtension {
+  func onBoot(_ instance: inout BotInstance) async throws {
+    instance.commands = instance.commands.map {
+      $0
+        .preAction { cmd, _ in
+          print(cmd.baseInfo.name)
+        }
+        .postAction { cmd, _ in
+          print(cmd.baseInfo.name, "finished") // if it didnt error this will work
+        }
+    }
+  }
+}
+```
+
+`DDBKitExtension` has two more methods called at other times.
+
+```swift
+actor PrintAllCommandsExtension: DDBKitExtension {
+  func onBoot(_ instance: inout BotInstance) async throws {
+    // ...
+  }
+
+  /// The register method allows you to create new commands and events
+  /// This builder can use logic to determine what to register, which you
+  /// can combine with `onBoot(:) async throws` to logically add handling.
+  func register() -> [any BotScene] {
+    Command("gm") { e in
+      try await e.respond(with: "gm")
+    }
+  }
+
+  /// Gives you direct events from the gateway. Combine this with
+  /// DiscordBM's `GatewayEventHandler` protocol to make event handling easier
+  func onEvent(_ instance: BotInstance, event: Gateway.Event) async throws {
+    print("\(event.type ?? "") received")
+    // instanciate handler with event and handle
+    MessageReceiveHandle(event: event).handle() 
+  }
+
+
+  struct MessageReceiveHandle: GatewayEventHandler {
+    var event: Gateway.Event
+    
+    func onMessageCreate(_ payload: Gateway.MessageCreate) async throws {
+      print("[\(payload.author?.username ?? "idk")] \(payload.content)")
+    }
   }
 }
 ```
@@ -162,7 +239,8 @@ extension ExtensibleCommand {
 ```
 
 You can combine these modifiers inside of your own modifier to create a chain of actions that will be executed as part of an interaction.
-The `boot` modifier runs your closure immediately so you can do initial setup if needed, avoiding the need for work with registered extensions.
+The `boot` modifier runs your closure immediately after extension registering finishes 
+so you can do initial setup if needed, allowing you to work with a global extension instance.
 
 Here's an example of a modifier that prints something before and after a command is run:
 
@@ -174,13 +252,13 @@ extension ExtensibleCommand {
         print("\(cmd.baseInfo.name) command exists!")
       }
       .catchAction { error, cmd, _, _, i, _ in
-        print("\(cmd.baseInfo.name) command errored for \(i.member?.user?.username ?? "unknown user") with error: \(error)")
+        print("\(cmd.baseInfo.name) command errored for \(i.interaction.member?.user?.username ?? "unknown user") with error: \(error)")
       }
       .preAction { cmd, _, _, i, _ in
-        print("\(cmd.baseInfo.name) command started by \(i.member?.user?.username ?? "unknown user")")
+        print("\(cmd.baseInfo.name) command started by \(i.interaction.member?.user?.username ?? "unknown user")")
       }
       .postAction { cmd, _, _, i, _ in
-        print("\(cmd.baseInfo.name) command completed for \(i.member?.user?.username ?? "unknown user")")
+        print("\(cmd.baseInfo.name) command completed for \(i.interaction.member?.user?.username ?? "unknown user")")
       }
   }
 }
@@ -220,12 +298,29 @@ extension ExtensibleCommand {
   func myModifier() -> Self {
     self
       .boot { cmd, i in
-        let myExtension = Self.GetExtension(of: Configurator.self, from: i)
+        let myExtension = i.instance[ext: Configurator.self]
         myExtension.doSomething()
       }
   }
 }
 ```
 
-> As you can tell, this is very Proof-of-Concept and will be changed 
-in the future for a clearner and more robust API.
+### `InteractionExtras` Extensions
+
+`InteractionExtras` is the structure passed into all interaction closures in DDBKit, 
+which exposes it's wrapped `Interaction` structure and a reference to the `BotInstance`.
+It's extended with computed properties to expose the gateway and cache objects, and 
+you can extend it with your own properties and methods for your extension.
+
+```swift
+public extension InteractionExtras {
+  // Does a thing in MyExtension with the interaction
+  func doSomething() async throws {
+    let ext = self.instance[ext: MyExtension.self]
+    try await ext.doSomething(self)
+  }
+}
+```
+
+You can now expose methods and properties from `InteractionExtras` to your extension for users.
+

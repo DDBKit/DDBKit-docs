@@ -52,20 +52,21 @@ You can then use the database to store and retrieve data in the format of said m
 ```swift
 // in your bot
 
-Command("cheese") { i, cmd, reqs in
-  // defer, since database operations can be held up
-  try await bot.createInteractionResponse(to: i, type: .deferredChannelMessageWithSource())
+Command("cheese") { i in
+  // defer, since database operations can be held up by other accesses
+  try await i.respond(with: .deferredChannelMessageWithSource())
   // get option data
-  let bool = try cmd.requireOption(named: "bool").requireBool()
+  let bool = try i.options.requireOption(named: "bool").requireBool()
   // get the user's prefs, this means it shares across servers.
-  let prefs = try await db.transaction(reqs.user(ofType: UserPrefs.self)) { prefs in
+  let req = i.dbRequests.user(ofType: UserPrefs.self)
+  let prefs = try await db.transaction() { prefs in
     var prefs = prefs ?? .default // if the user doesn't have prefs, use default
     prefs.theyReallyLikeCheese = bool
     return prefs // return modified prefs to be saved
   }! // force unwrap, we know it exists
   // the prefs returned from the transaction are the updated prefs we returned from the closure
   // so we can use them here in the response.
-  try await bot.createInteractionResponse(to: i) {
+  try await i.respond {
     Message {
       MessageEmbed {
         Title("Cheese")
@@ -81,7 +82,10 @@ Command("cheese") { i, cmd, reqs in
 .isUsableInDMS(true)
 ```
 
-The `transaction` method is used to ensure that the data is not modified by another command while it is being modified by this one.
-If another thread tries to modify the same data while the transaction is in progress, it will wait until the existing transaction is complete before modifying the data.
+The `transaction` method is used to ensure that the data is not 
+modified by another command while it is being modified by this one.
+If another thread tries to modify the same data while the transaction is in 
+progress, it will wait until the existing transaction is complete before modifying the data.
 
-The reqs object is of type `DatabaseBranches`, which is a utility structure that contains all the predefined database requests based on interaction context.
+The reqs object is of type `DatabaseBranches`, which is a utility structure that 
+contains all the predefined database requests based on interaction context.
