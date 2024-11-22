@@ -1,8 +1,8 @@
 @font-face {
-    font-family: 'gg sans';
+    font-family: 'Whitney';
     font-style: normal;
     font-weight: normal;
-    src: url('/fonts/gg sans.woff') format('woff');
+    src: url('/fonts/whitneybook.otf') format('opentype');
 }
 
 /* Dark mode colors. */
@@ -173,4 +173,12 @@ code[dir="auto"] {
 }
 :root[data-theme='light'] .star-chart > picture > img {
     content: url(https://api.star-history.com/svg?repos=DDBKit/DDBKit&type=Date)
+}
+
+/* mobile fix */
+header {
+  max-width: 100vw !important;
+}
+.card {
+    min-width: 1vw !important;
 }
