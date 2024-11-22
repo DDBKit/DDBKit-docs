@@ -174,3 +174,11 @@ code[dir="auto"] {
 :root[data-theme='light'] .star-chart > picture > img {
     content: url(https://api.star-history.com/svg?repos=DDBKit/DDBKit&type=Date)
 }
+
+/* mobile fix */
+header {
+  max-width: 100vw;
+}
+.class {
+    min-width: 1vh;
+}
