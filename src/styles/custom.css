@@ -1,100 +1,100 @@
 @font-face {
-    font-family: 'Whitney';
-    font-style: normal;
-    font-weight: normal;
-    src: url('/fonts/whitneybook.otf') format('opentype');
+  font-family: "Whitney";
+  font-style: normal;
+  font-weight: normal;
+  src: url("/fonts/whitneybook.otf") format("opentype");
 }
 
 /* Dark mode colors. */
 :root {
-    --sl-color-accent-low: #391b00;
-    --sl-color-accent: #9d5400;
-    --sl-color-accent-high: #f5ba8e;
-    --sl-color-white: #ffffff;
-    --sl-color-gray-1: #eeeeee;
-    --sl-color-gray-2: #c2c2c2;
-    --sl-color-gray-3: #8b8b8b;
-    --sl-color-gray-4: #585858;
-    --sl-color-gray-5: #383838;
-    --sl-color-gray-6: #272727;
-    --sl-color-gray-7: #1b1b1b;
-    --sl-color-black: #181818;
+  --sl-color-accent-low: #391b00;
+  --sl-color-accent: #9d5400;
+  --sl-color-accent-high: #f5ba8e;
+  --sl-color-white: #ffffff;
+  --sl-color-gray-1: #eeeeee;
+  --sl-color-gray-2: #c2c2c2;
+  --sl-color-gray-3: #8b8b8b;
+  --sl-color-gray-4: #585858;
+  --sl-color-gray-5: #383838;
+  --sl-color-gray-6: #272727;
+  --sl-color-gray-7: #1b1b1b;
+  --sl-color-black: #181818;
 }
 
 /* Light mode colors. */
-:root[data-theme='light'] {
-    --sl-color-accent-low: #facdac;
-    --sl-color-accent: #e09137;
-    --sl-color-accent-high: #4e2600;
-    --sl-color-white: #181818;
-    --sl-color-gray-1: #272727;
-    --sl-color-gray-2: #383838;
-    --sl-color-gray-3: #585858;
-    --sl-color-gray-4: #8b8b8b;
-    --sl-color-gray-5: #f4dcd4;
-    --sl-color-gray-6: #eeeeee;
-    --sl-color-gray-7: #ffe7d2;
-    --sl-color-black: #ffe7d2;
+:root[data-theme="light"] {
+  --sl-color-accent-low: #facdac;
+  --sl-color-accent: #e09137;
+  --sl-color-accent-high: #4e2600;
+  --sl-color-white: #181818;
+  --sl-color-gray-1: #272727;
+  --sl-color-gray-2: #383838;
+  --sl-color-gray-3: #585858;
+  --sl-color-gray-4: #8b8b8b;
+  --sl-color-gray-5: #f4dcd4;
+  --sl-color-gray-6: #eeeeee;
+  --sl-color-gray-7: #ffe7d2;
+  --sl-color-black: #ffe7d2;
 }
 
 /* Some customization */
 :root {
-    --sl-font: "SF Pro Display", Inter, -system-ui, sans-serif;
-    --__sl-font-mono: 'SF Mono', SFMono-Regular, ui-monospace,
-        'DejaVu Sans Mono', Menlo, Consolas, monospace !important;
-    --whitney: "Whitney", --__sl-font-mono;
-    tab-size: 40px;
-    scroll-behavior: smooth;
-    --global-shadow: 0 4px 8px #0000001a;
+  --sl-font: "SF Pro Display", Inter, -system-ui, sans-serif;
+  --__sl-font-mono: "SF Mono", SFMono-Regular, ui-monospace, "DejaVu Sans Mono",
+    Menlo, Consolas, monospace !important;
+  --whitney: "Whitney", --__sl-font-mono;
+  tab-size: 40px;
+  scroll-behavior: smooth;
+  --global-shadow: 0 4px 8px #0000001a;
 }
 
 /* *   Shadows   * */
 .is-terminal,
-site-search>button,
-site-search>button>kbd {
-    box-shadow: var(--global-shadow) !important;
+site-search > button,
+site-search > button > kbd {
+  box-shadow: var(--global-shadow) !important;
 }
 
 select {
-    border-radius: 0.5rem;
+  border-radius: 0.5rem;
 }
 
 [data-theme="light"] select {
-    box-shadow: var(--global-shadow) !important;
-    border: 1px solid var(--sl-color-gray-5);
+  box-shadow: var(--global-shadow) !important;
+  border: 1px solid var(--sl-color-gray-5);
 }
 
 .social-icons svg {
-    filter: drop-shadow(var(--global-shadow)) !important;
+  filter: drop-shadow(var(--global-shadow)) !important;
 }
 
 main img {
-    filter: drop-shadow(var(--global-shadow)) !important;
+  filter: drop-shadow(var(--global-shadow)) !important;
 }
 
 /* *  File tree  * */
 starlight-file-tree,
 code[dir="auto"] {
-    border: none;
-    border-radius: 0.3rem !important;
-    box-shadow: 0 0 1px var(--sl-color-gray-4) inset;
+  border: none;
+  border-radius: 0.3rem !important;
+  box-shadow: 0 0 1px var(--sl-color-gray-4) inset;
 }
 
 .tree-entry {
-    transition: 0.2s color;
-    font-weight: 500;
+  transition: 0.2s color;
+  font-weight: 500;
 }
 
 /* * Discord Slash Command style * */
 code[type="cmd"] {
-    font-family: var(--whitney);
-    /* make bold */
-    font-weight: 700;
-    border: none;
-    border-radius: 3px !important;
-    box-shadow: 0 0 1px var(--sl-color-gray-4) inset;
+  font-family: var(--whitney);
+  /* make bold */
+  font-weight: 700;
+  border: none;
+  border-radius: 3px !important;
+  box-shadow: 0 0 1px var(--sl-color-gray-4) inset;
 
-    /* Colors 
+  /* Colors
     bg when not hovered: #3b4370
     text when not hovered: #c9cdfc
 
@@ -102,25 +102,25 @@ code[type="cmd"] {
     text when hovered: #ffffff
     */
 
-    background-color: #3b4370;
-    color: #c9cdfc;
-    
-    transition: 0.1s background-color, 0.1s color;
+  background-color: #3b4370;
+  color: #c9cdfc;
 
-    /* disable font-size specified earlier */
-    font-size: unset;
-    padding: 2px;
+  transition: 0.1s background-color, 0.1s color;
 
-    /* Hover */
-    &:hover {
-        background-color: #5865f2;
-        color: #ffffff;
-    }
+  /* disable font-size specified earlier */
+  font-size: unset;
+  padding: 2px;
+
+  /* Hover */
+  &:hover {
+    background-color: #5865f2;
+    color: #ffffff;
+  }
 }
 
 /* * Indent size * */
 .indent {
-    letter-spacing: 6px !important;
+  letter-spacing: 6px !important;
 }
 
 /*
@@ -128,65 +128,73 @@ Fix scrollbar sometimes
 being shown in VS Code
 */
 .tablist-wrapper {
-    scrollbar-width: none;
+  scrollbar-width: none;
 }
 
 .tablist-wrapper::-webkit-scrollbar {
-    display: none;
+  display: none;
 }
 
 .expressive-code .frame.has-title:not(.is-terminal) {
-    border-top-left-radius: 0;
+  border-top-left-radius: 0;
 }
 
 .expressive-code .frame.has-title:not(.is-terminal) .title {
-    border-radius: 0 !important;
+  border-radius: 0 !important;
 }
 
 .expressive-code .frame.has-title:not(.is-terminal) figcaption {
-    border-top-left-radius: 0;
+  border-top-left-radius: 0;
 }
 
 .expressive-code .frame.has-title:not(.is-terminal) .title::after {
-    border-bottom: none !important;
-    border-top: 1px solid var(--ec-frm-edActTabFg) !important;
+  border-bottom: none !important;
+  border-top: 1px solid var(--ec-frm-edActTabFg) !important;
 }
 
 .inline-external-link {
-    display: inline;
+  display: inline;
 }
 
 code[dir="auto"] {
-    color: var(--sl-color-accent-high);
-    filter: brightness(1.2);
-    background-color: var(--sl-color-accent-low) !important;
-    border-radius: 0.4rem;
+  color: var(--sl-color-accent-high);
+  filter: brightness(1.2);
+  background-color: var(--sl-color-accent-low) !important;
+  border-radius: 0.4rem;
 }
 
 /* star-chart */
 .star-chart > picture > img {
-    border-radius: 0.5rem;
-    box-shadow: var(--global-shadow);
-    border: 2px solid var(--sl-color-gray-5);
-    margin-bottom: 1rem;
+  border-radius: 0.5rem;
+  box-shadow: var(--global-shadow);
+  border: 2px solid var(--sl-color-gray-5);
+  margin-bottom: 1rem;
 }
-:root[data-theme='dark'] .star-chart > picture > img {
-    content: url(https://api.star-history.com/svg?repos=DDBKit/DDBKit&type=Date&theme=dark)
+:root[data-theme="dark"] .star-chart > picture > img {
+  content: url(https://api.star-history.com/svg?repos=DDBKit/DDBKit&type=Date&theme=dark);
 }
-:root[data-theme='light'] .star-chart > picture > img {
-    content: url(https://api.star-history.com/svg?repos=DDBKit/DDBKit&type=Date)
+:root[data-theme="light"] .star-chart > picture > img {
+  content: url(https://api.star-history.com/svg?repos=DDBKit/DDBKit&type=Date);
 }
 
 /* mobile fix */
 header {
-    max-width: 100vw !important;
+  max-width: 100vw !important;
 }
 .card {
-    min-width: 1vw !important;
+  min-width: 1vw !important;
 }
 
 /* Another custom rule causes inline code in aside components to have not cool colors */
 .sl-markdown-content .starlight-aside code:not(:where(.not-content *)) {
-    background-color: color-mix(in srgb, var(--sl-color-asides-text-accent) 12%, transparent) !important;
-    color: color-mix(in srgb, var(--sl-color-asides-text-accent) 100%, transparent);
+  background-color: color-mix(
+    in srgb,
+    var(--sl-color-asides-text-accent) 12%,
+    transparent
+  ) !important;
+  color: color-mix(
+    in srgb,
+    var(--sl-color-asides-text-accent) 100%,
+    transparent
+  );
 }
