@@ -28,7 +28,6 @@ struct MyNewBot: DiscordBotApp {
     }
     
     MessageCreateEvent { msg in
-      guard let msg else { return }
       print("[\(msg.author?.username ?? "unknown")] \(msg.content)")
     }
   }
