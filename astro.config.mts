@@ -45,11 +45,7 @@ export default defineConfig({
 				{
 					label: 'Extras',
 					autogenerate: { directory: 'extras' },
-				},
-				{
-					label: 'API Reference',
-					autogenerate: { directory: 'reference' },
-				},
+				}
 			],
 		}),
 	],
