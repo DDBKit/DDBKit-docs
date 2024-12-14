@@ -1,8 +1,8 @@
 @font-face {
-  font-family: "Whitney";
+  font-family: "Open Sans";
   font-style: normal;
   font-weight: normal;
-  src: url("/fonts/whitneybook.otf") format("opentype");
+  src: url("/fonts/OpenSans.ttf");
 }
 
 /* Dark mode colors. */
@@ -42,7 +42,7 @@
   --sl-font: "SF Pro Display", Inter, -system-ui, sans-serif;
   --__sl-font-mono: "SF Mono", SFMono-Regular, ui-monospace, "DejaVu Sans Mono",
     Menlo, Consolas, monospace !important;
-  --whitney: "Whitney", --__sl-font-mono;
+  --open-sans: "Open Sans", --__sl-font-mono;
   tab-size: 40px;
   scroll-behavior: smooth;
   --global-shadow: 0 4px 8px #0000001a;
@@ -87,7 +87,7 @@ code[dir="auto"] {
 
 /* * Discord Slash Command style * */
 code[type="cmd"] {
-  font-family: var(--whitney);
+  font-family: var(--open-sans);
   /* make bold */
   font-weight: 700;
   border: none;
