@@ -1,4 +1,3 @@
 {
-  "extends": "astro/tsconfigs/strict",
-  "exclude": ["src/docs/start-here/Bot.swift"]
+  "extends": "astro/tsconfigs/strict"
 }
