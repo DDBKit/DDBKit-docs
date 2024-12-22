@@ -1,22 +1,21 @@
 {
-  "name": "docs",
-  "type": "module",
-  "version": "0.0.1",
-  "scripts": {
-    "dev": "astro dev",
-    "start": "astro dev",
-    "build": "astro check && astro build",
-    "preview": "astro preview",
-    "astro": "astro"
-  },
-  "dependencies": {
-    "@astrojs/check": "^0.9.4",
-    "@astrojs/markdown-remark": "^5.3.0",
-    "@astrojs/starlight": "^0.28.3",
-    "astro": "^4.16.6",
-    "rehype-autolink-headings": "^7.1.0",
-    "sharp": "^0.33.5",
-    "starlight-links-validator": "^0.12.3",
-    "typescript": "^5.6.3"
-  }
+	"name": "docs",
+	"type": "module",
+	"version": "0.0.1",
+	"scripts": {
+		"dev": "astro dev",
+		"start": "astro dev",
+		"build": "astro check && astro build",
+		"preview": "astro preview",
+		"astro": "astro"
+	},
+	"dependencies": {
+		"@astrojs/check": "^0.9.4",
+		"@astrojs/starlight": "^0.30.3",
+		"astro": "^5.1.0",
+		"rehype-autolink-headings": "^7.1.0",
+		"sharp": "^0.33.5",
+		"starlight-links-validator": "^0.14.0",
+		"typescript": "^5.7.2"
+	}
 }

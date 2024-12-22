@@ -6,8 +6,10 @@ sidebar:
 ---
 
 import { Aside, FileTree, Code, LinkButton } from '@astrojs/starlight/components';
-import botSwift from "/src/examples/Bot.swift?raw";
-import packageInitOutput from "/src/examples/package-init-output.sh?raw";
+import entrypointExample from "/src/snippets/swift/getting-started/entrypoint-example.swift?raw";
+import cmdGroupExample from "/src/snippets/swift/getting-started/cmdgroup-example.swift?raw";
+import packageExample from "/src/snippets/swift/getting-started/package-example.swift?raw";
+import packageInitOutput from "/src/snippets/sh/getting-started/package-init-output.sh?raw";
 
 This will guide you through the basics of setting up DDBKit and your bot. By the end,
 we should have something that can connect to Discord, and you can work from there afterward.
@@ -32,40 +34,22 @@ For easier version management, it is recommended that you use
 ## Making our directory and package
 We need to set up our bot's directory. Open a terminal and copy and
 paste the following command.
+
 ```sh
 mkdir MyNewBot && cd MyNewBot
 ```
+
 `mkdir` makes a folder, `cd` changes the current directory to that folder.
 Now that we're in the folder, we can create our `Package.swift` file.
 Copy and paste the following command.
+
 <Code class="dir-my-new-bot" lang="sh" code={packageInitOutput} />
+
 We now have a `Package.swift`. This just kind of tells Swift how to
 run our program, a bot in this case. The defaults aren't exactly
 what we need, so copy and paste the following code into `Package.swift`.
-```swift
-let package = Package(
-  name: "MyNewBot",
-  platforms: [
-    .macOS(.v13)
-  ],
-  dependencies: [
-    .package(url: "https://github.com/llsc12/DDBKit", exact: "0.2.0"), // change this to latest ver
-  ],
-  targets: [
-    // Targets are the basic building blocks of a package, defining a module or a test suite.
-    // Targets can depend on other targets in this package and products from dependencies.
-    .executableTarget(
-      name: "MyNewBot",
-      dependencies: [
-        .product(name: "DDBKit", package: "DDBKit"),
-        .product(name: "Database", package: "DDBKit"),
-        .product(name: "DDBKitUtilities", package: "DDBKit"),
-        .product(name: "DDBKitFoundation", package: "DDBKit"),
-      ]
-    ),
-  ]
-)
-```
+
+<Code code={packageExample} lang="swift" title="Package.swift" />
 
 ## Creating our entry point
 The entry point file is where the bot will be configured (token, intents, 
@@ -77,7 +61,7 @@ Rename this to your choice and copy and paste the following code into it.
 
 export const highlights = ['token: "Token Here"', 'intents: [.messageContent, .guildMessages]'];
 
-<Code code={botSwift} lang="swift" title="Bot.swift" mark={highlights} />
+<Code code={entrypointExample} lang="swift" title="Bot.swift" mark={highlights} />
 
 Change the token to your bot's token, and if any, specify 
 the intents you need in `intents` under `BotGatewayManager`.
@@ -100,6 +84,7 @@ it and disable the token if found on a public repo.
 
 ## First Command
 Let's make a simple command to test the waters. In your `Bot.swift` file, add the following code.
+
 ```swift
 Command("ping") { interaction in
   try? await interaction.respond(with: "Pong!")
@@ -115,8 +100,8 @@ Try running your bot. After a minute or two, you'll find a new <code type="cmd">
 </Aside>
 
 <Aside type="tip">
-  Don't see it? Try using the <code>guildScope(:)</code> modifier, 
-  it'll make command registration instant. Append <code>.guildScope(.local, ["123"])</code> 
+  Don't see it? Try using the `guildScope(:)` modifier, 
+  it'll make command registration instant. Append `.guildScope(.local, ["123"])`
   to your command's definition, replacing the placeholder text with your guild's real ID.
 
   Refreshing your Discord client can also load global commands.
@@ -140,21 +125,8 @@ The best way to organise your code is to extend your bot's structure with a comp
 Begin by making a new directory named `Commands and Events` or whatever suits your needs.
 
 Make a new swift file, naming it appropriately. Use the following code to get started.
-```swift
-import DDBKit
-import DDBKitUtilities
 
-extension MyNewBot {
-  var coolCommandGroup: Group {
-    Group {
-      Command("pong") { i
-        try await i.respond(with: "ping!")
-      }
-    }
-  }
-}
-```
-
+<Code code={cmdGroupExample} lang="swift" title="TestCommands.swift" />
 
 Your directory structure should now look a little like this:
 

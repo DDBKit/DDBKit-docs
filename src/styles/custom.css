@@ -158,14 +158,6 @@ code[dir="auto"] {
 	content: url(https://api.star-history.com/svg?repos=DDBKit/DDBKit&type=Date);
 }
 
-header {
-	max-width: 100vw !important;
-}
-
-.card {
-	min-width: 1vw !important;
-}
-
 .sl-markdown-content .starlight-aside code:not(:where(.not-content *)) {
 	background-color: color-mix(in srgb,
 			var(--sl-color-asides-text-accent) 12%,

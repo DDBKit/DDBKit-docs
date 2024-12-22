@@ -18,79 +18,76 @@ it in `Bot.swift` or wherever you store your token securely.
 Instructions are available per platform.
 
 <Tabs>
-  <TabItem label="macOS" icon="apple">
-    ### With Xcode (recommended)
-    Ensure the scheme is set to your bot, and press the run button. It will build for debugging unless you change the scheme settings.
-    ![Xcode screenshot highlighting run button](../../../assets/xcode-run.webp)
 
-    ### With a terminal
-    Open a terminal, `cd` to your bot project directory,
-    and paste the following command.
+<TabItem label="macOS" icon="apple">
+  ### With Xcode (recommended)
+  Ensure the scheme is set to your bot, and press the run button. It will build for debugging unless you change the scheme settings.
+  ![Xcode screenshot highlighting run button](../../../assets/xcode-run.webp)
+  ### With a terminal
+  Open a terminal, `cd` to your bot project directory,
+  and paste the following command.
+  <Code class="dir-my-new-bot" lang="sh" code="swift run" />
+</TabItem>
+
+<TabItem label="Linux and Windows" icon="linux">
+  Open a terminal, `cd` to your bot project directory,
+  and paste the following command.
+  <Code class="dir-my-new-bot" lang="sh" code="swift run" />
+</TabItem>
+
+<TabItem label="Special" icon="star">
+  If you have no other choice, you can run your bot on an iDevice.
+  It's not recommended, but it's possible. DDBKit does not regularly
+  test on iDevices, so you may run into issues. If you do, please
+  report them in a [GitHub issue](https://github.com/DDBKit/DiscordBotShell/issues).
+
+  <Tabs>
+
+  <TabItem label="Non-Jailbroken" icon="apple">
+    ### DiscordBotShell
+    You will need to migrate your codebase to work on iOS, and
+    make a new project forked from the template shell app.
+    You can find the shell app at [DiscordBotShell](https://github.com/DDBKit/DiscordBotShell).
+    Begin by navigating to the repository, then click on `Use this template`.
+    Give your repository a name, and clone it to your local machine.
+    Your project structure should look like this:
+    <FileTree>
+    - DiscordBotShell.xcodeproj
+    - DiscordBotShell
+      - Shell
+        - ...
+      - Bot
+        - BotMain.swift
+      - DiscordBotShell.entitlements
+      - Info.plist
+    - DiscordBotShellTests
+      - DiscordBotShellTests.swift
+    </FileTree>
+    Next, copy your bot code from your `Sources` folder to the `Bot` folder.
+    > You can remove `BotMain.swift` if your bot's entrypoint is in a different file.
+    <Aside type="tip">
+    If your bot has any SPM dependencies, add them to the app now.
+    Do this by right-clicking in the empty space of the file navigator, then selecting `Add package dependencies`.
+    </Aside>
+    Go to your bot's entrypoint struct, remove the `@main` attribute. DiscordBotShell will handle the entrypoint.
+    Rename the struct to `MyDiscordBot`, since that's what the shell app is looking for at launch.
+    Finally, build and run your bot on your iDevice.
+    <Aside type="note">
+    Your build may fail if you rely on macOS frameworks. You will need to switch to the iOS alternatives.
+    </Aside>
+  </TabItem>
+
+  <TabItem label="Jailbroken" icon="seti:lock">
+    ### Installing Swift
+    Open your preferred package manager, and install Swift. You should know how to do this if you're jailbroken.
+    ### Running your bot
+    Open a terminal, `cd` to your bot project directory, clone if necessary, and then run as you would on other platforms.
     <Code class="dir-my-new-bot" lang="sh" code="swift run" />
   </TabItem>
-  <TabItem label="Linux and Windows" icon="linux">
-    Open a terminal, `cd` to your bot project directory,
-    and paste the following command.
-    <Code class="dir-my-new-bot" lang="sh" code="swift run" />
-  </TabItem>
-  <TabItem label="Special" icon="star">
-    If you have no other choice, you can run your bot on an iDevice.
-    It's not recommended, but it's possible. DDBKit does not regularly
-    test on iDevices, so you may run into issues. If you do, please
-    report them in a [GitHub issue](https://github.com/DDBKit/DiscordBotShell/issues).
-    <Tabs>
-      <TabItem label="Non-Jailbroken" icon="apple">
-        ### DiscordBotShell
-        You will need to migrate your codebase to work on iOS, and
-        make a new project forked from the template shell app.
-        You can find the shell app at [DiscordBotShell](https://github.com/DDBKit/DiscordBotShell).
 
-        Begin by navigating to the repository, then click on `Use this template`.
-        Give your repository a name, and clone it to your local machine.
+  </Tabs>
+</TabItem>
 
-        Your project structure should look like this:
-        <FileTree>
-        - DiscordBotShell.xcodeproj
-        - DiscordBotShell
-          - Shell
-            - ...
-          - Bot
-            - BotMain.swift
-          - DiscordBotShell.entitlements
-          - Info.plist
-        - DiscordBotShellTests
-          - DiscordBotShellTests.swift
-        </FileTree>
-
-        Next, copy your bot code from your `Sources` folder to the `Bot` folder.
-        > You can remove `BotMain.swift` if your bot's entrypoint is in a different file.
-
-        <Aside type="tip">
-        If your bot has any SPM dependencies, add them to the app now.
-        Do this by right-clicking in the empty space of the file navigator, then selecting `Add package dependencies`.
-        </Aside>
-
-        Go to your bot's entrypoint struct, remove the `@main` attribute. DiscordBotShell will handle the entrypoint.
-        Rename the struct to `MyDiscordBot`, since that's what the shell app is looking for at launch.
-
-        Finally, build and run your bot on your iDevice.
-
-        <Aside type="note">
-        Your build may fail if you rely on macOS frameworks. You will need to switch to the iOS alternatives.
-        </Aside>
-
-      </TabItem>
-
-      <TabItem label="Jailbroken" icon="seti:lock">
-        ### Installing Swift
-        Open your preferred package manager, and install Swift. You should know how to do this if you're jailbroken.
-
-        ### Running your bot
-        Open a terminal, `cd` to your bot project directory, clone if necessary, and then run as you would on other platforms.
-        <Code class="dir-my-new-bot" lang="sh" code="swift run" />
-      </TabItem>
-    </Tabs>
-  </TabItem>
 </Tabs>
 <br />
 
@@ -99,11 +96,11 @@ Instructions are available per platform.
 ## Deployment
 
 <Aside type="danger">
-  **Remember to keep your token secure.** Do not share it with anyone.
-  If you do, you can regenerate it at the Discord developer portal.
-  Do not commit your token to a public repository accidentally.
-  Avoid storing your token in your codebase, perhaps pass it in
-  as an environment variable.
+**Remember to keep your token secure.** Do not share it with anyone.
+If you do, you can regenerate it at the Discord developer portal.
+Do not commit your token to a public repository accidentally.
+Avoid storing your token in your codebase, perhaps pass it in
+as an environment variable.
 </Aside>
 
 ### Binary (for macOS)
