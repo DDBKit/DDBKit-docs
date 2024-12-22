@@ -46,9 +46,14 @@
 }
 
 .is-terminal,
-site-search>button,
 site-search>button>kbd {
 	box-shadow: var(--global-shadow) !important;
+}
+
+@media (min-width: 50rem) {
+	site-search>button {
+		box-shadow: var(--global-shadow) !important;
+	}
 }
 
 select {
