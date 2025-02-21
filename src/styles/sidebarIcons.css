@@ -9,14 +9,14 @@
 }
 
 .sidebar-icon {
-	font-family: "fontawesome";
+	font-family: "fontawesome" !important;
 	background: none !important;
 	border: none !important;
 	padding: 0 !important;
 }
 
 .sidebar-icon-filled {
-	font-family: "fontawesome-filled";
+	font-family: "fontawesome-filled" !important;
 	background: none !important;
 	border: none !important;
 	padding: 0 !important;
