@@ -10,18 +10,18 @@
 
 .sidebar-icon {
 	font-family: "fontawesome";
-	background: none;
-	border: none;
+	background: none !important;
+	border: none !important;
 	padding: 0 !important;
 }
 
 .sidebar-icon-filled {
 	font-family: "fontawesome-filled";
-	background: none;
-	border: none;
+	background: none !important;
+	border: none !important;
 	padding: 0 !important;
 }
 
 ul.top-level .group-label {
-	direction: rtl;
+	direction: rtl !important;
 }
