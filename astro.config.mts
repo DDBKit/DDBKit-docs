@@ -43,8 +43,12 @@ export default defineConfig({
 					autogenerate: { directory: 'start-here' },
 				},
 				{
-					label: 'Extras',
-					autogenerate: { directory: 'extras' },
+					label: 'Messages',
+					autogenerate: { directory: 'messages' },
+				},
+				{
+					label: 'Commands',
+					autogenerate: { directory: 'commands' },
 				}
 			],
 		}),

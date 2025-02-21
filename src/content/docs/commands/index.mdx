@@ -1,0 +1,54 @@
+---
+title: Overview
+sidebar:
+  order: 0
+---
+<img src="/src/assets/commands.png"></img>
+
+**Commands** are actions with parameters (options) users can call to trigger something. For example, you could have a
+<code type="cmd">/ban</code> command, with an option of which user to ban.
+
+```swift
+Command("ban") { interaction in
+	guard let target = await interaction.getUser(from: "target") else { return }
+
+	try await i.client.banUserFromGuild(
+		guildId: (i.interaction.guild?.guild_id)!,
+		userId: target.id,
+		payload: .init()
+	).guardSuccess()
+
+	try await i.respond {
+		Message {
+			Text("✅ Banned user!")
+		}
+	}
+}.addingOptions {
+	UserOption(name: "target", description: "The target user to ban")
+		.required()
+}
+```
+
+## Adding Commands
+Add commands by extending your bot's type with **Groups**.
+
+```swift
+extension MyNewBot {
+	var utilityCommands: Group {
+		Command("hello") { interaction in
+			try await interaction.respond(with: "..world")
+		}
+	}
+}
+```
+
+Then, within your entrypoint file, add it to your bot's body.
+
+```swift
+struct MyNewBot: DiscordBotApp {
+...
+var body: [any BotScene] {
+	utilityCommands
+}
+...
+```
