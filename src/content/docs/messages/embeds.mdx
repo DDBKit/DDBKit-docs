@@ -1,9 +1,9 @@
 ---
 title: Embeds
 sidebar:
-  order: 3
+  order: 4
 ---
-![Alt text](/Embeds.png)
+![Banner](/Embeds.png)
 
 **Embeds** are containers for when you need to present information in an organized manner. They can have fields²,
 a footer¹, an author¹, a title¹, an accent colour, and a description.
@@ -20,3 +20,13 @@ Message {
 	}.setColor(.gray)
 }
 ```
+
+## Modifiers
+Embeds have multiple modifiers to integrate with Discord.
+
+| **Modifier**  | **Description**                          | **Parameter**                                                                 |
+|---------------|------------------------------------------|-------------------------------------------------------------------------------|
+| `setTimestamp`| Sets the timestamp for the embed message.| `Date`                                                                        |
+| `setColor`    | Colour for the embed line                | `DiscordColor?`                                                               |
+| `setURL`      | URL for the title                        | `String`                                                                      |
+| `setAuthor`   | Author name and icon                     | `String` name, an optional `String` URL, optional `Embed.DynamicURL` icon URL |

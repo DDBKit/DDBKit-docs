@@ -179,18 +179,3 @@ summary>.caret {
 li {
 	border-inline-start: none !important;
 }
-
-a[href="/start-here/"] {
-	position: absolute;
-	top: 12px;
-	left: 32px;
-	width: calc(100% - 48px);
-}
-
-ul.top-level {
-	margin-top: 32px !important;
-}
-
-ul.top-level summary.astro-t4stthtn {
-	pointer-events: none !important;
-}

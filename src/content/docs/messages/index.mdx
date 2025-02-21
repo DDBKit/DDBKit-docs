@@ -3,7 +3,7 @@ title: Overview
 sidebar:
   order: 0
 ---
-![Alt text](/Messages.png)
+![Banner](/Messages.png)
 
 **Messages** are.. messages. They can contain many things- markdown, components like buttons, reactions, embeds,
 attachments, stickers, whatever.
@@ -27,6 +27,13 @@ Message {
 		They're not fond of rules. And they have no respect for the status quo.
 		""")
 	}
-}
+}.ephemeral()
 ```
 
+## Responding to interactions
+`InteractionExtras` has multiple methods to send and edit messages.
+
+* `i.respond` - Respond to the interaction
+* `i.followup` - Follow up to the original response
+* `i.editResponse` - Edit the original response
+* `i.deleteResponse()` - Delete the original response

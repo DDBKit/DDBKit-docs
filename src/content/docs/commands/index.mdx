@@ -3,7 +3,7 @@ title: Overview
 sidebar:
   order: 0
 ---
-![Alt text](/Commands.png)
+![Banner](/Commands.png)
 
 **Commands** are actions with parameters (options) users can call to trigger something. For example, you could have a
 <code type="cmd">/ban</code> command, with an option of which user to ban.
@@ -23,10 +23,14 @@ Command("ban") { interaction in
 			Text("✅ Banned user!")
 		}
 	}
-}.addingOptions {
+}
+.description("Ban a user.")
+.addingOptions {
 	UserOption(name: "target", description: "The target user to ban")
 		.required()
 }
+.integrationType(.all, contexts: .all)
+.isUsableInDMS(true)
 ```
 
 ## Adding Commands

@@ -3,7 +3,7 @@ title: Buttons
 sidebar:
   order: 2
 ---
-![Alt text](/Buttons.png)
+![Banner](/Buttons.png)
 
 **Buttons** are clickable elements you can append to a message. In DDBKit, you put them
 inside an ActionRow inside a components disclosure. Buttons have 4 styles. Each button
@@ -26,6 +26,13 @@ Message {
 	}
 }
 ```
+
+## Modifiers
+Buttons have multiple modifiers to integrate with Discord.
+
+* `.disabled(Bool)`
+* `.style(.primary | .secondary | .success | .danger)`
+* `.id(String)`
 
 ## Responding to user input
 Similarly to other components, you simply react to clicks of a button in a

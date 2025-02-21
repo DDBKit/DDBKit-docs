@@ -1,0 +1,28 @@
+---
+title: Menus
+sidebar:
+  order: 3
+---
+TODO: Banner
+
+**Menus** (not to be confused with context menus) are expandable lists that you can append to the bottom
+of a message. There is currently 5 types of menus, channels, roles, strings, mentionables, and members.
+
+```swift
+Message {
+	MessageContent {
+		Heading("Translate")
+		Text("Select a language to translate to.")
+	}
+	MessageComponents {
+		ActionRow {
+  			StringMenu {
+				for language in languages {
+					StringMenuOption("\(language.name)")
+						.emoji(language.flag)
+				}
+			}.id("language")
+		}
+	}
+}
+```
