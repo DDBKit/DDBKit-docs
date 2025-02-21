@@ -1,0 +1,31 @@
+---
+title: Overview
+sidebar:
+  order: 0
+---
+![Banner](/Messages.png)
+
+**Messages** are.. messages. They can contain many things- markdown, components like buttons, reactions, embeds,
+attachments, stickers, whatever.
+DDBKit provides an interface for all of this and more. Messages are constructed intuitively with builders.
+
+```swift
+Message {
+	MessageContent {
+		Heading("Some information")
+		Text("This is to the:")
+
+		List {
+			Text("crazy ones")
+			Text("misfits")
+			Text("rebels")
+			Text("troublemakers")
+			Text("round pegs in the square holes")
+		}
+
+		Subtext("""
+		They're not fond of rules. And they have no respect for the status quo.
+		""")
+	}
+}.ephemeral()
+```

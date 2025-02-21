@@ -1,0 +1,19 @@
+---
+title: Options
+sidebar:
+  order: 1
+---
+![Banner](/Options.png)
+
+**Options** are the parameters to commands. If your command needs input from the user, like a string, another user,
+a role, a boolean, whatever, use options.
+
+```swift
+.addingOptions {
+	UserOption(name: "target", description: "The target user to ban")
+		.required()
+	IntOption(name: "days", description: "Days of messages to delete")
+		.range(1...2)
+	BoolOption(name: "roles", description: "Whether to give them roles back on join")
+}
+```

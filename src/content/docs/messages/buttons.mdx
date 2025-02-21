@@ -1,0 +1,28 @@
+---
+title: Buttons
+sidebar:
+  order: 2
+---
+![Banner](/Buttons.png)
+
+**Buttons** are clickable elements you can append to a message. In DDBKit, you put them
+inside an ActionRow inside a components disclosure. Buttons have 4 styles. Each button
+has a unique ID which is to identify which was clicked by the user.
+
+```swift
+Message {
+	MessageContent {
+		Text("Are you sure?")
+	}
+	MessageComponents {
+		ActionRow {
+			Button("Yes")
+				.id("yes")
+				.style(.danger)
+			Button("No")
+				.id("no")
+				.style(.primary)
+		}
+	}
+}
+```

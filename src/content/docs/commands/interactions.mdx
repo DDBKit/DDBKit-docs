@@ -1,0 +1,53 @@
+---
+title: Interactions
+sidebar:
+  order: 2
+---
+import { Aside } from '@astrojs/starlight/components';
+
+<Aside>
+This article is a **stub.**
+Please contribute on the [GitHub](https://github.com/DDBKit/DDBKit-docs/)!
+</Aside>
+
+**Interactions** are the building blocks of really any form of action with your bot.
+They hold the information of what action was exactly performed on what, when, and where.
+Most closures in DDBKit will provide you an InteractionExtras object to interpret and take
+information from, such as input to a command's options.
+
+### Responding to commands
+You respond to command interactions in the closure of a command.
+
+```swift
+Command("ban") { interaction in
+	guard let target = await interaction.getUser(from: "target") else { return }
+
+	try await interaction.client.banUserFromGuild(
+		guildId: (interaction.interaction.guild?.guild_id)!,
+		userId: target.id,
+		payload: .init()
+	).guardSuccess()
+
+	try await interaction.respond {
+		Message {
+			Text("✅ Banned user!")
+		}
+	}
+}
+```
+
+### Responding to components
+You react to clicks of a button, or selecting of items in a menu, in a
+component closure of a command.
+
+```swift
+.component(on: "ping") { interaction in
+	try? await interaction.followup {
+		Message {
+			Text("Pong!")
+		}
+	}
+}
+```
+
+### Responding to modals

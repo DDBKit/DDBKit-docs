@@ -19,7 +19,7 @@ export default defineConfig({
 				src: "./src/assets/ddbkit-icon.webp"
 			},
 			social: {
-				github: 'https://github.com/DDBKit/DDBKit',
+				github: 'https://github.com/DDBKit/',
 				discord: 'https://discord.gg/CkB2QzVsCz'
 			},
 			editLink: {
@@ -32,6 +32,7 @@ export default defineConfig({
 				'./src/styles/terminals.css',
 				'./src/styles/landing.css',
 				'./src/styles/discord.css',
+				'./src/styles/sidebarIcons.css',
 			],
 			expressiveCode: {
 				styleOverrides: { borderRadius: '0.5rem' },
@@ -39,13 +40,59 @@ export default defineConfig({
 			},
 			sidebar: [
 				{
-					label: 'Start Here',
+					label: 'Introduction',
 					autogenerate: { directory: 'start-here' },
+					badge: {
+						text: "",
+						class: "sidebar-icon-filled"
+					}
+				},
+
+				{ label: '', items: [] },
+
+				{
+					label: 'Messages',
+					autogenerate: { directory: 'messages' },
+					badge: {
+						text: "",
+						class: "sidebar-icon-filled"
+					}
 				},
 				{
-					label: 'Extras',
-					autogenerate: { directory: 'extras' },
-				}
+					label: 'Commands',
+					autogenerate: { directory: 'commands' },
+					badge: {
+						text: "",
+						class: "sidebar-icon-filled"
+					}
+				},
+				{
+					label: 'Modals',
+					autogenerate: { directory: 'modals' },
+					badge: {
+						text: "",
+						class: "sidebar-icon"
+					}
+				},
+				{
+					label: 'Context menus',
+					autogenerate: { directory: 'context-menus' },
+					badge: {
+						text: "",
+						class: "sidebar-icon-filled"
+					}
+				},
+				
+				{ label: '', items: [] },
+
+				{
+					label: 'Database',
+					autogenerate: { directory: 'database' },
+					badge: {
+						text: "",
+						class: "sidebar-icon-filled"
+					}
+				},
 			],
 		}),
 	],

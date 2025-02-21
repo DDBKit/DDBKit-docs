@@ -1,0 +1,19 @@
+---
+title: Embeds
+sidebar:
+  order: 4
+---
+![Banner](/Embeds.png)
+
+**Embeds** are containers for when you need to present information in an organized manner. They can have fields,
+a footer, an author, a title, an accent colour, a timestamp, and a description.
+
+```swift
+Message {
+	MessageEmbed {
+		Title("True or False")
+		Description("The Eiffel Tower can shrink in winter due to the cold.")
+		Image(.exact("https://upload.wikimedia.org/wikipedia/commons/8/85/Tour_Eiffel_Wikimedia_Commons_%28cropped%29.jpg"))
+	}.setColor(.gray)
+}
+```

@@ -171,3 +171,11 @@ code[dir="auto"] {
 			var(--sl-color-asides-text-accent) 100%,
 			transparent);
 }
+
+summary>.caret {
+	display: none;
+}
+
+li {
+	border-inline-start: none !important;
+}

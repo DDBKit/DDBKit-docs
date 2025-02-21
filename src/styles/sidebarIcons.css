@@ -1,0 +1,27 @@
+@font-face {
+	font-family: "fontawesome";
+	src: url("/fonts/fa-regular-400.woff2");
+}
+
+@font-face {
+	font-family: "fontawesome-filled";
+	src: url("/fonts/fa-solid-900.woff2");
+}
+
+.sidebar-icon {
+	font-family: "fontawesome" !important;
+	background: none !important;
+	border: none !important;
+	padding: 0 !important;
+}
+
+.sidebar-icon-filled {
+	font-family: "fontawesome-filled" !important;
+	background: none !important;
+	border: none !important;
+	padding: 0 !important;
+}
+
+ul.top-level .group-label {
+	direction: rtl !important;
+}
