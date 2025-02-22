@@ -26,25 +26,3 @@ Message {
 	}
 }
 ```
-
-## Modifiers
-Buttons have multiple modifiers to integrate with Discord.
-
-* `.disabled(Bool)`
-* `.style(.primary | .secondary | .success | .danger)`
-* `.id(String)`
-
-## Responding to user input
-Similarly to other components, you simply react to clicks of a button in a
-component closure of a command. You can do whatever you'd like here, whether
-that be editing the original response, or following up with another message.
-
-```swift
-.component(on: "yes") { interaction in
-	try? await interaction.followup {
-		Message {
-			Text("Confirmed")
-		}
-	}
-}
-```

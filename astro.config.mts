@@ -47,6 +47,9 @@ export default defineConfig({
 						class: "sidebar-icon-filled"
 					}
 				},
+
+				{ label: '', items: [] },
+
 				{
 					label: 'Messages',
 					autogenerate: { directory: 'messages' },
@@ -78,7 +81,18 @@ export default defineConfig({
 						text: "",
 						class: "sidebar-icon-filled"
 					}
-				}
+				},
+				
+				{ label: '', items: [] },
+
+				{
+					label: 'Database',
+					autogenerate: { directory: 'database' },
+					badge: {
+						text: "",
+						class: "sidebar-icon-filled"
+					}
+				},
 			],
 		}),
 	],

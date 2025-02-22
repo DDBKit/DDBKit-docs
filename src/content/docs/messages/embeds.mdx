@@ -5,11 +5,8 @@ sidebar:
 ---
 ![Banner](/Embeds.png)
 
-**Embeds** are containers for when you need to present information in an organized manner. They can have fields²,
-a footer¹, an author¹, a title¹, an accent colour, and a description.
-
-* ¹ doesn't support markdown
-* ² supports markdown in lower text only
+**Embeds** are containers for when you need to present information in an organized manner. They can have fields,
+a footer, an author, a title, an accent colour, a timestamp, and a description.
 
 ```swift
 Message {
@@ -20,13 +17,3 @@ Message {
 	}.setColor(.gray)
 }
 ```
-
-## Modifiers
-Embeds have multiple modifiers to integrate with Discord.
-
-| **Modifier**  | **Description**                          | **Parameter**                                                                 |
-|---------------|------------------------------------------|-------------------------------------------------------------------------------|
-| `setTimestamp`| Sets the timestamp for the embed message.| `Date`                                                                        |
-| `setColor`    | Colour for the embed line                | `DiscordColor?`                                                               |
-| `setURL`      | URL for the title                        | `String`                                                                      |
-| `setAuthor`   | Author name and icon                     | `String` name, an optional `String` URL, optional `Embed.DynamicURL` icon URL |

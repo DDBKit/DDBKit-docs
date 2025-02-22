@@ -17,28 +17,3 @@ a role, a boolean, whatever, use options.
 	BoolOption(name: "roles", description: "Whether to give them roles back on join")
 }
 ```
-
-You access and get options from an `InteractionExtras` object, which is given in a command's closure, or component closure.
-
-```swift
-...
-guard let target = await interaction.getUser(from: "target") else { return }
-...
-```
-
-### Types of options & modifiers
-Base option types are excluded
-
-| **StringOption**                   | **IntOption**                      | **BoolOption**   | **UserOption**   | **ChannelOption**| **RoleOption**   |
-|------------------------------------|------------------------------------|------------------|------------------|------------------|------------------|
-| `.autocompletions` (async callback)| `.autocompletions` (async callback)|                  |                  |                  |                  |
-| `.choices` (array of choices)      | `.choices` (array of choices)      |                  |                  |                  |                  |
-| `.length(1...10)`                  | `.range(1...100)`                  | `.length(1...10)`| `.length(1...10)`| `.length(1...10)`| `.length(1...10)`|
-| `.required(true)`                  | `.required(true)`                  | `.required(true)`| `.required(true)`| `.required(true)`| `.required(true)`|
-
-| **DoubleOption**                   | **AttachmentOption**|
-|------------------------------------|---------------------|
-| `.autocompletions` (async callback)| `.required(true)`   |
-| `.choices` (array of choices)      |                     | 
-| `.range(1...100)`                  |                     |
-| `.required(true)`                  |                     |

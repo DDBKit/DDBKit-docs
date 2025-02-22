@@ -12,13 +12,13 @@ sidebar:
 Command("ban") { interaction in
 	guard let target = await interaction.getUser(from: "target") else { return }
 
-	try await i.client.banUserFromGuild(
-		guildId: (i.interaction.guild?.guild_id)!,
+	try await interaction.client.banUserFromGuild(
+		guildId: (interaction.interaction.guild?.guild_id)!,
 		userId: target.id,
 		payload: .init()
 	).guardSuccess()
 
-	try await i.respond {
+	try await interaction.respond {
 		Message {
 			Text("✅ Banned user!")
 		}
