@@ -1,0 +1,199 @@
+---
+title: Handling Errors
+description: Throwing and catching errors at scope
+sidebar:
+  order: 6
+---
+import { Aside, Code } from '@astrojs/starlight/components';
+
+So far, we've been implicitly ignoring errors. We've used `try?` to suppress errors and `try!` to crash the program if an error occurs. But this means we never handle errors gracefully. In this section, we'll learn how to throw and catch errors with DDBKit's error handling system.
+
+This is preferred over the usual `do {} catch {_ in}` like we're used to since we can avoid nesting and keep our code clean.
+## Throwing Errors
+Change any instances of `try?` to `try` and `try!` to `try`. This will make the function throw an error if it encounters one. You can throw errors with the `throw` keyword. Errors thrown from commands will propagate up to the command handler.
+
+```swift
+Command("failable") { i in
+  struct Egg: Decodable {
+    var gm: String
+  }
+  let data = "{}".data(using: .utf8)!
+  _ = try JSONDecoder().decode(Egg.self, from: data)
+}
+```
+Running your bot now will result in the following:
+<Code class="dir-my-new-bot" lang="sh" code="2024-10-25T11:51:18+0100 notice GatewayManager : connectionId=1 gateway-id=1 [DiscordGateway] Received ready notice. The connection is fully established
+[Uncaught Error] This command failed oh no who could've guessed
+
+Interaction( ... )
+" />
+
+Throwing errors from a command will log an uncaught error, caught by the error handler. It only does this if you don't provide any way to avoid propagating the error to this level. This is useful for debugging, but you should probably handle errors more gracefully in production.
+
+## Catching Errors
+DDBKit provides two ways of catching errors to best suit your needs. You can catch errors at the command scope or at the  global scope.
+
+### Global Scope
+The `DiscordBotApp` protocol defines a method called `boot() async throws`. This method is called before bot is started. This is provided as a way to register extensions and other setup code. You can use this method to catch errors at the global scope.
+
+```swift
+@main
+struct MyNewBot: DiscordBotApp {
+  init() async {
+    // ...
+  }
+
+  func boot() async throws {
+    AssignGlobalCatch { error, i in
+      try? await i.respond {
+        Message {
+          MessageEmbed {
+            Title("Your command ran into a problem")
+            Description {
+              Text(error.localizedDescription)
+            }
+          }
+          .setColor(.red)
+        }
+      }
+    }
+  }
+
+  var body: [any BotScene] {
+    Command("failable") { i in
+      struct Egg: Decodable {
+        var gm: String
+      }
+      let data = "{}".data(using: .utf8)!
+      _ = try JSONDecoder().decode(Egg.self, from: data)
+    }
+  }
+
+  var bot: Bot
+  var cache: Cache
+}
+```
+Running the new <code type="cmd">/failable</code> command will result in the following:
+
+<div class="discord-messages">
+  <div class="discord-message">
+      <div class="discord-interaction">
+        <img class="discord-interaction-author-avatar" src="https://cdn.discordapp.com/embed/avatars/0.png" alt=""/>
+        <span class="discord-author-info discord-interaction-author-info">
+          <span class="discord-author-username">User</span>
+        </span>
+        <span class="discord-interaction-command"> used <span class="discord-interaction-command-name"> /failable</span></span>
+      </div>
+      <div class="discord-message-content">
+        <div class="discord-author-avatar">
+          <img src="https://cdn.discordapp.com/embed/avatars/2.png" alt=""/>
+        </div>
+        <div class="discord-message-body">
+          <div>
+            <span class="discord-author-info">
+              <span class="discord-author-username">MyNewBot</span>
+              <span class="discord-author-bot-tag"> Bot </span>
+            </span>
+            <span class="discord-message-timestamp">10/23/2024</span>
+          </div>
+
+          <div class="discord-embed">
+          <div class="discord-embed-left-border" style="background-color: rgb(255,59,48);"></div>
+          <div class="discord-embed-container">
+            <div class="discord-embed-content">
+              <div>
+                <div class="discord-embed-title">Your command ran into a problem</div>
+                <div class="discord-embed-description">The data couldn’t be read because it is missing.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+### Command Scope
+You can also catch errors at the command scope. This is useful if you want to handle errors differently for different commands.
+
+```swift
+Command("failable") { i, _, _ in
+  struct Egg: Decodable {
+    var gm: String
+  }
+  let data = "{}".data(using: .utf8)!
+  _ = try JSONDecoder().decode(Egg.self, from: data)
+}
+.catch { error, interaction
+  try? await interaction.respond {
+    Message {
+      MessageEmbed {
+        Title("Failable failed, who could've guessed")
+        Description {
+          Text(error.localizedDescription)
+        }
+      }
+      .setColor(.red)
+    }
+  }
+}
+```
+
+I feel this is relatively self-explanatory. The `catch` closure is called when an error is thrown from the command.
+
+<div class="discord-messages">
+  <div class="discord-message">
+    <div class="discord-interaction">
+      <img class="discord-interaction-author-avatar" src="https://cdn.discordapp.com/embed/avatars/0.png" alt=""/>
+      <span class="discord-author-info discord-interaction-author-info">
+        <span class="discord-author-username">User</span>
+      </span>
+      <span class="discord-interaction-command"> used <span class="discord-interaction-command-name"> /failable</span></span>
+    </div>
+    <div class="discord-message-content">
+      <div class="discord-author-avatar">
+        <img src="https://cdn.discordapp.com/embed/avatars/2.png" alt=""/>
+      </div>
+      <div class="discord-message-body">
+        <div>
+          <span class="discord-author-info">
+            <span class="discord-author-username">MyNewBot</span>
+            <span class="discord-author-bot-tag"> Bot </span>
+          </span>
+          <span class="discord-message-timestamp">10/23/2024</span>
+        </div>
+        <div class="discord-embed">
+          <div class="discord-embed-left-border" style="background-color: rgb(255,59,48);"></div>
+          <div class="discord-embed-container">
+            <div class="discord-embed-content">
+              <div>
+                <div class="discord-embed-title">Failable failed, who could've guessed</div>
+                <div class="discord-embed-description">The data couldn’t be read because it is missing.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+### Propagating errors
+You can propagate errors from command scope to global scope by rethrowing the error. 
+This is useful if you want to handle errors differently at the global scope after some implicit work or just transforming the error at command scope
+
+```swift
+Command("failable") { i in
+  struct Egg: Decodable {
+    var gm: String
+  }
+  let data = "{}".data(using: .utf8)!
+  _ = try JSONDecoder().decode(Egg.self, from: data)
+}
+.catch { error, _ in
+  // ...
+  let transformedError = /* new error or something (maybe more user friendly? who knows) */
+  throw transformedError
+  // this will now be caught by global scope (if any)
+}
+```

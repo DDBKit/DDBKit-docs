@@ -1,36 +1,144 @@
 ---
-title: Getting started with the template
+title: Getting started
 description: Getting started with DDBKit!
 sidebar:
   order: 2
 ---
 
+import { Aside, FileTree, Code, LinkButton } from '@astrojs/starlight/components';
+import entrypointExample from "/src/snippets/swift/getting-started/entrypoint-example.swift?raw";
+import cmdGroupExample from "/src/snippets/swift/getting-started/cmdgroup-example.swift?raw";
+import packageExample from "/src/snippets/swift/getting-started/package-example.swift?raw";
+import packageInitOutput from "/src/snippets/sh/getting-started/package-init-output.sh?raw";
+
+This will guide you through the basics of setting up DDBKit and your bot. By the end,
+we should have something that can connect to Discord, and you can work from there afterward.
+
 ## Prerequisites
-This guide assumes you have decent understanding of the Swift language and something to compile a Swift project on.
+* A decent understanding of the Swift programming language.
+* Something that can compile Swift code. macOS and Linux are preferred.
+Get Swift [here](https://www.swift.org/install/).
+<Aside type="tip">
+A great place to start learning Swift is the 
+[Swift book](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/).<br />
+You can also use the [Swift Guided Tour](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/guidedtour)
+for a quick introduction to the language.
+</Aside>
+<Aside type="note">
+On macOS, using Xcode for DDBKit development is recommended.<br />
+It offers Swift-oriented features to make editing code easier.<br />
+For easier version management, it is recommended that you use 
+[Xcodes](https://github.com/XcodesOrg/XcodesApp/releases/latest).
+</Aside>
 
-You also need a Discord bot. [Create one here.](https://discord.com/developers/applications?new_application=true)
+## Making our directory and package
+We need to set up our bot's directory. Open a terminal and copy and
+paste the following command.
 
-## Getting the template
-Download/clone the template [here](https://github.com/DDBKit/DDBKit-Template/). However you set it up is your
-choice and out of scope for this guide. Typically, you should just download & unzip this repository, and open
-it in Xcode.
-
-## Filling out the token
-Take a look at `Sources/Bot.swift`. Notice line 17:
-
-```swift
-token: [Token Goes Here],
+```sh
+mkdir MyNewBot && cd MyNewBot
 ```
 
-You should replace this with your bot's token. This can be found in [the portal](https://discord.com/developers/applications),
-under your app, **Bot** > **Reset Token**. **Never share this.**
+`mkdir` makes a folder, `cd` changes the current directory to that folder.
+Now that we're in the folder, we can create our `Package.swift` file.
+Copy and paste the following command.
 
-Once you've done this, the bot is ready to run. Run it however you'd like, whether that be the run button
-in Xcode, or using something like Docker.
+<Code class="dir-my-new-bot" lang="sh" code={packageInitOutput} />
 
-## What next?
-Just experiment! Make something. Take a look at how the template works and what else you can do with it.
+We now have a `Package.swift`. This just kind of tells Swift how to
+run our program, a bot in this case. The defaults aren't exactly
+what we need, so copy and paste the following code into `Package.swift`.
 
-If you want to make more commands, messages, or whatever, read on.
-<br></br>
-<sub><sup>[**Manually create a bot (legacy documentation)**](https://551ef4ba.ddbkit-docs.pages.dev/start-here/getting-started/)</sup></sub>
+<Code code={packageExample} lang="swift" title="Package.swift" />
+
+## Creating our entry point
+The entry point file is where the bot will be configured (token, intents, 
+etc.) and what to do when the bot is ready. You can name this anything
+but `main.swift`. We will just go with `Bot.swift` here.
+
+The command you ran earlier has already made a `Sources/main.swift` file.
+Rename this to your choice and copy and paste the following code into it.
+
+export const highlights = ['token: "Token Here"', 'intents: [.messageContent, .guildMessages]'];
+
+<Code code={entrypointExample} lang="swift" title="Bot.swift" mark={highlights} />
+
+Change the token to your bot's token, and if any, specify 
+the intents you need in `intents` under `BotGatewayManager`.
+
+<Aside type="note">
+You can invite your bot, change your token, and manage intents at
+the [Discord developer portal](https://discord.com/developers/applications).
+</Aside>
+
+<Aside type="danger">
+**Do not share your token.** This is what you use to
+login to your bot. What your bot does is your responsibility.
+If anyone gets access to your bot, they can spam the API,
+abuse permissions (ban people) and more.
+
+**In the case that you have committed your token or shared it**,
+reset your token immediately. GitHub will tell Discord to reset
+it and disable the token if found on a public repo.
+</Aside>
+
+## First Command
+Let's make a simple command to test the waters. In your `Bot.swift` file, add the following code.
+
+```swift
+Command("ping") { interaction in
+  try? await interaction.respond(with: "Pong!")
+}
+```
+Don't yet concern yourself with `try?`, it's not too important right now.
+
+Try running your bot. After a minute or two, you'll find a new <code type="cmd">/ping</code> command available for use.
+
+<Aside type="note">
+  If you don't know how to run your bot, check the [Running your bot](/start-here/running-your-bot) page.<br />
+  It's already the next page so you could skip running your bot now and continue reading.
+</Aside>
+
+<Aside type="tip">
+  Don't see it? Try using the `guildScope(:)` modifier, 
+  it'll make command registration instant. Append `.guildScope(.local, ["123"])`
+  to your command's definition, replacing the placeholder text with your guild's real ID.
+
+  Refreshing your Discord client can also load global commands.
+</Aside>
+
+## Command Modifiers
+
+You'll find that `Command` types feature many modifiers, such as the one you may have already discovered above. DDBKit implements these modifiers that configure your command's options before they're registered after body evaluation. 
+
+These modifiers help describe and configure your commands, such as default permission requirements, DM usability, integration contexts and more!
+
+Expanding on this, DDBKit includes extra utilities as another module you can import as `DDBKitUtilities`, which contains builders for messages and other composable objects, and modifiers that offer extra client side functionality. 
+
+
+<Aside type="tip">
+  You can find more information on DDBKitFoundation in [this page](/extras).
+</Aside>
+
+## Organisation
+The best way to organise your code is to extend your bot's structure with a computed variable for groups of commands/events.
+Begin by making a new directory named `Commands and Events` or whatever suits your needs.
+
+Make a new swift file, naming it appropriately. Use the following code to get started.
+
+<Code code={cmdGroupExample} lang="swift" title="TestCommands.swift" />
+
+Your directory structure should now look a little like this:
+
+<FileTree>
+- Package.swift
+- Sources
+  - Commands and Events
+    - TestCommands.swift
+    - ...
+  - Bot.swift
+</FileTree>
+
+As such, you can continue organising your code in a similar fashion or in any way you desire.
+
+Your bot is now ready to build and run, good job 🎉

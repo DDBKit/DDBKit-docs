@@ -1,26 +1,36 @@
 ---
-title: Overview
+title: About DDBKit
 sidebar:
-  order: 0
+  order: 1
 ---
 
 import { Aside, LinkButton } from '@astrojs/starlight/components';
 
-DDBKit (**D**eclarative **D**iscord **B**ot Kit) is an abstraction for [DiscordBM](https://github.com/DiscordBM/DiscordBM).
-It allows you to build bots in a new, more simple, and friendly way. Your project is structured similarly to that of a SwiftUI
-project, the same goes for the code. Things like commands and messages or embeds are laid out in a more understandable way,
-and you can easily iterate and customize with a human-friendly, declarative format. DDBKit and your bot use Swift to harness
-the power of Swift's [result builder](https://github.com/swiftlang/swift-evolution/blob/main/proposals/0289-result-builders.md) functionality.
-
-```swift
-Message {
-  MessageContent {
-    Text("Hello, world!")
-  }
-}
-```
+DDBKit, short for Declarative Discord Bot Kit, simplifies the process of 
+building Discord bots by abstracting Discord's API. Inspired by SwiftUI, 
+DDBKit allows you to declare commands and apply modifiers to create bot 
+functionality with ease. It operates similarly to 
+[Commando](https://github.com/discordjs/commando) and is built on top 
+of [DiscordBM](https://github.com/DiscordBM/DiscordBM).
 
 This section covers the setup and configuration of your bot.
 By the end, you will have a fully configured bot capable of 
 connecting to Discord and supporting slash commands, along 
 with additional functionality.
+
+P.S. If you love DDBKit, consider [starring the repo](https://github.com/DDBKit/DDBKit)!
+<a href="https://star-history.com/#DDBKit/DDBKit&Date" class="star-chart">
+  <picture>
+  {/* the sources only apply when auto theme used */}
+    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=DDBKit/DDBKit&type=Date&theme=dark" />
+    <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=DDBKit/DDBKit&type=Date" />
+    <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=DDBKit/DDBKit&type=Date" />
+  </picture>
+</a>
+
+<Aside type="tip" title="Quick start">
+Take a look at the [DDBKit template](https://github.com/DDBKit/DDBKit-Template).
+</Aside>
+
+
+Thank you to [Tiramisu](https://tiramisu.gay) for the amazing logo, and for making this site!
