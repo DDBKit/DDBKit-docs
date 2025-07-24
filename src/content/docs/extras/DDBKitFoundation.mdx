@@ -31,7 +31,7 @@ struct MyNewBot: DiscordBotApp {
     // ...
   }
 
-  func boot() async throws {
+  func onBoot() async throws {
     // we pass in the configuration template type to the configurator instance
     let configExtension = Configurator(guildConfiguation: GuildConfigTemplate.self)
     RegisterExtension(configExtension)

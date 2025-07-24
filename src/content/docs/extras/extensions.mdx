@@ -46,7 +46,7 @@ struct MyNewBot: DiscordBotApp {
     // ...
   }
 
-  func boot() async throws {
+  func onBoot() async throws {
     // Register the extension
     RegisterExtension(MyExtension())
   }
