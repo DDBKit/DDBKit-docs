@@ -34,7 +34,7 @@ Throwing errors from a command will log an uncaught error, caught by the error h
 DDBKit provides two ways of catching errors to best suit your needs. You can catch errors at the command scope or at the  global scope.
 
 ### Global Scope
-The `DiscordBotApp` protocol defines a method called `boot() async throws`. This method is called before bot is started. This is provided as a way to register extensions and other setup code. You can use this method to catch errors at the global scope.
+The `DiscordBotApp` protocol defines a method called `onBoot() async throws`. This method is called before bot is started. This is provided as a way to register extensions and other setup code. You can use this method to catch errors at the global scope.
 
 ```swift
 @main
@@ -43,7 +43,7 @@ struct MyNewBot: DiscordBotApp {
     // ...
   }
 
-  func boot() async throws {
+  func onBoot() async throws {
     AssignGlobalCatch { error, i in
       try? await i.respond {
         Message {
