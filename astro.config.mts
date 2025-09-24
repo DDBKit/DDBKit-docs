@@ -18,10 +18,18 @@ export default defineConfig({
 			logo: {
 				src: "./src/assets/ddbkit-icon.webp"
 			},
-			social: {
-				github: 'https://github.com/DDBKit/DDBKit',
-				discord: 'https://discord.gg/CkB2QzVsCz'
-			},
+			social: [
+				{
+					icon: 'github',
+					label: 'GitHub',
+					href: 'https://github.com/DDBKit/DDBKit'
+				},
+				{
+					icon: 'discord',
+					label: 'Discord',
+					href: 'https://discord.gg/CkB2QzVsCz'
+				},
+			],
 			editLink: {
                 baseUrl: "https://github.com/DDBKit/DDBKit-docs/tree/master/"
             },
