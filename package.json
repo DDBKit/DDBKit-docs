@@ -13,6 +13,6 @@
 		"astro": "^5.14.1",
 		"rehype-autolink-headings": "^7.1.0",
 		"sharp": "^0.34.4",
-		"starlight-links-validator": "^0.18.0"
+		"starlight-links-validator": "^0.19.1"
 	}
 }
