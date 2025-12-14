@@ -1,0 +1,69 @@
+---
+title: Markdown
+---
+## Example
+```swift
+Message {
+	Text("gm chat")
+		.bold()
+		.italic()
+	Heading("gm")
+	Subtext("gm")
+	Link("https://www.youtube.com/watch?v=dQw4w9WgXcQ")
+		.disableEmbedding()
+		.maskedWith({ Text("something") })
+}
+```
+
+## Components
+
+### Text
+```swift
+Text("foobar")
+	.bold()
+	.strikethrough()
+	.italic()
+```
+### Subtext
+```swift
+Subtext("foobar")
+```
+### Link
+```swift
+Link("https://ddbkit.llsc12.me/")
+	.disableEmbedding()
+	.maskedWith({ Text("DDBKit docs") })
+```
+### Heading
+```swift
+Heading("foobar").large()
+Heading("foobar").medium()
+Heading("foobar").small()
+```
+### Blockquote
+```swift
+Blockquote {
+	Heading("foobar")
+	Text("foobar")
+	Subtext("foobar")
+}
+```
+### Code
+```swift
+Code("foobar")
+
+Codeblock("""if foobar {
+	return
+}""", lang: "swift")
+```
+### Lists
+```swift
+OrderedList {
+	Text("foobar")
+	Text("foobar")
+}
+UnorderedList {
+	Text("foobar")
+	Text("foobar")
+}
+```

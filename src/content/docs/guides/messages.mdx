@@ -1,0 +1,33 @@
+---
+title: "Building messages"
+---
+
+DDBKit also offers abstracted message builders.
+These are pretty self explanatory:
+
+```swift
+try await i.respond {
+	Message {
+		MessageContent {
+			Text("gm chat")
+				.bold()
+				.italic()
+			Heading("gm")
+			Subtext("gm")
+			Link("https://www.youtube.com/watch?v=dQw4w9WgXcQ")
+				.disableEmbedding()
+				.maskedWith({ Text("something") })
+		}
+		MessageEmbed {
+			Title("gm chat")
+			Description("gm")
+			for _ in 1...4 {
+				Field("gm", "gm").inline()
+			}
+		}.setAuthor("gm")
+	}
+}
+```
+
+Take a look at the references for a list of
+all components and features.

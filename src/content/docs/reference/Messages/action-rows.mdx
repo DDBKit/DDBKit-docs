@@ -1,0 +1,53 @@
+---
+title: Action rows
+---
+
+## Example
+```swift
+Command("foobar") { i in
+	i.respond {
+		Message {
+			MessageComponents {
+				ActionRow {
+					Button("Confirm")
+						.id("confirm")
+						.style(.success)
+					Button("Cancel")
+						.id("cancel")
+						.style(.danger)
+					LinkButton(
+						"foobar",
+						url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+					)
+				}
+			}
+		}
+	}
+}
+.component(on: "confirm") { i in
+	try await i.respond(with: "You clicked confirm.")
+}
+.component(on: "cancel") { i in
+	try await i.respond(with: "You clicked cancel.")
+}
+```
+
+## Components
+### Buttons
+```swift
+Button("Confirm")
+	.id("confirm")
+	.style(.success)
+Button("Cancel")
+	.id("cancel")
+	.style(.danger)
+```
+### Link buttons
+```swift
+LinkButton(
+	"foobar",
+	url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+)
+```
+### Menus
+TODO

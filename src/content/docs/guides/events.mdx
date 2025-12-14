@@ -1,0 +1,32 @@
+---
+title: Handling events
+---
+
+Discord signals events when certain things happen,
+such as when your bot is ready to go, or when a
+message is created. These are specified in your
+bot's body in DDBKit:
+
+```swift
+// Bot.swift
+@main
+struct App: DiscordBotApp {
+	// ...
+	var body: [any BotScene] {
+		ReadyEvent { ready in
+			print("hi mom")
+		}
+		MessageCreateEvent { msg in
+			print("[\(msg.author?.username ?? "unknown")] \(msg.content)")
+		}
+		GuildMemberUpdateEvent { member in
+			print("\(member.user.username) changed")
+		}
+	}
+	// ...
+}
+```
+
+DDBKit implements every event, and there are way
+too many to list. The good news is, the API for
+each one is almost identical.

@@ -1,0 +1,138 @@
+---
+title: Slash commands
+---
+
+import { FileTree } from '@astrojs/starlight/components';
+
+[extensions]: https://docs.swift.org/swift-book/documentation/the-swift-programming-language/extensions/
+
+Slash commands are interactions users can invoke that
+hold options and parameters.
+
+## Preparing
+Make some sort of directory for commands. One way of
+structuring this is to make a file for each category
+of command:
+
+<FileTree>
+	- bot
+		- Package.swift
+		- Sources
+			- Bot
+				- Commands
+					- Fun.swift
+					- Info.swift
+					- Utility.swift
+				- Bot.swift
+</FileTree>
+
+For this guide, we will have a Fun group with a HelloWorld
+command.
+
+## Making a command group
+[Extend][extensions] the `Bot` struct and
+add a variable holding a `Group`:
+
+```swift
+// Commands/Fun.swift
+import DDBKit
+import DDBKitUtilities
+
+extension Bot {
+	var funCommands: Group {
+		Group {
+			// feeling empty in here..
+		}
+	}
+}
+```
+
+Add it to `Bot`'s body:
+
+```diff lang="swift"
+// Bot.swift
+var body: [any BotScene] {
+	ReadyEvent { ready in
+		print("hi mom")
+	}
+	MessageCreateEvent { msg in
+		print("[\(msg.author?.username ?? "unknown")] \(msg.content)")
+	}
++	funCommands
+}
+```
+
+Put a command inside of that group:
+
+```diff lang="swift"
+Group {
++	Command("helloworld") { interaction in
++		
++	}
++	// Make this command available everywhere.
++	.integrationType(.all, contexts: .all)
++	.description("helloooo world")
+}
+```
+
+And implement your command however you'd like:
+
+```diff lang="swift"
+Command("helloworld") { interaction in
++	try await interaction.respond(with: "Hello, world!")
+}
+```
+
+## Specifying options
+Use `.addingOptions` on `Command` and specify whatever
+you'd like. For example, a /ban command which takes
+in a `user` option:
+
+```swift "i.getUser(from: "user")" /UserOption.*/
+Command("ban") { i in
+	do {
+		try await i.client.banUserFromGuild(
+			guildId: i.interaction.guild_id!,
+			userId: i.getUser(from: "user")!.id,
+			payload: .init()
+		).guardSuccess()
+		try await i.respond(with: "Bam!")
+	} catch {
+		try await i.respond(with: "Couldn't bam!")
+	}
+}
+.addingOptions {
+	UserOption(name: "user", description: "User to bam")
+		.required() // shorthand for .required(true)
+}
+```
+
+## Subcommands
+You can optionally label sets of commands using
+subcommands. This is useful if you have multiple
+commands which can be categorized. For instance,
+a /ban and /kick command could fall under a
+/moderation subcommand, and be used like
+`/moderation ban` and `/moderation kick`.
+
+Subcommands can also be nested into SubcommandGroups
+for a total of 3 labels. This example would produce
+a `/data merge entity` command:
+
+```swift
+SubcommandBase("data") {
+	SubcommandGroup("merge") {
+		Subcommand("entity") { i in
+			try await i.respond(
+				with: "Modified data of \(i.getString(from: "entity")!)"
+			)
+		}
+		.addingOptions {
+			StringOption(name: "entity", description: "The entity")
+				.required()
+			StringOption(name: "nbt", description: "The data to merge")
+				.required()
+		}
+	}
+}.integrationType(.all, contexts: .all)
+```

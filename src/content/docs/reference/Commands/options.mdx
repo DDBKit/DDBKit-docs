@@ -1,0 +1,52 @@
+---
+title: Options
+---
+
+## Example
+```swift
+.addingOptions {
+	UserOption(name: "user", description: "User to ban")
+		.required()
+}
+```
+
+## Choices
+Use `.choices` on an Option which supports it.
+For example, a /fruit command with a choice option
+which responds with an emoji of that choice:
+```swift
+Command("fruit") { i in
+	try await i.respond(with: ":\(i.getString(from: "choice")!):")
+}
+.integrationType(.all, contexts: .all)
+.addingOptions {
+	StringOption(name: "choice", description: "Your fruit of choice")
+		.required()
+		.choices {
+			[
+				"apple",
+				"banana",
+				"grapes"
+			].map { .string($0) }
+		}
+}
+```
+
+## Autocompletions
+TODO
+
+## Option types
+### String
+```swift
+StringOption(name: "foo", description: "bar")
+	.required()
+	.choices { ["foo", "bar"].map { .string($0) } }
+```
+### Int
+### Bool
+### User
+### Channel
+### Role
+### Mentionable
+### Double
+### Attachment

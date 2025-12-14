@@ -1,0 +1,162 @@
+---
+title: Getting started
+---
+
+import { FileTree } from '@astrojs/starlight/components';
+
+[swift-install]: https://www.swift.org/install
+[developer-portal]: https://discord.com/developers/applications?new_application=true
+
+
+This will guide you through the basics of
+setting up DDBKit and your bot. By the end,
+we should have something that can connect
+to Discord, and you can work from there afterward.
+
+## Prerequisites
+* A decent understanding of the Swift programming language.
+* A Discord bot. Click [here][developer-portal] to make one.
+* Something that can compile Swift code. macOS and Linux are preferred.
+Get Swift [here](https://www.swift.org/install/).
+:::tip
+A great place to start learning Swift is the 
+[Swift book](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/).<br />
+You can also use the [Swift Guided Tour](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/guidedtour)
+for a quick introduction to the language.
+:::
+:::note
+On macOS, using Xcode for DDBKit development is recommended.<br />
+It offers Swift-oriented features to make editing code easier.<br />
+For easier version management, it is recommended that you use 
+[Xcodes](https://github.com/XcodesOrg/XcodesApp/releases/latest).
+:::
+
+## Setting up a package
+
+Open up your terminal and create a new Swift package, this
+will be your bot:
+
+```sh
+mkdir bot
+cd bot
+swift package init --name Bot --type executable
+```
+
+You will now have the following:
+
+<FileTree>
+	- bot
+		- Package.swift
+		- Sources
+			- Bot
+				- Bot.swift
+</FileTree>
+
+You can open this directory in your editor of choice for
+the rest of this guide. Or do it all from the terminal if
+you're into that.
+
+### Tweaking `Package.swift`
+:::caution[Important]
+The `swift-tools-version` in `Package.swift` will vary depending
+on what Swift version you have installed, so you'll need to
+change it to 5.10 in order for DDBKit to work.
+:::
+
+...so change the version number accordingly:
+
+```diff lang="swift"
+// Package.swift
+-// swift-tools-version: 6.2
++// swift-tools-version: 5.10
+```
+
+...and also add DDBKit as a dependency:
+
+```diff lang="swift"
+let package = Package(
+	name: "Bot",
++	dependencies: [
++		.package(url: "https://github.com/DDBKit/DDBKit.git", branch: "main")
++	],
+	targets: [
+		.executableTarget(
+			name: "Bot",
++			dependencies: [
++				.product(name: "DDBKit", package: "DDBKit"),
++				.product(name: "DDBKitUtilities", package: "DDBKit")
++			]
+		),
+	]
+)
+```
+
+## Setting up an entry point
+The entry point is where we specify the token and
+intents and some other things. Open `Sources/Bot/Bot.swift`
+and replace the contents with:
+
+```swift "TOKEN HERE"
+import DDBKit
+import Foundation
+
+@main
+struct Bot: DiscordBotApp {
+	init() async {
+		bot = await BotGatewayManager(
+			token: "TOKEN HERE",
+			intents: []
+		)
+		cache = await .init(
+			gatewayManager: bot,
+			intents: .all,
+			requestAllMembers: .enabledWithPresences,
+			messageCachingPolicy: .saveEditHistoryAndDeleted
+		)
+	}
+
+	var body: [any BotScene] {
+		ReadyEvent { ready in
+			print("hi mom")
+		}
+		MessageCreateEvent { msg in
+			print("[\(msg.author?.username ?? "unknown")] \(msg.content)")
+		}
+	}
+
+	var bot: Bot
+	var cache: Cache
+}
+```
+
+The specifics of this don't really matter yet, for right
+now, just replace "TOKEN HERE" with your bot's token.
+
+:::caution[Important]
+Don't commit or share your token. Properly store it
+in a .env or config.json file (for example) and add
+that file to your .gitignore.
+
+See the [FAQ](/more/faq/) if you want an example of
+storing secrets.
+:::
+
+## Running the bot
+A universal way of doing so is to run this in your bot's directory:
+
+```sh
+swift run
+```
+
+### In an IDE
+For Xcode, hit the play button at the top left. For
+other editors, it can vary.
+
+### In production
+If you finished your bot and want to deploy it, there's
+many ways to do so.
+The [template](https://github.com/DDBKit/DDBKit-Template) provides
+a Dockerfile and docker-compose.yml if you'd like to use Docker.
+Also consider systemd/launchd services.
+
+If you need to compile your bot, run `swift build -c release`.

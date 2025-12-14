@@ -1,0 +1,42 @@
+---
+title: Interactions
+sidebar:
+    order: 0
+---
+
+## Supplying default values
+For nullable options which aren't required,
+you should gracefully handle them instead of
+force unwrapping. For example, null coalesce
+with a default value:
+
+```swift
+i.getString(from: "food") ?? "banana"
+```
+
+If the option is required, there is nothing
+wrong with force unwrapping:
+
+```swift
+i.getString(from: "food")!
+```
+
+## Deferring
+A common process when responding to the user
+is waiting for an API to respond or doing some
+other work which takes time. Discord will discard
+your interaction if you take too long, so you should
+signal that you need to get work done by deferring
+the interaction:
+
+```swift ".deferredChannelMessageWithSource()"
+Command("cook") { i in
+	try await i.respond(with: .deferredChannelMessageWithSource())
+	try await Task.sleep(for: .seconds(5))
+	try await i.editResponse(with: "Cooked \(i.getString(from: "food")!)")
+}
+.addingOptions {
+	StringOption(name: "food", description: "some food")
+		.required()
+}
+```

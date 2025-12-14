@@ -1,0 +1,23 @@
+---
+title: Misc
+---
+
+## Polls
+```swift
+Message {
+	MessagePoll("Is macOS 26 good?", hours: 1) {
+		PollAnswer("No", emoji: nil)
+		PollAnswer("No", emoji: nil)
+		PollAnswer("No", emoji: nil)
+		PollAnswer("No", emoji: nil)
+		PollAnswer("Hell no", emoji: nil)
+	}.allowMultipleAnswers()
+}
+```
+
+## Stickers
+```swift
+Message {
+	MessageSticker(id: "1234567891011121314")
+}
+```

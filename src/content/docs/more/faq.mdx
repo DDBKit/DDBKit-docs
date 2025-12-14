@@ -1,0 +1,73 @@
+---
+title: FAQ
+sidebar:
+    order: 0
+---
+
+### Do I need macOS?
+DDBKit is cross platform and works on Windows
+and Linux too!
+
+### What is DiscordBM?
+[DiscordBM](https://github.com/DiscordBM/DiscordBM) is the underlying framework
+that DDBKit uses. It is its own separate
+project, but we contribute back to it
+every now and then!
+
+### How do I use components V2?
+DDBKit doesn't have CV2 yet. You can help contribute!
+
+### How do I store my token?
+You can use a Swift package for dotenv support
+or alternatively read from a JSON file.
+
+For an example of using JSON, you can make a
+model of the config.json so that it is strongly
+typed, and use it in your Bot struct:
+
+```swift "token: Config.shared.token,"
+// Bot.swift
+@main
+struct Bot: DiscordBotApp {
+	init() async {
+		bot = await BotGatewayManager(
+			token: Config.shared.token,
+			intents: []
+		)
+		// etc
+	}
+	// etc
+}
+```
+
+```swift
+// Models/Config.swift
+import Foundation
+
+struct Config: Codable {
+	static let shared = {
+		do {
+			let data = try Data(contentsOf: URL(filePath: "./config.json"))
+			let decoded = try JSONDecoder().decode(Self.self, from: data)
+			return decoded
+		} catch {
+			fatalError("Could not parse config\n\n\(error)")
+		}
+	}()
+	let token: String
+}
+```
+
+```json
+// config.json
+{
+	"token": "..."
+}
+```
+
+Remember to add it to gitignore:
+
+```
+// .gitignore
+config.json
+```
