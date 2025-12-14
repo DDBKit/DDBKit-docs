@@ -18,19 +18,19 @@ of command:
 	- bot
 		- Package.swift
 		- Sources
-			- Bot
+			- MyBot
 				- Commands
 					- Fun.swift
 					- Info.swift
 					- Utility.swift
-				- Bot.swift
+				- MyBot.swift
 </FileTree>
 
 For this guide, we will have a Fun group with a HelloWorld
 command.
 
 ## Making a command group
-[Extend][extensions] the `Bot` struct and
+[Extend][extensions] the `MyBot` struct and
 add a variable holding a `Group`:
 
 ```swift
@@ -38,7 +38,7 @@ add a variable holding a `Group`:
 import DDBKit
 import DDBKitUtilities
 
-extension Bot {
+extension MyBot {
 	var funCommands: Group {
 		Group {
 			// feeling empty in here..
@@ -47,10 +47,10 @@ extension Bot {
 }
 ```
 
-Add it to `Bot`'s body:
+Add it to `MyBot`'s body:
 
 ```diff lang="swift"
-// Bot.swift
+// MyBot.swift
 var body: [any BotScene] {
 	ReadyEvent { ready in
 		print("hi mom")
@@ -134,5 +134,38 @@ SubcommandBase("data") {
 				.required()
 		}
 	}
-}.integrationType(.all, contexts: .all)
+}
+.integrationType(.all, contexts: .all)
 ```
+
+:::tip
+You additionally make functions which return `some BotScene`
+to help organize your commands. For example:
+```swift
+extension MyBot {
+  func moderationCommands() -> some BotScene {
+    Command("ban") { i in
+      // ...
+    }
+  }
+}
+```
+The extension is still recommended to be able to access `bot` and `cache` properties of your bot structure.
+:::
+
+### Context Commands
+
+You can also create context menu commands using `ContextCommand`. For example, a message context command:
+```swift
+Context("explode", kind: .message) { interaction in
+  try await interaction.respond {
+    Message {
+      MessageContent {
+        Text("💥 Boom! 💥")
+      }
+    }
+  }
+}
+```
+
+There will now be an "Explode" option in the context menu when right-clicking messages. You can also make user context commands by setting `kind: .user`.

@@ -4,10 +4,6 @@ description: Throwing and catching errors at scope
 ---
 import { Aside, Code } from '@astrojs/starlight/components';
 
-:::note
-This page is potentially out of date.
-:::
-
 So far, we've been implicitly ignoring errors. We've used `try?` to suppress errors and `try!` to crash the program if an error occurs. But this means we never handle errors gracefully. In this section, we'll learn how to throw and catch errors with DDBKit's error handling system.
 
 This is preferred over the usual `do {} catch {_ in}` like we're used to since we can avoid nesting and keep our code clean.

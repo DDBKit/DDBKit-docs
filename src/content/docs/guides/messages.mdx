@@ -29,5 +29,85 @@ try await i.respond {
 }
 ```
 
-Take a look at the references for a list of
-all components and features.
+The key part is `Message` which gives you a resultbuilder context to build messages. There are several containers you can use, we'll cover a few of them here.
+
+### MessageContent
+This is the main content of a message. You can add text, headings, links, and other block and inline elements here. This can only be used once per message.
+
+```swift
+let message = Message {
+  MessageContent {
+    Heading("Hello, World!")
+    Text("This is a test message from my Discord bot using DDBKit. ")
+    Text("Enjoy coding your bot!")
+    Link("https://example.com")
+      .maskedWith {
+        Text("Click here for more info")
+      }
+  }
+}
+```
+
+### MessageEmbed
+Embeds are rich content blocks that can include titles, descriptions, fields, images, and more. You can have 1 to 10 embeds per message.
+
+```swift
+let embedMessage = Message {
+  MessageEmbed {
+    Title("Welcome to My Bot")
+    Description("This is an example of an embed message.")
+    Field("Field 1", "This is the value for field 1")
+      .inline()
+    Field("Field 2", "This is the value for field 2")
+      .inline()
+    Image(url: .exact("https://example.com/image.png"))
+  }
+  .setColor(.blue)
+}
+```
+
+### MessageComponents
+Message components allow you to add interactive elements like buttons and select menus to your messages. Only one of these can be used per message.
+
+```swift
+let componentMessage = Message {
+  MessageContent {
+    Text("Choose an option:")
+  }
+  MessageComponents {
+    ActionRow {
+      Button("Option 1")
+        .style(.primary)
+        .id("option_1")
+      Button("Option 2")
+        .style(.secondary)
+        .id("option_2")
+      Button("Option 3")
+        .style(.danger)
+        .id("option_3")
+    }
+  }
+}
+```
+<br />
+:::note
+You'd want to handle interactions for these components using the `component(on:)` modifier.
+```swift
+Command("choose") { i in
+  try await i.respond {
+    // message with components
+  }
+}
+.component(on: "option_1") { interaction in
+  try await interaction.respond(with: "You chose option 1!")
+}
+.component(on: "option_2") { interaction in
+  try await interaction.respond(with: "You chose option 2!")
+}
+.component(on: "option_3") { interaction in
+  try await interaction.respond(with: "You chose option 3!")
+}
+```
+:::
+
+Take a look at the references for a list of all components and features.

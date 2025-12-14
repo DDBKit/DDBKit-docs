@@ -4,9 +4,7 @@ title: Getting started
 
 import { FileTree } from '@astrojs/starlight/components';
 
-[swift-install]: https://www.swift.org/install
 [developer-portal]: https://discord.com/developers/applications?new_application=true
-
 
 This will guide you through the basics of
 setting up DDBKit and your bot. By the end,
@@ -39,7 +37,7 @@ will be your bot:
 ```sh
 mkdir bot
 cd bot
-swift package init --name Bot --type executable
+swift package init --name MyBot --type executable
 ```
 
 You will now have the following:
@@ -48,8 +46,8 @@ You will now have the following:
 	- bot
 		- Package.swift
 		- Sources
-			- Bot
-				- Bot.swift
+			- MyBot
+				- MyBot.swift
 </FileTree>
 
 You can open this directory in your editor of choice for
@@ -57,27 +55,13 @@ the rest of this guide. Or do it all from the terminal if
 you're into that.
 
 ### Tweaking `Package.swift`
-:::caution[Important]
-The `swift-tools-version` in `Package.swift` will vary depending
-on what Swift version you have installed, so you'll need to
-change it to 5.10 in order for DDBKit to work.
-:::
-
-...so change the version number accordingly:
-
-```diff lang="swift"
-// Package.swift
--// swift-tools-version: 6.2
-+// swift-tools-version: 5.10
-```
-
-...and also add DDBKit as a dependency:
+You'll need to add DDBKit as a dependency:
 
 ```diff lang="swift"
 let package = Package(
-	name: "Bot",
+	name: "MyBot",
 +	dependencies: [
-+		.package(url: "https://github.com/DDBKit/DDBKit.git", branch: "main")
++		.package(url: "https://github.com/DDBKit/DDBKit.git", exact: "0.3.1")
 +	],
 	targets: [
 		.executableTarget(
@@ -90,10 +74,40 @@ let package = Package(
 	]
 )
 ```
+<br />
+:::note
+You can check for the latest version of DDBKit
+on [GitHub](https://github.com/DDBKit/DDBKit/releases).
+:::
+
+:::caution[Important]
+On macOS and other Apple platforms, you need to specify minimum deployment versions for macOS 13, iOS 16 etc. in order for your package to build.
+```diff lang="swift"
+let package = Package(
+	name: "Bot",
++	platforms: [
++	  .macOS(.v13)
++	],
+	dependencies: [
+		.package(url: "https://github.com/DDBKit/DDBKit.git", exact: "0.3.1")
+	],
+	targets: [
+		.executableTarget(
+			name: "MyBot",
+			dependencies: [
+				.product(name: "DDBKit", package: "DDBKit"),
+				.product(name: "DDBKitUtilities", package: "DDBKit")
+			]
+		),
+	]
+)
+```
+<br />
+:::
 
 ## Setting up an entry point
 The entry point is where we specify the token and
-intents and some other things. Open `Sources/Bot/Bot.swift`
+intents and some other things. Open `Sources/MyBot/Bot.swift`
 and replace the contents with:
 
 ```swift "TOKEN HERE"
@@ -101,7 +115,7 @@ import DDBKit
 import Foundation
 
 @main
-struct Bot: DiscordBotApp {
+struct MyBot: DiscordBotApp {
 	init() async {
 		bot = await BotGatewayManager(
 			token: "TOKEN HERE",
