@@ -44,15 +44,18 @@
 }
 
 /* Remove top sidebar item's collapse button and line */
-.sidebar-content ul.top-level > :first-child {
+.sidebar-content ul.top-level> :first-child {
 	summary {
 		display: none;
 	}
+
 	ul {
 		--sl-sidebar-item-padding-inline: 0;
+
 		li {
 			border-inline-start: none;
 		}
+
 		a {
 			--sl-sidebar-item-padding-inline: 8px;
 		}
@@ -64,21 +67,26 @@
 	border: 1px solid #4e4e4e !important;
 	border-radius: 14px;
 	overflow: hidden;
-	& > figcaption, & > pre {
+
+	&>figcaption,
+	&>pre {
 		border: none !important;
 	}
-	& > figcaption {
+
+	&>figcaption {
 		background: #2d2d2d !important;
 	}
-	& > figcaption::after {
+
+	&>figcaption::after {
 		border-color: black !important;
 	}
-	& > figcaption::before {
+
+	&>figcaption::before {
 		width: 2.5rem !important;
-		mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 68 16' preserveAspectRatio='xMidYMid meet'%3E%3Ccircle cx='8' cy='8' r='8'/%3E%3Ccircle cx='35' cy='8' r='8'/%3E%3Ccircle cx='60' cy='8' r='8'/%3E%3C/svg%3E")
-			!important;
+		mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 68 16' preserveAspectRatio='xMidYMid meet'%3E%3Ccircle cx='8' cy='8' r='8'/%3E%3Ccircle cx='35' cy='8' r='8'/%3E%3Ccircle cx='60' cy='8' r='8'/%3E%3C/svg%3E") !important;
 	}
-	& > figcaption > .title::after {
+
+	&>figcaption>.title::after {
 		content: "zsh";
 		font-weight: 700;
 		color: #bcbdc0;
@@ -96,10 +104,8 @@
 [data-has-hero] .page {
 	background:
 		linear-gradient(215deg, var(--overlay-blurple), transparent 40%),
-		radial-gradient(var(--overlay-blurple), transparent 40%) no-repeat -60vw
-		-40vh / 105vw 200vh,
-		radial-gradient(var(--overlay-blurple), transparent 65%) no-repeat 50%
-		calc(100% + 20rem) / 60rem 30rem;
+		radial-gradient(var(--overlay-blurple), transparent 40%) no-repeat -60vw -40vh / 105vw 200vh,
+		radial-gradient(var(--overlay-blurple), transparent 65%) no-repeat 50% calc(100% + 20rem) / 60rem 30rem;
 }
 
 [data-has-hero] header {
@@ -109,7 +115,7 @@
 	backdrop-filter: blur(16px);
 }
 
-[data-has-hero] .hero > img {
+[data-has-hero] .hero>img {
 	filter: drop-shadow(0 0 3rem var(--overlay-blurple));
 }
 
@@ -128,4 +134,21 @@
 
 [data-has-hero] .tagline {
 	font-weight: 300;
+}
+
+/* Slash commands */
+code[type="cmd"] {
+	background-color: color-mix(in oklab, hsl(234.935 calc(1*85.556%) 64.706% /0.23921568627450981) 100%, hsl(0 0% 0% /0.23921568627450981) 0%);
+	border-radius: 3px;
+	color: color-mix(in oklab, hsl(228.14 calc(1*100%) 83.137% /1) 100%, #000 0%);
+	font-weight: 500;
+	padding: 0 2px;
+	font-size: 16px;
+	font-family: sans-serif;
+	cursor: pointer;
+	transition: background-color 50ms ease-out,color 50ms ease-out;
+	&:hover {
+		color: white;
+		background-color: #5865f0;
+	}
 }
