@@ -327,13 +327,6 @@ Here's an example of a modifier that prints something
 before and after a command is run:
 
 ```swift
-```
-
-This modifier will print the command name when the
-bot boots, when the command is started, when the
-command is completed, and when the command errors.
-
-```swift
 extension ExtensibleCommand {
 	func logUsages() -> Self {
 		self
@@ -357,6 +350,22 @@ extension ExtensibleCommand {
 			}
 	}
 }
+```
+
+This modifier will print the command name when the
+bot boots, when the command is started, when the
+command is completed, and when the command errors.
+
+```swift
+Command("failable") { i, _, _ in
+	struct Egg: Decodable {
+		var gm: String
+	}
+	let data = "{}".data(using: .utf8)!
+	_ = try JSONDecoder().decode(Egg.self, from: data)
+}
+.integrationType(.all, contexts: .all)
+.logUsages()
 ```
 
 In this example, this command will fail, and the
