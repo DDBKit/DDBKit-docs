@@ -114,14 +114,14 @@ Command("ban") { i in
 
 You can optionally label sets of commands using
 subcommands. This is useful if you have multiple
-commands which can be categorized. For instance,
-a /ban and /kick command could fall under a
-/moderation subcommand, and be used like
-`/moderation ban` and `/moderation kick`.
+commands which can be categorized. For instance, a
+<code type="cmd">/ban</code> command could fall under a
+<code type="cmd">/moderation</code> subcommand, and be used
+like <code type="cmd">/moderation ban</code>.
 
 Subcommands can also be nested into SubcommandGroups
 for a total of 3 labels. This example would produce
-a `/data merge entity` command:
+a <code type="cmd">/data merge entity</code> command:
 
 ```swift
 SubcommandBase("data") {

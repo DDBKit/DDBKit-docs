@@ -137,7 +137,7 @@
 }
 
 /* Slash commands */
-code[type="cmd"] {
+code[type=cmd] {
 	background-color: color-mix(in oklab, hsl(234.935 calc(1*85.556%) 64.706% /0.23921568627450981) 100%, hsl(0 0% 0% /0.23921568627450981) 0%);
 	border-radius: 3px;
 	color: color-mix(in oklab, hsl(228.14 calc(1*100%) 83.137% /1) 100%, #000 0%);
