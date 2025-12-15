@@ -12,8 +12,9 @@
 	--sl-color-gray-7: #1b1b1b;
 	--sl-color-black: #181818;
 	--sl-font: "SF Pro Display", Inter, -system-ui, sans-serif;
-	--__sl-font-mono: "SF Mono", SFMono-Regular, ui-monospace, "DejaVu Sans Mono",
-		Menlo, Consolas, monospace !important;
+	--__sl-font-mono:
+		"SF Mono", SFMono-Regular, ui-monospace, "DejaVu Sans Mono", Menlo,
+		Consolas, monospace !important;
 	--open-sans: "Open Sans", --__sl-font-mono;
 	tab-size: 40px;
 	scroll-behavior: smooth;
@@ -58,33 +59,26 @@
 	}
 }
 
-/* Preamble star chart border */
-.star-chart > picture > img {
-	border-radius: 0.5rem;
-	box-shadow: var(--global-shadow);
-	border: 2px solid var(--sl-color-gray-5);
-	margin-bottom: 1rem;
-}
-
 /* Terminals */
 .is-terminal {
 	border: 1px solid #4e4e4e !important;
 	border-radius: 14px;
 	overflow: hidden;
-	&>figcaption, &>pre {
+	& > figcaption, & > pre {
 		border: none !important;
 	}
-	&>figcaption {
+	& > figcaption {
 		background: #2d2d2d !important;
 	}
-	&>figcaption::after {
+	& > figcaption::after {
 		border-color: black !important;
 	}
-	&>figcaption::before {
+	& > figcaption::before {
 		width: 2.5rem !important;
-		mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 68 16' preserveAspectRatio='xMidYMid meet'%3E%3Ccircle cx='8' cy='8' r='8'/%3E%3Ccircle cx='35' cy='8' r='8'/%3E%3Ccircle cx='60' cy='8' r='8'/%3E%3C/svg%3E") !important;
+		mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 68 16' preserveAspectRatio='xMidYMid meet'%3E%3Ccircle cx='8' cy='8' r='8'/%3E%3Ccircle cx='35' cy='8' r='8'/%3E%3Ccircle cx='60' cy='8' r='8'/%3E%3C/svg%3E")
+			!important;
 	}
-	&>figcaption>.title::after {
+	& > figcaption > .title::after {
 		content: "zsh";
 		font-weight: 700;
 		color: #bcbdc0;
@@ -102,8 +96,10 @@
 [data-has-hero] .page {
 	background:
 		linear-gradient(215deg, var(--overlay-blurple), transparent 40%),
-		radial-gradient(var(--overlay-blurple), transparent 40%) no-repeat -60vw -40vh / 105vw 200vh,
-		radial-gradient(var(--overlay-blurple), transparent 65%) no-repeat 50% calc(100% + 20rem) / 60rem 30rem;
+		radial-gradient(var(--overlay-blurple), transparent 40%) no-repeat -60vw
+		-40vh / 105vw 200vh,
+		radial-gradient(var(--overlay-blurple), transparent 65%) no-repeat 50%
+		calc(100% + 20rem) / 60rem 30rem;
 }
 
 [data-has-hero] header {
@@ -113,7 +109,7 @@
 	backdrop-filter: blur(16px);
 }
 
-[data-has-hero] .hero>img {
+[data-has-hero] .hero > img {
 	filter: drop-shadow(0 0 3rem var(--overlay-blurple));
 }
 

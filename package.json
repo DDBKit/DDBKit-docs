@@ -5,11 +5,28 @@
 		"start": "astro dev",
 		"build": "astro build",
 		"preview": "astro preview",
-		"astro": "astro"
+		"astro": "astro",
+		"format:docs": "remark **/*.mdx -o"
 	},
 	"dependencies": {
 		"@astrojs/starlight": "^0.37.1",
 		"astro": "^5.6.1",
 		"sharp": "^0.34.2"
+	},
+	"devDependencies": {
+		"@stylistic/eslint-plugin": "^5.6.1",
+		"@typescript-eslint/eslint-plugin": "^8.49.0",
+		"@typescript-eslint/parser": "^8.49.0",
+		"eslint": "^9.39.2",
+		"eslint-mdx": "^3.6.2",
+		"eslint-plugin-astro": "^1.5.0",
+		"jiti": "^2.6.1",
+		"remark-cli": "^12.0.1",
+		"remark-directive": "^4.0.0",
+		"remark-frontmatter": "^5.0.0",
+		"remark-lint-maximum-line-length": "^4.1.1",
+		"remark-mdx": "^3.1.1",
+		"remark-preset-lint-consistent": "^6.0.1",
+		"remark-preset-lint-recommended": "^7.0.1"
 	}
 }

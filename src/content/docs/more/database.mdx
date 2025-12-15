@@ -2,22 +2,37 @@
 title: Database
 ---
 
+:::danger
+This feature is subject to change and can break,
+change or be removed at any time. This documentation
+may also be out of date.
+:::
+
 :::caution[Important]
-  The database is intended for basic configuration needs.
-  For big data, complex queries and relationships, consider [FluentKit](https://github.com/vapor/fluent-kit), an external database setup and an appropriate database driver.
+The database is intended for basic configuration needs.
+For big data, complex queries and relationships, consider
+[FluentKit](https://github.com/vapor/fluent-kit), an
+external database setup and an appropriate database driver.
 :::
 
 :::note
-You may wish to just use the database module for storing basic data like preferences of users or guilds, 
-or for storing other small-scale data that doesn't need to be queried in complex ways. In this case,
-the database module is adequate for your needs, as it also ensures that collisions are avoided.
-> If any professionals are reading this, can you check it out to verify? Thanks.
+You may wish to just use the database module for storing
+basic data like preferences of users or guilds, or for
+storing other small-scale data that doesn't need to be
+queried in complex ways. In this case, the database module
+is adequate for your needs, as it also ensures that
+collisions are avoided.
+
+> If any professionals are reading this, can you check
+> it out to verify? Thanks.
 :::
 
-Using the database is straight forward, and a utility structure is passed into commands by default that 
-exposes predefined database requests based on interaction context.
+Using the database is straight forward, and a utility
+structure is passed into commands by default that exposes
+predefined database requests based on interaction context.
 
-You use the database by accessing the singleton instance of it.
+You use the database by accessing the singleton instance
+of it.
 
 ```swift
 import Database
@@ -25,7 +40,8 @@ import Database
 let db = Database.shared
 ```
 
-The database stores models, which are structs that conform to `DatabaseModel` (it's just `Codable`).
+The database stores models, which are structs that conform
+to `DatabaseModel` (it's just `Codable`).
 
 ```swift
 struct UserPrefs: DatabaseModel {
@@ -41,7 +57,8 @@ struct UserPrefs: DatabaseModel {
 }
 ```
 
-You can then use the database to store and retrieve data in the format of said models.
+You can then use the database to store and retrieve data
+in the format of said models.
 
 ```swift
 // in your bot
@@ -76,10 +93,13 @@ Command("cheese") { i in
 .isUsableInDMS(true)
 ```
 
-The `transaction` method is used to ensure that the data is not 
-modified by another command while it is being modified by this one.
-If another thread tries to modify the same data while the transaction is in 
-progress, it will wait until the existing transaction is complete before modifying the data.
+The `transaction` method is used to ensure that the data is
+not modified by another command while it is being modified
+by this one. If another thread tries to modify the same
+data while the transaction is in progress, it will wait
+until the existing transaction is complete before modifying
+the data.
 
-The reqs object is of type `DatabaseBranches`, which is a utility structure that 
-contains all the predefined database requests based on interaction context.
+The reqs object is of type `DatabaseBranches`, which is a
+utility structure that contains all the predefined database
+requests based on interaction context.

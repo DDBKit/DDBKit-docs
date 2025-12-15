@@ -2,13 +2,26 @@
 title: Handling Errors
 description: Throwing and catching errors at scope
 ---
+
 import { Aside, Code } from '@astrojs/starlight/components';
 
-So far, we've been implicitly ignoring errors. We've used `try?` to suppress errors and `try!` to crash the program if an error occurs. But this means we never handle errors gracefully. In this section, we'll learn how to throw and catch errors with DDBKit's error handling system.
+So far, we've been implicitly ignoring errors. We've used
+`try?` to suppress errors and `try!` to crash the program
+if an error occurs. But this means we never handle errors
+gracefully. In this section, we'll learn how to throw and
+catch errors with DDBKit's error handling system.
 
-This is preferred over the usual `do {} catch {_ in}` like we're used to since we can avoid nesting and keep our code clean.
+This is preferred over the usual `do {} catch {_ in}` like
+we're used to since we can avoid nesting and keep our code
+clean.
+
 ## Throwing Errors
-Change any instances of `try?` to `try` and `try!` to `try`. This will make the function throw an error if it encounters one. You can throw errors with the `throw` keyword. Errors thrown from commands will propagate up to the command handler.
+
+Change any instances of `try?` to `try` and `try!` to
+`try`. This will make the function throw an error if it
+encounters one. You can throw errors with the `throw`
+keyword. Errors thrown from commands will propagate up to
+the command handler.
 
 ```swift
 Command("failable") { i in
@@ -19,20 +32,36 @@ Command("failable") { i in
   _ = try JSONDecoder().decode(Egg.self, from: data)
 }
 ```
+
 Running your bot now will result in the following:
-<Code class="dir-my-new-bot" lang="sh" code="2024-10-25T11:51:18+0100 notice GatewayManager : connectionId=1 gateway-id=1 [DiscordGateway] Received ready notice. The connection is fully established
+
+```sh
+2024-10-25T11:51:18+0100 notice GatewayManager : connectionId=1 gateway-id=1 [DiscordGateway] Received ready notice. The connection is fully established
 [Uncaught Error] This command failed oh no who could've guessed
 
 Interaction( ... )
-" />
+```
 
-Throwing errors from a command will log an uncaught error, caught by the error handler. It only does this if you don't provide any way to avoid propagating the error to this level. This is useful for debugging, but you should probably handle errors more gracefully in production.
+Throwing errors from a command will log an uncaught
+error, caught by the error handler. It only does this
+if you don't provide any way to avoid propagating the
+error to this level. This is useful for debugging, but
+you should probably handle errors more gracefully in
+production.
 
 ## Catching Errors
-DDBKit provides two ways of catching errors to best suit your needs. You can catch errors at the command scope or at the  global scope.
+
+DDBKit provides two ways of catching errors to best suit
+your needs. You can catch errors at the command scope or
+at the global scope.
 
 ### Global Scope
-The `DiscordBotApp` protocol defines a method called `onBoot() async throws`. This method is called before bot is started. This is provided as a way to register extensions and other setup code. You can use this method to catch errors at the global scope.
+
+The `DiscordBotApp` protocol defines a method called
+`onBoot() async throws`. This method is called before
+bot is started. This is provided as a way to register
+extensions and other setup code. You can use this method
+to catch errors at the global scope.
 
 ```swift
 @main
@@ -73,7 +102,10 @@ struct MyNewBot: DiscordBotApp {
 ```
 
 ### Command Scope
-You can also catch errors at the command scope. This is useful if you want to handle errors differently for different commands.
+
+You can also catch errors at the command scope. This is
+useful if you want to handle errors differently for
+different commands.
 
 ```swift
 Command("failable") { i, _, _ in
@@ -98,11 +130,16 @@ Command("failable") { i, _, _ in
 }
 ```
 
-I feel this is relatively self-explanatory. The `catch` closure is called when an error is thrown from the command.
+I feel this is relatively self-explanatory. The `catch`
+closure is called when an error is thrown from the command.
 
 ### Propagating errors
-You can propagate errors from command scope to global scope by rethrowing the error. 
-This is useful if you want to handle errors differently at the global scope after some implicit work or just transforming the error at command scope
+
+You can propagate errors from command scope to global scope
+by rethrowing the error. This is useful if you want to
+handle errors differently at the global scope after some
+implicit work or just transforming the error at command
+scope
 
 ```swift
 Command("failable") { i in

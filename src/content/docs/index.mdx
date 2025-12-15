@@ -21,46 +21,50 @@ import { Card, CardGrid } from '@astrojs/starlight/components';
 [discordbm]: https://github.com/DiscordBM/DiscordBM
 
 <CardGrid stagger>
-	<Card title="Powerful" icon="rocket">
-		DDBKit provides a clean and concise
-		ResultBuilder-based API to Discord,
-		eliminating unnecessary boilerplate code.
-		```swift
-		Message {
-			MessageContent {
-				Heading("gm")
-				Text("gm")
-			}
-			MessageComponents {
-				ActionRow {
-					LinkButton("Get Started", url: "...")
-						.id("mom-btn")
-				}
-			}
-		}
-		```
-	</Card>
-	<Card title="Fast" icon="seti:swift">
-		Thanks to the safety and performance
-		of Swift, your Discord bots respond
-		rapidly and efficiently. Each event
-		is ran on it’s own `Task` context
-		without blocking your main thread,
-		and ensuring smooth operation.
-		
-		[DiscordBM][discordbm] exposes
-		fully-typed and asynchronous access
-		to the entire Discord API.
-	</Card>
-	<Card title="Extensive" icon="setting">
-		DDBKit covers everything, from the entrypoint
-		of your bot and it’s initialisation to easy
-		creation of messages, embeds, components
-		and modals.
-	</Card>
-	<Card title="And more" icon="open-book">
-		DDBKit ships with two support modules,
-		`DDBKitUtilitites` and `DDBKitFoundation`
-		to help increase productivity.
-	</Card>
+  <Card title="Powerful" icon="rocket">
+    DDBKit provides a clean and concise
+    ResultBuilder-based API to Discord,
+    eliminating unnecessary boilerplate code.
+
+    ```swift
+    Message {
+    	MessageContent {
+    		Heading("gm")
+    		Text("gm")
+    	}
+    	MessageComponents {
+    		ActionRow {
+    			LinkButton("Get Started", url: "...")
+    				.id("mom-btn")
+    		}
+    	}
+    }
+    ```
+  </Card>
+
+  <Card title="Fast" icon="seti:swift">
+    Thanks to the safety and performance
+    of Swift, your Discord bots respond
+    rapidly and efficiently. Each event
+    is ran on it’s own `Task` context
+    without blocking your main thread,
+    and ensuring smooth operation.
+
+    [DiscordBM][discordbm] exposes
+    fully-typed and asynchronous access
+    to the entire Discord API.
+  </Card>
+
+  <Card title="Extensive" icon="setting">
+    DDBKit covers everything, from the entrypoint
+    of your bot and it’s initialisation to easy
+    creation of messages, embeds, components
+    and modals.
+  </Card>
+
+  <Card title="And more" icon="open-book">
+    DDBKit ships with two support modules,
+    `DDBKitUtilitites` and `DDBKitFoundation`
+    to help increase productivity.
+  </Card>
 </CardGrid>

@@ -2,22 +2,27 @@
 title: DDBKitUtilities
 description: Extra DDBKit module with utility abstractions
 ---
+
 import { Aside } from '@astrojs/starlight/components';
 
-:::note
-This page is potentially out of date.
-:::
-
-:::caution
-This documentation is incomplete.
+:::danger
+This feature is subject to change and can break,
+change or be removed at any time. This documentation
+may also be out of date.
 :::
 
 # Extensions
-DDBKitUtilities exposes a collection of useful extensions for your Discord bots.
+
+DDBKitUtilities exposes a collection of
+useful extensions for your Discord bots.
 
 ## BucketRatelimiting
-Your Discord bot may have a number of commands that use expensive resources or external service limits.
-To prevent abuse, you can use the `BucketRatelimiting` extension to rate limit these commands.
+
+Your Discord bot may have a number of commands
+that use expensive resources or external service
+limits. To prevent abuse, you can use the
+`BucketRatelimiting` extension to rate limit
+these commands.
 
 To get started, register the extension at boot.
 
@@ -25,90 +30,91 @@ To get started, register the extension at boot.
 @_spi(Extensions) import DDBKitUtilities
 
 struct MyNewBot: DiscordBotApp {
-  func onBoot() async throws {
-    // ...
-
-    RegisterExtension(BucketRatelimiting())
-  }
+	func onBoot() async throws {
+		// ...
+		RegisterExtension(BucketRatelimiting())
+	}
 }
 ```
 
-You can now use the `ratelimited()` modifier on your commands to rate limit them.
+You can now use the `ratelimited()` modifier on
+your commands to rate limit them.
 
 ```swift
 Command("ratelimited") { i in
-  try await i.respond(with: "This command is rate limited!")
+	try await i.respond(with: "This command is rate limited!")
 }
 .ratelimited()
 ```
 
-You can customise it by passing in a configuration object.
+You can customise it by passing in a configuration
+object.
+
 ```swift
 Command("ratelimited") { i in
-  try await i.respond(with: "This command is rate limited!")
+	try await i.respond(with: "This command is rate limited!")
 }
 .ratelimited(.init(maxUses: 10, timeWindow: 60))
 ```
 
-The example above would rate limit the command to 10 uses per minute.
+The example above would rate limit the command to
+10 uses per minute.
 
 # Builders
-DDBKitUtilities provides a collection of utiltity builders for various structured types. This allows for a more concise and readable way to instance these types.
+
+DDBKitUtilities provides a collection of utiltity
+builders for various structured types. This allows
+for a more concise and readable way to instance
+these types.
 
 ## Message builder
-You can build a simple message with text content with the `Message` struct. 
+
+You can build a simple message with text content
+with the `Message` struct.
 
 ### Text Content
+
 ```swift
 Message {
-  Text("Hello World!")
+	Text("Hello World!")
 }
 ```
-<div class="discord-messages">
-  <div class="discord-message">
-    <div class="discord-message-content">
-      <div class="discord-author-avatar">
-        <img src="https://cdn.discordapp.com/embed/avatars/2.png" alt=""/>
-      </div>
-      <div class="discord-message-body">
-        <div><span class="discord-author-info"><span class="discord-author-username">MyNewBot</span><span class="discord-author-bot-tag"> Bot </span></span><span class="discord-message-timestamp">23/10/2024</span></div>
-        <span>Hello World!</span>
-      </div>
-    </div>
-  </div>
-</div>
-> `MessageContentComponent` types such as `Text` can be used at the root of a `Message` builder to set the message content easily.
+
+> `MessageContentComponent` types such as `Text` can
+> be used at the root of a `Message` builder to set
+> the message content easily.
 
 ### Text Formatting
-The following example demonstrates many of the available modifiers and components.
+
+The following example demonstrates many of the
+available modifiers and components.
+
 ```swift
 Message {
-  Heading {
-    Text {
-      Text("Welcome to ")
-      Text("The Test")
-        .italic()
-      Text("!")
-    }
-    .underlined()
-  }
-  Heading("We're testing the Message DSL")
-    .medium()
-  Text("Actually scratch that")
-    .strikethrough()
-  Link("https://llsc12.me")
-    .disableEmbedding()
-    .maskedWith {
-      Text("check out this!")
-        .bold()
-    }
-  Blockquote {
-    Heading {
-      Text("Blockquote!")
-        .underlined()
-    }
-    .medium()
-    Text("yep, we got em")
-  }
+	Heading {
+		Text {
+			Text("Welcome to ")
+			Text("The Test")
+				.italic()
+			Text("!")
+		}.underlined()
+	}
+	Heading("We're testing the Message DSL")
+		.medium()
+	Text("Actually scratch that")
+		.strikethrough()
+	Link("https://llsc12.me")
+		.disableEmbedding()
+		.maskedWith {
+			Text("check out this!")
+				.bold()
+		}
+	Blockquote {
+		Heading {
+			Text("Blockquote!")
+				.underlined()
+		}.medium()
+		Text("yep, we got em")
+	}
 }
 ```

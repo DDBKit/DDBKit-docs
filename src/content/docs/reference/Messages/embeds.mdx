@@ -3,6 +3,7 @@ title: Embeds
 ---
 
 ## Example
+
 ```swift
 MessageEmbed {
 	Title("gm chat")
@@ -14,13 +15,19 @@ MessageEmbed {
 ```
 
 ## Components
+
 ### Title
+
 The embed title.
+
 ```swift
 Title("foobar")
 ```
+
 ### Description
+
 The embed description.
+
 ```swift
 Description("foobar")
 // or
@@ -29,36 +36,51 @@ Description {
 	Text("bar")
 }
 ```
+
 ### Image
+
 An image in an embed.
+
 ```swift
 Image(.attachment(name: "cat.png"))
 // or
 Image(.exact("https://example.com/example.png"))
 ```
+
 ### Thumbnail
+
 The embed thumbnail.
+
 ```swift
 Thumbnail(.attachment(name: "cat.png"))
 // or
 Thumbnail(.exact("https://example.com/example.png"))
 ```
+
 ### Video
+
 A video in an embed.
+
 ```swift
 Video(.attachment(name: "gta_6_footage.mp4"))
 // or
 Video(.exact("https://example.com/example.mp4"))
 ```
+
 ### Field
+
 A field in an embed.
+
 ```swift
 Field("foo", "bar")
 // or
 Field(Text("foo"), Text("bar").bold())
 ```
+
 ### Footer
+
 The embed footer.
+
 ```swift
 Footer("foobar")
 // or
@@ -66,33 +88,51 @@ Footer("foobar", icon: .exact("https://example.com/example.png"))
 ```
 
 ## Modifiers
+
 ### setKind
+
 Set the embed's kind.
+
 ```swift
 .setKind(.video)
 ```
+
 ### setTimestamp
+
 Set the embed's timestamp.
+
 ```swift
 .setTimestamp(Date.now)
 ```
+
 ### setColor
+
 Set the embed's accent color.
+
 ```swift
 .setColor(.blue)
 ```
+
 ### setURL
+
 Set the embed's URL.
+
 ```swift
 .setURL("https://example.com/")
 ```
+
 ### setProvider
+
 Set the embed's provider.
+
 ```swift
 .setProvider("foobar", url: "https://example.com/")
 ```
+
 ### setAuthor
+
 Set the embed's author.
+
 ```swift
 .setAuthor(
 	"foobar",

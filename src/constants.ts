@@ -1,2 +1,2 @@
-export const DISCORD = "";
-export const GITHUB = "https://github.com/DDBKit";
+export const DISCORD = ""
+export const GITHUB = "https://github.com/DDBKit"

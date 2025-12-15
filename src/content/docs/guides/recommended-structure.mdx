@@ -4,27 +4,42 @@ title: Recommended Structure
 
 import { FileTree } from '@astrojs/starlight/components';
 
-There are many ways to structure your projects, not just DDBKit projects. But here's some guidance if you need it.
+There are many ways to structure your projects, not
+just DDBKit projects. But here's some guidance if you
+need it.
 
-Make some new targets in your Swift Package. Separate your bot's interaction code from your "business" logic. This will help you keep your logical code organized, maintainable and testable.
+Make some new targets in your Swift Package. Separate
+your bot's interaction code from your "business" logic.
+This will help you keep your logical code organized,
+maintainable and testable.
+
 <FileTree>
-	- bot
-		- Package.swift
-		- Sources
-			- MyBot
-				- MyBot.swift
-			- MyBotCore
-              - MyBotCore.swift
-              - Helpers.swift
-              - Models
-        		    - ...
-              - Utilities
-                - ...
+  * bot
+    * Package.swift
+    * Sources
+      * MyBot
+        * MyBot.swift
+      * MyBotCore
+        * MyBotCore.swift
+        * Helpers.swift
+        * Models
+          * ...
+        * Utilities
+          * ...
 </FileTree>
 
-This leads into another topic. The prior guides have shown you bots that have been mostly stateless. Whilst many bots can be stateless, many bots will need to maintain some state. This could be user preferences, game state, or any other data that needs to persist between interactions.
+This leads into another topic. The prior guides have shown
+you bots that have been mostly stateless. Whilst many bots
+can be stateless, many bots will need to maintain some
+state. This could be user preferences, game state, or any
+other data that needs to persist between interactions.
 
-Whilst you can store configurations on disk for preferences etc., You will need some in-memory state. Say for example, a game session that people in the chat can join with a command. As DDBKit runs your commands under separate Task contexts, we recommend using `actor`s to provide thread-safe in-memory state.
+Whilst you can store configurations on disk for
+preferences etc., You will need some in-memory state.
+Say for example, a game session that people in the chat
+can join with a command. As DDBKit runs your commands
+under separate Task contexts, we recommend using
+`actor`s to provide thread-safe in-memory state.
 
 Here's a crude example demonstrating this.
 
@@ -81,9 +96,13 @@ actor GameSessionManager {
 }
 ```
 
-That could be part of your Core target. Throwing errors in your business logic and having a global catch as described earlier is a good way to handle errors without explicit handling per context.
+That could be part of your Core target. Throwing errors in
+your business logic and having a global catch as described
+earlier is a good way to handle errors without explicit
+handling per context.
 
-Then in your bot target, you can create an instance to use throughout your bot.
+Then in your bot target, you can create an instance to
+use throughout your bot.
 
 ```swift
 @main
@@ -128,6 +147,13 @@ struct MyBot: DiscordBotApp {
 }
 ```
 
-The best type for `GameSession` is likely a struct in this case. Any mutation to the session data should be done via the actor to ensure thread-safety. Returning class types for the session representation would be less safe. Lastly, structs are okay to return as the command lifetime is short-lived and so the data will remain valid for the duration of the command usually.
+The best type for `GameSession` is likely a struct in this
+case. Any mutation to the session data should be done via
+the actor to ensure thread-safety. Returning class types
+for the session representation would be less safe. Lastly,
+structs are okay to return as the command lifetime is
+short-lived and so the data will remain valid for the
+duration of the command usually.
 
-There are other data architectures you may require, however that is an exercise left to the reader.
+There are other data architectures you may require,
+however that is an exercise left to the reader.

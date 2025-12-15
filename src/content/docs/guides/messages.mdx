@@ -29,10 +29,15 @@ try await i.respond {
 }
 ```
 
-The key part is `Message` which gives you a resultbuilder context to build messages. There are several containers you can use, we'll cover a few of them here.
+The key part is `Message` which gives you a resultbuilder
+context to build messages. There are several containers
+you can use, we'll cover a few of them here.
 
 ### MessageContent
-This is the main content of a message. You can add text, headings, links, and other block and inline elements here. This can only be used once per message.
+
+This is the main content of a message. You can add text,
+headings, links, and other block and inline elements here.
+This can only be used once per message.
 
 ```swift
 let message = Message {
@@ -49,7 +54,10 @@ let message = Message {
 ```
 
 ### MessageEmbed
-Embeds are rich content blocks that can include titles, descriptions, fields, images, and more. You can have 1 to 10 embeds per message.
+
+Embeds are rich content blocks that can include titles,
+descriptions, fields, images, and more. You can have 1
+to 10 embeds per message.
 
 ```swift
 let embedMessage = Message {
@@ -67,7 +75,10 @@ let embedMessage = Message {
 ```
 
 ### MessageComponents
-Message components allow you to add interactive elements like buttons and select menus to your messages. Only one of these can be used per message.
+
+Message components allow you to add interactive elements
+like buttons and select menus to your messages. Only one
+of these can be used per message.
 
 ```swift
 let componentMessage = Message {
@@ -89,9 +100,13 @@ let componentMessage = Message {
   }
 }
 ```
+
 <br />
+
 :::note
-You'd want to handle interactions for these components using the `component(on:)` modifier.
+You'd want to handle interactions for these components
+using the `component(on:)` modifier.
+
 ```swift
 Command("choose") { i in
   try await i.respond {
@@ -110,4 +125,5 @@ Command("choose") { i in
 ```
 :::
 
-Take a look at the references for a list of all components and features.
+Take a look at the references for a list of all components
+and features.

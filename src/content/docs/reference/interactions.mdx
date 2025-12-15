@@ -5,6 +5,7 @@ sidebar:
 ---
 
 ## Supplying default values
+
 For nullable options which aren't required,
 you should gracefully handle them instead of
 force unwrapping. For example, null coalesce
@@ -22,6 +23,7 @@ i.getString(from: "food")!
 ```
 
 ## Deferring
+
 A common process when responding to the user
 is waiting for an API to respond or doing some
 other work which takes time. Discord will discard

@@ -1,0 +1,31 @@
+<a
+	href="https://star-history.com/#DDBKit/DDBKit&Date"
+>
+	<img
+		alt="Star History Chart"
+		src="https://api.star-history.com/svg?repos=DDBKit/DDBKit&type=Date&theme=dark"
+		class="dark"
+	/>
+	<img
+		alt="Star History Chart"
+		src="https://api.star-history.com/svg?repos=DDBKit/DDBKit&type=Date"
+		class="light"
+	/>
+</a>
+
+<style>
+	img {
+		border-radius: 0.5rem;
+		box-shadow: var(--global-shadow);
+		border: 2px solid var(--sl-color-gray-5);
+		margin-bottom: 1rem;
+	}
+	:global(:root) {
+		.light { display: block; }
+		.dark { display: none; }
+	}
+	:global(:root[data-theme="dark"]) {
+		.light { display: none; }
+		.dark { display: block; }
+	}
+</style>

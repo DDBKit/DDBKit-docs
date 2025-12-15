@@ -6,27 +6,33 @@ import { FileTree } from '@astrojs/starlight/components';
 
 [developer-portal]: https://discord.com/developers/applications?new_application=true
 
+[xcodes]: https://github.com/XcodesOrg/XcodesApp/releases/latest
+
 This will guide you through the basics of
 setting up DDBKit and your bot. By the end,
 we should have something that can connect
 to Discord, and you can work from there afterward.
 
 ## Prerequisites
+
 * A decent understanding of the Swift programming language.
 * A Discord bot. Click [here][developer-portal] to make one.
-* Something that can compile Swift code. macOS and Linux are preferred.
-Get Swift [here](https://www.swift.org/install/).
+* Something that can compile Swift code. macOS and Linux are
+  preferred. Get Swift [here](https://www.swift.org/install/).
+
 :::tip
-A great place to start learning Swift is the 
+A great place to start learning Swift is the
 [Swift book](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/).<br />
 You can also use the [Swift Guided Tour](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/guidedtour)
 for a quick introduction to the language.
 :::
+
 :::note
-On macOS, using Xcode for DDBKit development is recommended.<br />
-It offers Swift-oriented features to make editing code easier.<br />
-For easier version management, it is recommended that you use 
-[Xcodes](https://github.com/XcodesOrg/XcodesApp/releases/latest).
+On macOS, using Xcode for DDBKit development is
+recommended. It offers Swift-oriented features
+to make editing code easier. For easier version
+management, it is recommended that you use
+[Xcodes][xcodes].
 :::
 
 ## Setting up a package
@@ -43,11 +49,11 @@ swift package init --name MyBot --type executable
 You will now have the following:
 
 <FileTree>
-	- bot
-		- Package.swift
-		- Sources
-			- MyBot
-				- MyBot.swift
+  * bot
+    * Package.swift
+    * Sources
+      * MyBot
+        * MyBot.swift
 </FileTree>
 
 You can open this directory in your editor of choice for
@@ -55,6 +61,7 @@ the rest of this guide. Or do it all from the terminal if
 you're into that.
 
 ### Tweaking `Package.swift`
+
 You'll need to add DDBKit as a dependency:
 
 ```diff lang="swift"
@@ -74,14 +81,19 @@ let package = Package(
 	]
 )
 ```
+
 <br />
+
 :::note
 You can check for the latest version of DDBKit
 on [GitHub](https://github.com/DDBKit/DDBKit/releases).
 :::
 
 :::caution[Important]
-On macOS and other Apple platforms, you need to specify minimum deployment versions for macOS 13, iOS 16 etc. in order for your package to build.
+On macOS and other Apple platforms, you need to specify
+minimum deployment versions for macOS 13, iOS 16 etc.
+in order for your package to build.
+
 ```diff lang="swift"
 let package = Package(
 	name: "MyBot",
@@ -102,13 +114,15 @@ let package = Package(
 	]
 )
 ```
+
 <br />
 :::
 
 ## Setting up an entry point
+
 The entry point is where we specify the token and
-intents and some other things. Open `Sources/MyBot/Bot.swift`
-and replace the contents with:
+intents and some other things. Open
+`Sources/MyBot/Bot.swift` and replace the contents with:
 
 ```swift "TOKEN HERE"
 import DDBKit
@@ -156,21 +170,26 @@ storing secrets.
 :::
 
 ## Running the bot
-A universal way of doing so is to run this in your bot's directory:
+
+A universal way of doing so is to run this in your bot's
+directory:
 
 ```sh
 swift run
 ```
 
 ### In an IDE
+
 For Xcode, hit the play button at the top left. For
 other editors, it can vary.
 
 ### In production
+
 If you finished your bot and want to deploy it, there's
 many ways to do so.
-The [template](https://github.com/DDBKit/DDBKit-Template) provides
-a Dockerfile and docker-compose.yml if you'd like to use Docker.
-Also consider systemd/launchd services.
+The [template](https://github.com/DDBKit/DDBKit-Template)
+provides a Dockerfile and docker-compose.yml if you'd like
+to use Docker. Also consider systemd/launchd services.
 
-If you need to compile your bot, run `swift build -c release`.
+If you need to compile your bot, run
+`swift build -c release`.
