@@ -18,12 +18,15 @@ HTTP requests.
 
 ```swift
 Command("disappearing") { i in
-  let msgres = try await bot.client.createMessage(channelId: i.interaction.channel_id!, payload: .init(content: "I will disappear in 3 seconds"))
-    .decode()
-  
-  try await Task.sleep(for: .seconds(3))
-  try await bot.client.deleteMessage(channelId: msgres.channel_id, messageId: msgres.id)
-    .guardSuccess()
+	let msgres = try await bot.client.createMessage(
+		channelId: i.interaction.channel_id!,
+		payload: .init(content: "I will disappear in 3 seconds")
+	)
+	.decode()
+
+	try await Task.sleep(for: .seconds(3))
+	try await bot.client.deleteMessage(channelId: msgres.channel_id, messageId: msgres.id)
+		.guardSuccess()
 }
 ```
 

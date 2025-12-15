@@ -45,15 +45,15 @@ to `DatabaseModel` (it's just `Codable`).
 
 ```swift
 struct UserPrefs: DatabaseModel {
-  /// Whether the user likes cheese or not
-  var theyReallyLikeCheese: Bool
-  /// The user's XP points
-  var xp: UInt
+	/// Whether the user likes cheese or not
+	var theyReallyLikeCheese: Bool
+	/// The user's XP points
+	var xp: UInt
 
-  // helpful for setting default values quickly
-  static var `default`: UserPrefs { 
-    UserPrefs(theyReallyLikeCheese: false, xp: 0)
-  }
+	// helpful for setting default values quickly
+	static var `default`: UserPrefs {
+		UserPrefs(theyReallyLikeCheese: false, xp: 0)
+	}
 }
 ```
 
@@ -62,32 +62,33 @@ in the format of said models.
 
 ```swift
 // in your bot
-
 Command("cheese") { i in
-  // defer, since database operations can be held up by other accesses
-  try await i.respond(with: .deferredChannelMessageWithSource())
-  // get option data
-  let bool = try i.options.requireOption(named: "bool").requireBool()
-  // get the user's prefs, this means it shares across servers.
-  let req = i.dbRequests.user(ofType: UserPrefs.self)
-  let prefs = try await db.transaction() { prefs in
-    var prefs = prefs ?? .default // if the user doesn't have prefs, use default
-    prefs.theyReallyLikeCheese = bool
-    return prefs // return modified prefs to be saved
-  }! // force unwrap, we know it exists
-  // the prefs returned from the transaction are the updated prefs we returned from the closure
-  // so we can use them here in the response.
-  try await i.respond {
-    Message {
-      MessageEmbed {
-        Title("Cheese")
-        Description {
-          Text("You \(prefs.theyReallyLikeCheese ? "like" : "don't like") cheese.")
-        }
-      }
-      .setColor(prefs.theyReallyLikeCheese ? .yellow : .red)
-    }
-  }
+	// defer, since database operations can be held up by other accesses
+	try await i.respond(with: .deferredChannelMessageWithSource())
+	// get option data
+	let bool = try i.options.requireOption(named: "bool").requireBool()
+	// get the user's prefs, this means it shares across servers.
+	let req = i.dbRequests.user(ofType: UserPrefs.self)
+	let prefs = try await db.transaction { prefs in
+		var prefs = prefs ?? .default  // if the user doesn't have prefs, use default
+		prefs.theyReallyLikeCheese = bool
+		return prefs  // return modified prefs to be saved
+	}!  // force unwrap, we know it exists
+	// the prefs returned from the transaction are the updated prefs we returned from the closure
+	// so we can use them here in the response.
+	try await i.respond {
+		Message {
+			MessageEmbed {
+				Title("Cheese")
+				Description {
+					Text(
+						"You \(prefs.theyReallyLikeCheese ? "like" : "don't like") cheese."
+					)
+				}
+			}
+			.setColor(prefs.theyReallyLikeCheese ? .yellow : .red)
+		}
+	}
 }
 .integrationType(.all, contexts: .all)
 .isUsableInDMS(true)

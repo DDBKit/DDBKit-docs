@@ -3,8 +3,6 @@ title: Handling Errors
 description: Throwing and catching errors at scope
 ---
 
-import { Aside, Code } from '@astrojs/starlight/components';
-
 So far, we've been implicitly ignoring errors. We've used
 `try?` to suppress errors and `try!` to crash the program
 if an error occurs. But this means we never handle errors
@@ -25,11 +23,11 @@ the command handler.
 
 ```swift
 Command("failable") { i in
-  struct Egg: Decodable {
-    var gm: String
-  }
-  let data = "{}".data(using: .utf8)!
-  _ = try JSONDecoder().decode(Egg.self, from: data)
+	struct Egg: Decodable {
+		var gm: String
+	}
+	let data = "{}".data(using: .utf8)!
+	_ = try JSONDecoder().decode(Egg.self, from: data)
 }
 ```
 
@@ -66,38 +64,38 @@ to catch errors at the global scope.
 ```swift
 @main
 struct MyNewBot: DiscordBotApp {
-  init() async {
-    // ...
-  }
+	init() async {
+		// ...
+	}
 
-  func onBoot() async throws {
-    AssignGlobalCatch { error, i in
-      try? await i.respond {
-        Message {
-          MessageEmbed {
-            Title("Your command ran into a problem")
-            Description {
-              Text(error.localizedDescription)
-            }
-          }
-          .setColor(.red)
-        }
-      }
-    }
-  }
+	func onBoot() async throws {
+		AssignGlobalCatch { error, i in
+			try? await i.respond {
+				Message {
+					MessageEmbed {
+						Title("Your command ran into a problem")
+						Description {
+							Text(error.localizedDescription)
+						}
+					}
+					.setColor(.red)
+				}
+			}
+		}
+	}
 
-  var body: [any BotScene] {
-    Command("failable") { i in
-      struct Egg: Decodable {
-        var gm: String
-      }
-      let data = "{}".data(using: .utf8)!
-      _ = try JSONDecoder().decode(Egg.self, from: data)
-    }
-  }
+	var body: [any BotScene] {
+		Command("failable") { i in
+			struct Egg: Decodable {
+				var gm: String
+			}
+			let data = "{}".data(using: .utf8)!
+			_ = try JSONDecoder().decode(Egg.self, from: data)
+		}
+	}
 
-  var bot: Bot
-  var cache: Cache
+	var bot: Bot
+	var cache: Cache
 }
 ```
 
@@ -109,24 +107,24 @@ different commands.
 
 ```swift
 Command("failable") { i, _, _ in
-  struct Egg: Decodable {
-    var gm: String
-  }
-  let data = "{}".data(using: .utf8)!
-  _ = try JSONDecoder().decode(Egg.self, from: data)
+	struct Egg: Decodable {
+		var gm: String
+	}
+	let data = "{}".data(using: .utf8)!
+	_ = try JSONDecoder().decode(Egg.self, from: data)
 }
-.catch { error, interaction
-  try? await interaction.respond {
-    Message {
-      MessageEmbed {
-        Title("Failable failed, who could've guessed")
-        Description {
-          Text(error.localizedDescription)
-        }
-      }
-      .setColor(.red)
-    }
-  }
+.catch { error, interaction in
+	try? await interaction.respond {
+		Message {
+			MessageEmbed {
+				Title("Failable failed, who could've guessed")
+				Description {
+					Text(error.localizedDescription)
+				}
+			}
+			.setColor(.red)
+		}
+	}
 }
 ```
 
@@ -143,16 +141,16 @@ scope
 
 ```swift
 Command("failable") { i in
-  struct Egg: Decodable {
-    var gm: String
-  }
-  let data = "{}".data(using: .utf8)!
-  _ = try JSONDecoder().decode(Egg.self, from: data)
+	struct Egg: Decodable {
+		var gm: String
+	}
+	let data = "{}".data(using: .utf8)!
+	_ = try JSONDecoder().decode(Egg.self, from: data)
 }
 .catch { error, _ in
-  // ...
-  let transformedError = /* new error or something (maybe more user friendly? who knows) */
-  throw transformedError
-  // this will now be caught by global scope (if any)
+	// ...
+	let transformedError = /* new error or something (maybe more user friendly? who knows) */
+	throw transformedError
+	// this will now be caught by global scope (if any)
 }
 ```

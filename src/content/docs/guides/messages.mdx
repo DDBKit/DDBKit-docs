@@ -41,15 +41,15 @@ This can only be used once per message.
 
 ```swift
 let message = Message {
-  MessageContent {
-    Heading("Hello, World!")
-    Text("This is a test message from my Discord bot using DDBKit. ")
-    Text("Enjoy coding your bot!")
-    Link("https://example.com")
-      .maskedWith {
-        Text("Click here for more info")
-      }
-  }
+	MessageContent {
+		Heading("Hello, World!")
+		Text("This is a test message from my Discord bot using DDBKit. ")
+		Text("Enjoy coding your bot!")
+		Link("https://example.com")
+			.maskedWith {
+				Text("Click here for more info")
+			}
+	}
 }
 ```
 
@@ -61,16 +61,16 @@ to 10 embeds per message.
 
 ```swift
 let embedMessage = Message {
-  MessageEmbed {
-    Title("Welcome to My Bot")
-    Description("This is an example of an embed message.")
-    Field("Field 1", "This is the value for field 1")
-      .inline()
-    Field("Field 2", "This is the value for field 2")
-      .inline()
-    Image(url: .exact("https://example.com/image.png"))
-  }
-  .setColor(.blue)
+	MessageEmbed {
+		Title("Welcome to My Bot")
+		Description("This is an example of an embed message.")
+		Field("Field 1", "This is the value for field 1")
+			.inline()
+		Field("Field 2", "This is the value for field 2")
+			.inline()
+		Image(url: .exact("https://example.com/image.png"))
+	}
+	.setColor(.blue)
 }
 ```
 
@@ -82,22 +82,22 @@ of these can be used per message.
 
 ```swift
 let componentMessage = Message {
-  MessageContent {
-    Text("Choose an option:")
-  }
-  MessageComponents {
-    ActionRow {
-      Button("Option 1")
-        .style(.primary)
-        .id("option_1")
-      Button("Option 2")
-        .style(.secondary)
-        .id("option_2")
-      Button("Option 3")
-        .style(.danger)
-        .id("option_3")
-    }
-  }
+	MessageContent {
+		Text("Choose an option:")
+	}
+	MessageComponents {
+		ActionRow {
+			Button("Option 1")
+				.style(.primary)
+				.id("option_1")
+			Button("Option 2")
+				.style(.secondary)
+				.id("option_2")
+			Button("Option 3")
+				.style(.danger)
+				.id("option_3")
+		}
+	}
 }
 ```
 
@@ -109,18 +109,18 @@ using the `component(on:)` modifier.
 
 ```swift
 Command("choose") { i in
-  try await i.respond {
-    // message with components
-  }
+	try await i.respond {
+		// message with components
+	}
 }
 .component(on: "option_1") { interaction in
-  try await interaction.respond(with: "You chose option 1!")
+	try await interaction.respond(with: "You chose option 1!")
 }
 .component(on: "option_2") { interaction in
-  try await interaction.respond(with: "You chose option 2!")
+	try await interaction.respond(with: "You chose option 2!")
 }
 .component(on: "option_3") { interaction in
-  try await interaction.respond(with: "You chose option 3!")
+	try await interaction.respond(with: "You chose option 3!")
 }
 ```
 :::

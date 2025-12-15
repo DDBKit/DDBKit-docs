@@ -2,8 +2,6 @@
 title: DDBKitFoundation
 ---
 
-import { Aside } from '@astrojs/starlight/components';
-
 :::danger
 This feature is subject to change and can break,
 change or be removed at any time. This documentation
@@ -36,22 +34,22 @@ Register the `Configurator` extension in your bot app.
 ```swift
 @main
 struct MyNewBot: DiscordBotApp {
-  init() async {
-    // ...
-  }
+	init() async {
+		// ...
+	}
 
-  func onBoot() async throws {
-    // we pass in the configuration template type to the configurator instance
-    let configExtension = Configurator(guildConfiguation: GuildConfigTemplate.self)
-    RegisterExtension(configExtension)
-  }
+	func onBoot() async throws {
+		// we pass in the configuration template type to the configurator instance
+		let configExtension = Configurator(guildConfiguation: GuildConfigTemplate.self)
+		RegisterExtension(configExtension)
+	}
 }
 
 // ... elsewhere
 
 struct GuildConfigTemplate: ConfigTemplate {
-  @Config(name: "prefix", description: "The prefix for the bot", initialValue: "!")
-  var prefix: String
+	@Config(name: "prefix", description: "The prefix for the bot", initialValue: "!")
+	var prefix: String
 }
 ```
 

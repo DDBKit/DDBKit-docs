@@ -57,13 +57,13 @@ An example of such an extension:
 
 ```swift
 extension MyNewBot {
-  var Events: Group {
-    Group {
-      MessageCreateEvent { msg in
-        print("[\(msg!.author!.username)] \(msg!.content)")
-      }
-    }
-  }
+	var Events: Group {
+		Group {
+			MessageCreateEvent { msg in
+				print("[\(msg!.author!.username)] \(msg!.content)")
+			}
+		}
+	}
 }
 ```
 
@@ -72,21 +72,21 @@ And its usage:
 ```swift
 @main
 struct MyNewBot: DiscordBotApp {
-  init() async {
-    // ...
-  }
-  
-  var body: [any BotScene] {
-    ReadyEvent { ready in
-      print("hi mom")
-    }
-    
-    Commands
-    Events
-  }
-  
-  var bot: Bot
-  var cache: Cache
+	init() async {
+		// ...
+	}
+
+	var body: [any BotScene] {
+		ReadyEvent { ready in
+			print("hi mom")
+		}
+
+		Commands
+		Events
+	}
+
+	var bot: Bot
+	var cache: Cache
 }
 ```
 
@@ -116,41 +116,41 @@ to store data in different contexts.
 // ...
 
 Command("test") { interaction, cmd, reqs in
-  /// Don't forget that your transaction could end up being held in a
-  /// queue. Whilst we're only accessing a member's data, it's still
-  /// better to just defer when using the database.
-  try? await bot.createInteractionResponse(to: i, type: .deferredChannelMessageWithSource())
-  
-  /// You should define models in another file for cleaner code.
-  /// Types must be Codable to use in `DatabaseModel`s.
-  struct GuildMemberTest: DatabaseModel {
-    var val: Int = 0
-  }
-  
-  /// Don't assume this will always work, this is just for the example.
-  /// The request could fail if the command is ran in a DM, or used as a user-app.
-  /// We create the `FetchRequest` object from automatic request builder method on db argument.
-  /// The `db` variable is of type `DatabaseBranches`.
-  let req = try! reqs.member(ofType: GuildMemberTest.self)
-  
-  /// Using `transaction(_:)` method returns the model if you want it,
-  /// this result is marked as discardable in case you only need to write values
-  /// rather than bringing values back after the transaction
-  let model = await database.transaction(req) { model in
-    var model = model ?? .init() // create if it doesnt exist
-    model.val = (try? cmd.requireOption(named: "number").requireInt()) ?? 0
-    /// return the model to store back in the database, or nil if you want to delete it
-    return model
-  }
-  /// If you wanted to read the value outside the transaction context, just
-  /// return the model argument.
-  
-  try? await bot.createInteractionResponse(to: interaction, "Stored \(model?.val ?? 0)!")
+	/// Don't forget that your transaction could end up being held in a
+	/// queue. Whilst we're only accessing a member's data, it's still
+	/// better to just defer when using the database.
+	try? await bot.createInteractionResponse(to: i, type: .deferredChannelMessageWithSource())
+
+	/// You should define models in another file for cleaner code.
+	/// Types must be Codable to use in `DatabaseModel`s.
+	struct GuildMemberTest: DatabaseModel {
+		var val: Int = 0
+	}
+
+	/// Don't assume this will always work, this is just for the example.
+	/// The request could fail if the command is ran in a DM, or used as a user-app.
+	/// We create the `FetchRequest` object from automatic request builder method on db argument.
+	/// The `db` variable is of type `DatabaseBranches`.
+	let req = try! reqs.member(ofType: GuildMemberTest.self)
+
+	/// Using `transaction(_:)` method returns the model if you want it,
+	/// this result is marked as discardable in case you only need to write values
+	/// rather than bringing values back after the transaction
+	let model = await database.transaction(req) { model in
+		var model = model ?? .init()  // create if it doesnt exist
+		model.val = (try? cmd.requireOption(named: "number").requireInt()) ?? 0
+		/// return the model to store back in the database, or nil if you want to delete it
+		return model
+	}
+	/// If you wanted to read the value outside the transaction context, just
+	/// return the model argument.
+
+	try? await bot.createInteractionResponse(to: interaction, "Stored \(model?.val ?? 0)!")
 }
 .description("test command for database example")
 .addingOptions {
-  IntOption(name: "number", description: "Stores this value per guild member.")
-    .required()
+	IntOption(name: "number", description: "Stores this value per guild member.")
+		.required()
 }
 
 // ...

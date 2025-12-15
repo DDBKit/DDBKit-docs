@@ -27,7 +27,7 @@ Using or making an extension requires that you use the
 extensions.
 
 ```swift
-// Regular users: Import the module with 
+// Regular users: Import the module with
 // the extension you need with `@_spi`.
 @_spi(Extensions) import DDBKitFoundation
 
@@ -48,14 +48,14 @@ runs on startup.
 ```swift
 @main
 struct MyNewBot: DiscordBotApp {
-  init() async {
-    // ...
-  }
+	init() async {
+		// ...
+	}
 
-  func onBoot() async throws {
-    // Register the extension
-    RegisterExtension(MyExtension())
-  }
+	func onBoot() async throws {
+		// Register the extension
+		RegisterExtension(MyExtension())
+	}
 }
 ```
 
@@ -92,7 +92,7 @@ modifier:
 
 ```swift
 Command("ping") { i in
-  // ...
+	// ...
 }
 .levelRequirement(at: 20) // has to be xp level 20 to use the command
 ```
@@ -155,9 +155,9 @@ conforms to the `DDBKitExtension` protocol.
 
 ```swift
 actor MyExtension: DDBKitExtension {
-  func onBoot(_ instance: inout BotInstance) async throws {
-    // ...
-  }
+	func onBoot(_ instance: inout BotInstance) async throws {
+		// ...
+	}
 }
 ```
 
@@ -186,18 +186,23 @@ Here's the interface of `BotInstance`:
 
 ```swift
 public class BotInstance {
-  public var globalErrorHandle: ((any GatewayManager, any Error, Interaction) async throws -> Void)?
+	public var globalErrorHandle:
+		((any GatewayManager, any Error, Interaction) async throws -> Void)?
 
-  public var events: [any BaseEvent]
+	public var events: [any BaseEvent]
 
-  public var commands: [ExtensibleCommand]
+	public var commands: [ExtensibleCommand]
 
-  public var modalReceives: [String : [(Interaction, Interaction.ModalSubmit, DatabaseBranches) async throws -> Void]]
+	public var modalReceives:
+		[String: [(Interaction, Interaction.ModalSubmit, DatabaseBranches) async throws ->
+			Void]]
 
-  public var componentReceives: [String : [(Interaction, Interaction.MessageComponent, DatabaseBranches) async throws -> Void]]
+	public var componentReceives:
+		[String: [(Interaction, Interaction.MessageComponent, DatabaseBranches) async throws
+			-> Void]]
 
-  /// Unique stable identifier for the app
-  public let id: ApplicationSnowflake
+	/// Unique stable identifier for the app
+	public let id: ApplicationSnowflake
 }
 ```
 
@@ -210,10 +215,10 @@ Here's an example to print all registered commands.
 
 ```swift
 actor PrintAllCommandsExtension: DDBKitExtension {
-  func onBoot(_ instance: inout BotInstance) async throws {
-    let registeredCommands = instance.commands.map(\.baseInfo.name)
-    print(registeredCommands)
-  }
+	func onBoot(_ instance: inout BotInstance) async throws {
+		let registeredCommands = instance.commands.map(\.baseInfo.name)
+		print(registeredCommands)
+	}
 }
 ```
 
@@ -223,17 +228,17 @@ commands.
 
 ```swift
 actor PrintAllCommandsExtension: DDBKitExtension {
-  func onBoot(_ instance: inout BotInstance) async throws {
-    instance.commands = instance.commands.map {
-      $0
-        .preAction { cmd, _ in
-          print(cmd.baseInfo.name)
-        }
-        .postAction { cmd, _ in
-          print(cmd.baseInfo.name, "finished") // if it didnt error this will work
-        }
-    }
-  }
+	func onBoot(_ instance: inout BotInstance) async throws {
+		instance.commands = instance.commands.map {
+			$0
+				.preAction { cmd, _ in
+					print(cmd.baseInfo.name)
+				}
+				.postAction { cmd, _ in
+					print(cmd.baseInfo.name, "finished")  // if it didnt error this will work
+				}
+		}
+	}
 }
 ```
 
@@ -242,35 +247,34 @@ times.
 
 ```swift
 actor PrintAllCommandsExtension: DDBKitExtension {
-  func onBoot(_ instance: inout BotInstance) async throws {
-    // ...
-  }
+	func onBoot(_ instance: inout BotInstance) async throws {
+		// ...
+	}
 
-  /// The register method allows you to create new commands and events
-  /// This builder can use logic to determine what to register, which you
-  /// can combine with `onBoot(:) async throws` to logically add handling.
-  func register() -> [any BotScene] {
-    Command("gm") { e in
-      try await e.respond(with: "gm")
-    }
-  }
+	/// The register method allows you to create new commands and events
+	/// This builder can use logic to determine what to register, which you
+	/// can combine with `onBoot(:) async throws` to logically add handling.
+	func register() -> [any BotScene] {
+		Command("gm") { e in
+			try await e.respond(with: "gm")
+		}
+	}
 
-  /// Gives you direct events from the gateway. Combine this with
-  /// DiscordBM's `GatewayEventHandler` protocol to make event handling easier
-  func onEvent(_ instance: BotInstance, event: Gateway.Event) async throws {
-    print("\(event.type ?? "") received")
-    // instanciate handler with event and handle
-    MessageReceiveHandle(event: event).handle() 
-  }
+	/// Gives you direct events from the gateway. Combine this with
+	/// DiscordBM's `GatewayEventHandler` protocol to make event handling easier
+	func onEvent(_ instance: BotInstance, event: Gateway.Event) async throws {
+		print("\(event.type ?? "") received")
+		// instanciate handler with event and handle
+		MessageReceiveHandle(event: event).handle()
+	}
 
+	struct MessageReceiveHandle: GatewayEventHandler {
+		var event: Gateway.Event
 
-  struct MessageReceiveHandle: GatewayEventHandler {
-    var event: Gateway.Event
-    
-    func onMessageCreate(_ payload: Gateway.MessageCreate) async throws {
-      print("[\(payload.author?.username ?? "idk")] \(payload.content)")
-    }
-  }
+		func onMessageCreate(_ payload: Gateway.MessageCreate) async throws {
+			print("[\(payload.author?.username ?? "idk")] \(payload.content)")
+		}
+	}
 }
 ```
 
@@ -283,13 +287,32 @@ Here's some of the interface for `ExtensibleCommand`:
 
 ```swift
 extension ExtensibleCommand {
-    public func preAction(_ action: @escaping (BaseContextCommand, any GatewayManager, DiscordCache, Interaction, DatabaseBranches) async throws -> Void) -> Self
+	public func preAction(
+		_ action:
+			@escaping (
+				BaseContextCommand, any GatewayManager, DiscordCache, Interaction,
+				DatabaseBranches
+			) async throws -> Void
+	) -> Self
 
-    public func postAction(_ action: @escaping (BaseContextCommand, any GatewayManager, DiscordCache, Interaction, DatabaseBranches) async throws -> Void) -> Self
+	public func postAction(
+		_ action:
+			@escaping (
+				BaseContextCommand, any GatewayManager, DiscordCache, Interaction,
+				DatabaseBranches
+			) async throws -> Void
+	) -> Self
 
-    public func catchAction(_ action: @escaping (any Error, BaseContextCommand, any GatewayManager, DiscordCache, Interaction, DatabaseBranches) async throws -> Void) -> Self
+	public func catchAction(
+		_ action:
+			@escaping (
+				any Error, BaseContextCommand, any GatewayManager, DiscordCache,
+				Interaction, DatabaseBranches
+			) async throws -> Void
+	) -> Self
 
-    public func boot(_ action: @escaping (BaseContextCommand, BotInstance) async throws -> Void) -> Self
+	public func boot(_ action: @escaping (BaseContextCommand, BotInstance) async throws -> Void)
+		-> Self
 }
 ```
 
@@ -304,23 +327,7 @@ Here's an example of a modifier that prints something
 before and after a command is run:
 
 ```swift
-extension ExtensibleCommand {
-  func logUsages() -> Self {
-    self
-      .boot { cmd, _ in
-        print("\(cmd.baseInfo.name) command exists!")
-      }
-      .catchAction { error, cmd, _, _, i, _ in
-        print("\(cmd.baseInfo.name) command errored for \(i.interaction.member?.user?.username ?? "unknown user") with error: \(error)")
-      }
-      .preAction { cmd, _, _, i, _ in
-        print("\(cmd.baseInfo.name) command started by \(i.interaction.member?.user?.username ?? "unknown user")")
-      }
-      .postAction { cmd, _, _, i, _ in
-        print("\(cmd.baseInfo.name) command completed for \(i.interaction.member?.user?.username ?? "unknown user")")
-      }
-  }
-}
+
 ```
 
 This modifier will print the command name when the
@@ -328,15 +335,29 @@ bot boots, when the command is started, when the
 command is completed, and when the command errors.
 
 ```swift
-Command("failable") { i, _, _ in
-  struct Egg: Decodable {
-    var gm: String
-  }
-  let data = "{}".data(using: .utf8)!
-  _ = try JSONDecoder().decode(Egg.self, from: data)
+extension ExtensibleCommand {
+	func logUsages() -> Self {
+		self
+			.boot { cmd, _ in
+				print("\(cmd.baseInfo.name) command exists!")
+			}
+			.catchAction { error, cmd, _, _, i, _ in
+				print(
+					"\(cmd.baseInfo.name) command errored for \(i.interaction.member?.user?.username ?? "unknown user") with error: \(error)"
+				)
+			}
+			.preAction { cmd, _, _, i, _ in
+				print(
+					"\(cmd.baseInfo.name) command started by \(i.interaction.member?.user?.username ?? "unknown user")"
+				)
+			}
+			.postAction { cmd, _, _, i, _ in
+				print(
+					"\(cmd.baseInfo.name) command completed for \(i.interaction.member?.user?.username ?? "unknown user")"
+				)
+			}
+	}
 }
-.integrationType(.all, contexts: .all)
-.logUsages()
 ```
 
 In this example, this command will fail, and the
@@ -361,13 +382,13 @@ and easily.
 ```swift
 // In your modifier
 extension ExtensibleCommand {
-  func myModifier() -> Self {
-    self
-      .boot { cmd, i in
-        let myExtension = i.instance[ext: Configurator.self]
-        myExtension.doSomething()
-      }
-  }
+	func myModifier() -> Self {
+		self
+			.boot { cmd, i in
+				let myExtension = i.instance[ext: Configurator.self]
+				myExtension.doSomething()
+			}
+	}
 }
 ```
 
@@ -382,12 +403,12 @@ you can extend it with your own properties and methods
 for your extension.
 
 ```swift
-public extension InteractionExtras {
-  // Does a thing in MyExtension with the interaction
-  func doSomething() async throws {
-    let ext = self.instance[ext: MyExtension.self]
-    try await ext.doSomething(self)
-  }
+extension InteractionExtras {
+	// Does a thing in MyExtension with the interaction
+	public func doSomething() async throws {
+		let ext = self.instance[ext: MyExtension.self]
+		try await ext.doSomething(self)
+	}
 }
 ```
 

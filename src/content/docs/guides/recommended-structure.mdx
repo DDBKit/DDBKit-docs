@@ -45,54 +45,63 @@ Here's a crude example demonstrating this.
 
 ```swift
 actor GameSessionManager {
-  private var sessions: [String: GameSession] = [:]
-  
-  enum GameSessionError: LocalizedError {
-    case sessionAlreadyExists
-    case sessionNotFound
-    case userAlreadyInSession
-    
-    var errorDescription: String? {
-      switch self {
-      case .sessionAlreadyExists:
-        return "A game session already exists in this channel."
-      case .sessionNotFound:
-        return "No game session found in this channel."
-      case .userAlreadyInSession:
-        return "User is already in the game session."
-      }
-    }
-  }
-  
-  func createSession(for channelID: ChannelSnowflake) throws -> GameSession {
-    guard sessions[channelID] == nil else {
-      throw GameSessionError.sessionAlreadyExists
-    }
-    let session = GameSession()
-    sessions[channelID] = session
-    return session
-  }
-  
-  func getSession(for channelID: ChannelSnowflake) throws -> GameSession {
-    guard let session = sessions[channelID] else {
-      throw GameSessionError.sessionNotFound
-    }
-    return session
-  }
-  
-  func endSession(for channelID: ChannelSnowflake) throws {
-    if let session = sessions[channelID] {
-      sessions.removeValue(forKey: channelID)
-    } else {
-      throw GameSessionError.sessionNotFound
-    }
-  }
-    
-  func joinSession(channelID: ChannelSnowflake, userID: UserSnowflake) -> GameSession {
-    let session = try await getSession(for: channelID)
-    session.addPlayer(userID: userID)
-    return session
-  }
+	private var sessions: [String: GameSession] = [:]
+
+	enum GameSessionError: LocalizedError {
+		case sessionAlreadyExists
+		case sessionNotFound
+		case userAlreadyInSession
+
+		var errorDescription: String? {
+			switch self {
+			case .sessionAlreadyExists:
+				return "A game session already exists in this channel."
+			case .sessionNotFound:
+				return "No game session found in this channel."
+			case .userAlreadyInSession:
+				return "User is already in the game session."
+			}
+		}
+	}
+
+	func createSession(
+		for channelID: ChannelSnowflake
+	) throws -> GameSession {
+		guard sessions[channelID] == nil else {
+			throw GameSessionError.sessionAlreadyExists
+		}
+		let session = GameSession()
+		sessions[channelID] = session
+		return session
+	}
+
+	func getSession(
+		for channelID: ChannelSnowflake
+	) throws -> GameSession {
+		guard let session = sessions[channelID] else {
+			throw GameSessionError.sessionNotFound
+		}
+		return session
+	}
+
+	func endSession(
+		for channelID: ChannelSnowflake
+	) throws {
+		if let session = sessions[channelID] {
+			sessions.removeValue(forKey: channelID)
+		} else {
+			throw GameSessionError.sessionNotFound
+		}
+	}
+
+	func joinSession(
+		channelID: ChannelSnowflake,
+		userID: UserSnowflake
+	) -> GameSession {
+		let session = try await getSession(for: channelID)
+		session.addPlayer(userID: userID)
+		return session
+	}
 }
 ```
 
@@ -107,43 +116,45 @@ use throughout your bot.
 ```swift
 @main
 struct MyBot: DiscordBotApp {
-  init() async {
-    // ...
-  }
-  
-  func onBoot() async throws {
-    // assign global catch for errors
-    // usually by responding to the interaction or editing it with an error message
-  }
-  
-  var body: [any BotScene] {
-    Command("start") { i in
-      // shouldn't usually fail
-      guard let channelID = i.interaction.channel_id else {
-        return 
-      }
-      let session = try await gameSessionManager.createSession(for: channelID)
-      try await i.respond("Game session started! Everyone join up with `/join`!")
-    }
-    .description("Starts a new game session in this channel.")
-    .defaultPermissionRequirement([.administrator])
-    
-    Command("join") { i in
-      guard let channelID = i.interaction.channel_id,
-            let userID = i.interaction.user?.id else {
-        return
-      }
-      let session = await gameSessionManager.joinSession(channelID: channelID, userID: userID)
-      // do something with the session if needed
-      try await i.respond("You have joined the game session!")
-    }
-    .description("Join the active game session in this channel.")
-  }
-  
-  var bot: Bot
-  var cache: Cache
-  
-  let gameSessionManager = GameSessionManager()
+	init() async {
+		// ...
+	}
+
+	func onBoot() async throws {
+		// assign global catch for errors
+		// usually by responding to the interaction or editing it with an error message
+	}
+
+	var body: [any BotScene] {
+		Command("start") { i in
+			// shouldn't usually fail
+			guard let channelID = i.interaction.channel_id else {
+				return
+			}
+			let session = try await gameSessionManager.createSession(for: channelID)
+			try await i.respond("Game session started! Everyone join up with `/join`!")
+		}
+		.description("Starts a new game session in this channel.")
+		.defaultPermissionRequirement([.administrator])
+
+		Command("join") { i in
+			guard let channelID = i.interaction.channel_id,
+				let userID = i.interaction.user?.id
+			else {
+				return
+			}
+			let session = await gameSessionManager.joinSession(
+				channelID: channelID, userID: userID)
+			// do something with the session if needed
+			try await i.respond("You have joined the game session!")
+		}
+		.description("Join the active game session in this channel.")
+	}
+
+	var bot: Bot
+	var cache: Cache
+
+	let gameSessionManager = GameSessionManager()
 }
 ```
 
