@@ -19,7 +19,7 @@ export default defineConfig({
 			favicon: "/favicon.png",
 			lastUpdated: true,
 			editLink: {
-				baseUrl: "https://github.com/DDBKit/DDBKit-docs/tree/master/",
+				baseUrl: "https://github.com/DDBKit/docs/tree/master/",
 			},
 			logo: {
 				src: "./src/assets/favicon.png",
