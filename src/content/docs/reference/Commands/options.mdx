@@ -35,10 +35,6 @@ Command("fruit") { i in
 }
 ```
 
-## Autocompletions
-
-TODO
-
 ## Option types
 
 ### String
@@ -51,16 +47,60 @@ StringOption(name: "foo", description: "bar")
 
 ### Int
 
+```swift
+IntOption(name: "foo", description: "bar")
+	.required()
+	.choices { [1, 2].map { .int($0) } }
+	.range(1...2)
+```
+
 ### Bool
+
+```swift
+BoolOption(name: "foo", description: "bar")
+	.required()
+```
 
 ### User
 
+```swift
+UserOption(name: "foo", description: "bar")
+	.required()
+```
+
 ### Channel
+
+```swift
+ChannelOption(name: "foo", description: "bar")
+	.required()
+```
 
 ### Role
 
+```swift
+RoleOption(name: "foo", description: "bar")
+	.required()
+```
+
 ### Mentionable
+
+```swift
+MentionableOption(name: "foo", description: "bar")
+	.required()
+```
 
 ### Double
 
+```swift
+DoubleOption(name: "foo", description: "bar")
+	.required()
+	.choices { [1, 2].map { .double($0) } }
+	.range(1...2)
+```
+
 ### Attachment
+
+```swift
+AttachmentOption(name: "foo", description: "bar")
+	.required()
+```
