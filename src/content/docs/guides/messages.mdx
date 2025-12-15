@@ -53,6 +53,19 @@ let message = Message {
 }
 ```
 
+:::tip
+If you only have text content in your message, you can omit
+MessageContent. This will not work if you have embeds or
+other components.
+```diff lang="swift"
+Message {
+-	MessageContent {
+		Text("gm")
+-	}
+}
+```
+:::
+
 ### MessageEmbed
 
 Embeds are rich content blocks that can include titles,
